@@ -1,0 +1,1 @@
+/Table[@Artifact="table:InventQualityOrderTable"]

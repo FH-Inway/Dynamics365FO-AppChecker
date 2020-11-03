@@ -16,7 +16,7 @@ foreach ($folder in $packageFolders)
     # If there is a Descriptor subfolder, this should be a folder of a compileable module.
     if (Test-Path "$($folder.FullName)\Descriptor")
     {
-        # For an unknown reason, the compilation of the ApplicationSuite module with -includeSourceInAsts results in an error message, but the compilation completes nevertheless and the source seems to be included in the AST xml files
+        # For an unknown reason, the compilation of the ApplicationFoundation module with -includeSourceInAsts results in an error message, but the compilation completes nevertheless and the source seems to be included in the AST xml files
         C:\AOSService\PackagesLocalDirectory\bin\xppc.exe -metadata="$($packagesLocalDirectory)" -referencefolder="$($packagesLocalDirectory)" -writeAsts -astOutputPath="$($astOutputPath)" -includeSourceInAsts -modelmodule="$($folder.Name)" -output="$($folder.FullName)\bin"
         $count++
         <#
