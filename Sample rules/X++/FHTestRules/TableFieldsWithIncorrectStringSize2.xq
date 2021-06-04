@@ -15,7 +15,7 @@ declare function local:findRootEDTName($c)
      ($c/@Name)
 };
 
-declare variable $tables := <TableFieldsWithIncorrectStringSize>{
+let $tables := <TableFieldsWithIncorrectStringSize>{
   for $table in /Table[@Package="ApplicationFoundation"]
   for $field in $table/Metadata/Fields/AxTableField[StringSize]
   let $edt := $edts/Extend[@Name=$field/ExtendedDataType]
@@ -33,6 +33,6 @@ declare variable $tables := <TableFieldsWithIncorrectStringSize>{
       <RootEDT>{data($rootEDT/Name)}</RootEDT>
       <EDTStringSize>{data($rootEDT/StringSize)}</EDTStringSize>
     </Field>
-}</TableFieldsWithIncorrectStringSize>;
+}</TableFieldsWithIncorrectStringSize>
 
-$tables
+return $tables
