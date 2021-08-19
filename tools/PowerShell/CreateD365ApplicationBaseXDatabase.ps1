@@ -1,4 +1,7 @@
-﻿$packagesLocalDirectory = "C:\AOSService\PackagesLocalDirectory"
+﻿# Make sure the Java VM for BaseX has 10 GB memory capacity, e.g. by setting a system environment variable (may require a system reboot)
+# BASEX_JVM = -Xmx10G
+
+$packagesLocalDirectory = "C:\AOSService\PackagesLocalDirectory"
 $baseXDatabaseName = "D365ApplicationExtended"
 $astOutputPath = "C:\Temp\AST"
 
