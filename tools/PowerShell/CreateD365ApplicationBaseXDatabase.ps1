@@ -2,13 +2,16 @@
 # BASEX_JVM = -Xmx10G
 
 $packagesLocalDirectory = "C:\AOSService\PackagesLocalDirectory"
-$baseXDatabaseName = "D365ApplicationExtended"
+$baseXDatabaseName = "D365ApplicationExtendedTimesheetMobile"
 $astOutputPath = "C:\Temp\AST"
+$packageFilter = "TimesheetMobile"
 
 $stopwatch = [Diagnostics.Stopwatch]::StartNew()
 
 # TODO Maybe folders without a Descriptor subfolder can be excluded directly?
 $packageFolders = Get-ChildItem -Path $packagesLocalDirectory -Exclude bin -Directory
+# Filter out folders that do not contain the packageFilter string
+$packageFolders = $packageFolders | Where-Object {$_.Name -like "*$($packageFilter)*"}
 $count = 1
 
 # Compile modules and create AST content
