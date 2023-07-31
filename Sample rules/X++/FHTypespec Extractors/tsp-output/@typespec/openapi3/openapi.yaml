@@ -1,0 +1,353 @@
+openapi: 3.0.0
+info:
+  title: Microsoft Dynamics 365 Finance and Operations Custom Services API2
+  version: 0.0.1.20230730
+tags:
+  - name: /TSTimesheetServices
+paths:
+  /TSTimesheetServices/TSTimesheetApprovalService/approveTimesheetLines:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_approveTimesheetLines
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/approveTimesheets:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_approveTimesheets
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/delegateTimesheetLines:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_delegateTimesheetLines
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/delegateTimesheets:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_delegateTimesheets
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/getDelegatesForApproval:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_getDelegatesForApproval
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/getDelegatesForLineApproval:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_getDelegatesForLineApproval
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/getTimesheetDetailsForMyApproval:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_getTimesheetDetailsForMyApproval
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/getTimesheetsForMyApproval:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_getTimesheetsForMyApproval
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/rejectTimesheetLines:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_rejectTimesheetLines
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetApprovalService/rejectTimesheets:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetApprovalService_rejectTimesheets
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/copyLinesFromAssignments:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_copyLinesFromAssignments
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/copyLinesFromFavorites:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_copyLinesFromFavorites
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/copyLinesFromTimesheet:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_copyLinesFromTimesheet
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/createNewTimesheet:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_createNewTimesheet
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/createOrUpdateTimesheetLine:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_createOrUpdateTimesheetLine
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/deleteTimesheetLine:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_deleteTimesheetLine
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/deleteTimesheets:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_deleteTimesheets
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/findOrCreateTimesheet:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_findOrCreateTimesheet
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getCompletedTimesheets:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getCompletedTimesheets
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getLabelTranslations:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getLabelTranslations
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getLegalEntityReferenceInformation:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getLegalEntityReferenceInformation
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getProjectDetailsByProjId:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getProjectDetailsByProjId
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getProjectDetailsSearch:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getProjectDetailsSearch
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getRecentAndAssignedProjects:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getRecentAndAssignedProjects
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getServerVersion:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getServerVersion
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getTimesheetDetailsByNumber:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getTimesheetDetailsByNumber
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getTimesheetSettingsForCurrentUser:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getTimesheetSettingsForCurrentUser
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/getTimesheetSummary:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_getTimesheetSummary
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/recallTimesheet:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_recallTimesheet
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/saveTimesheetLinesAsFavorite:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_saveTimesheetLinesAsFavorite
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+  /TSTimesheetServices/TSTimesheetSubmissionService/submitTimesheet:
+    get:
+      tags:
+        - /TSTimesheetServices
+      operationId: TSTimesheetSubmissionService_submitTimesheet
+      parameters: []
+      responses:
+        '204':
+          description: >-
+            There is no content to send for this request, but the headers may be
+            useful. 
+components: {}
+servers:
+  - url: https://usnconeboxax1aos.cloud.onebox.dynamics.com/api/services
+    description: Microsoft Dynamics 365 Finance and Operations Local OneBox Environment
+    variables: {}

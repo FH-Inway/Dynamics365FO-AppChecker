@@ -2,9 +2,9 @@
 # BASEX_JVM = -Xmx10G
 
 $packagesLocalDirectory = "C:\AOSService\PackagesLocalDirectory"
-$baseXDatabaseName = "D365ApplicationExtendedTimesheetMobile"
+$baseXDatabaseName = "D365ApplicationExtended"
 $astOutputPath = "C:\Temp\AST"
-$packageFilter = "TimesheetMobile"
+$packageFilter = ""
 
 $stopwatch = [Diagnostics.Stopwatch]::StartNew()
 

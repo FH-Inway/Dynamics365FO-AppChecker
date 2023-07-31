@@ -8,7 +8,7 @@ import "@typespec/http";
 using TypeSpec.Http;
 
 @service(&#123;
-  title: "Microsoft Dynamics 365 Finance and Operations Custom Services API",
+  title: "Microsoft Dynamics 365 Finance and Operations Custom Services API2",
   version: "0.0.1.20230730",
 &#125;)
 @server(
@@ -41,7 +41,7 @@ namespace {$service/@name/string()} &#123;
     @get 
     op {$operation/@name/string()}(
       
-      {
+      {(:
         let $input := $operation/wsdl:input
         let $messageName := substring-after($input/@message/string(), ":")
         let $message := //wsdl:message[@name=$messageName]
@@ -53,7 +53,7 @@ namespace {$service/@name/string()} &#123;
         test {$parameterName}
         
         </parameter>
-      }
+      :)}
       
     ): void;
     
@@ -73,4 +73,4 @@ namespace {$service/@name/string()} &#123;
 
 </typespec>
 
-return file:write-text("C:\Temp\Typespec.tsp", $typespec)
+return file:write-text("C:\Repositories\GitHub\FH-Inway\Dynamics365FO-AppChecker\Sample rules\X++\FHTypespec Extractors/main.tsp", $typespec)

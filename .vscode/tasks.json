@@ -37,6 +37,90 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run BaseX XQuery",
+            "type": "shell",
+            "command": "basex",
+            "args": [
+                "-i TSTimesheetServices",
+                "'${file}'"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "Build Typespec",
+            "type": "shell",
+            "command": "tsp",
+            "args": [
+                "format",
+                "'C:/Repositories/GitHub/FH-Inway/Dynamics365FO-AppChecker/Sample rules/X++/FHTypespec Extractors/main.tsp'"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "dependsOn": [
+                "Run BaseX XQuery"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "Compile Typespec",
+            "type": "shell",
+            "command": "tsp",
+            "args": [
+                "compile",
+                "'C:/Repositories/GitHub/FH-Inway/Dynamics365FO-AppChecker/Sample rules/X++/FHTypespec Extractors/main.tsp'",
+                "--output-dir",
+                "'C:/Repositories/GitHub/FH-Inway/Dynamics365FO-AppChecker/Sample rules/X++/FHTypespec Extractors/tsp-output'"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "dependsOn": [
+                "Build Typespec"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "database",
+            "options": [
+                "TSTimesheetServices"
+            ],
+            "description": "Select the database to query"
         }
     ]
 }
