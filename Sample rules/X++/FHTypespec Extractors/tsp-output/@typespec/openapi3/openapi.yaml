@@ -1,14 +1,15 @@
 openapi: 3.0.0
 info:
-  title: Microsoft Dynamics 365 Finance and Operations Custom Services API2
+  title: Microsoft Dynamics 365 Finance and Operations Custom Services API3
   version: 0.0.1.20230730
 tags:
-  - name: /TSTimesheetServices
+  - name: /TSTimesheetSubmissionService
+  - name: /TSTimesheetApprovalService
 paths:
   /TSTimesheetServices/TSTimesheetApprovalService/approveTimesheetLines:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_approveTimesheetLines
       parameters: []
       responses:
@@ -16,10 +17,23 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _timesheetLineRecIds: {}
+              required:
+                - _comment
+                - _timesheetLineRecIds
   /TSTimesheetServices/TSTimesheetApprovalService/approveTimesheets:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_approveTimesheets
       parameters: []
       responses:
@@ -27,10 +41,23 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _timesheetRecIds: {}
+              required:
+                - _comment
+                - _timesheetRecIds
   /TSTimesheetServices/TSTimesheetApprovalService/delegateTimesheetLines:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_delegateTimesheetLines
       parameters: []
       responses:
@@ -38,10 +65,26 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _timesheetLineRecIds: {}
+                _user:
+                  type: string
+              required:
+                - _comment
+                - _timesheetLineRecIds
+                - _user
   /TSTimesheetServices/TSTimesheetApprovalService/delegateTimesheets:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_delegateTimesheets
       parameters: []
       responses:
@@ -49,10 +92,26 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _timesheetRecIds: {}
+                _user:
+                  type: string
+              required:
+                - _comment
+                - _timesheetRecIds
+                - _user
   /TSTimesheetServices/TSTimesheetApprovalService/getDelegatesForApproval:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_getDelegatesForApproval
       parameters: []
       responses:
@@ -60,10 +119,22 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _timesheetRecId:
+                  type: integer
+                  format: int64
+              required:
+                - _timesheetRecId
   /TSTimesheetServices/TSTimesheetApprovalService/getDelegatesForLineApproval:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_getDelegatesForLineApproval
       parameters: []
       responses:
@@ -71,10 +142,22 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _timesheetLineRecId:
+                  type: integer
+                  format: int64
+              required:
+                - _timesheetLineRecId
   /TSTimesheetServices/TSTimesheetApprovalService/getTimesheetDetailsForMyApproval:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_getTimesheetDetailsForMyApproval
       parameters: []
       responses:
@@ -82,10 +165,22 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _recId:
+                  type: integer
+                  format: int64
+              required:
+                - _recId
   /TSTimesheetServices/TSTimesheetApprovalService/getTimesheetsForMyApproval:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_getTimesheetsForMyApproval
       parameters: []
       responses:
@@ -94,9 +189,9 @@ paths:
             There is no content to send for this request, but the headers may be
             useful. 
   /TSTimesheetServices/TSTimesheetApprovalService/rejectTimesheetLines:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_rejectTimesheetLines
       parameters: []
       responses:
@@ -104,10 +199,23 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _timesheetLineRecIds: {}
+              required:
+                - _comment
+                - _timesheetLineRecIds
   /TSTimesheetServices/TSTimesheetApprovalService/rejectTimesheets:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetApprovalService
       operationId: TSTimesheetApprovalService_rejectTimesheets
       parameters: []
       responses:
@@ -115,10 +223,23 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _timesheetRecIds: {}
+              required:
+                - _comment
+                - _timesheetRecIds
   /TSTimesheetServices/TSTimesheetSubmissionService/copyLinesFromAssignments:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_copyLinesFromAssignments
       parameters: []
       responses:
@@ -126,10 +247,29 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _entryDate:
+                  type: string
+                  format: date-time
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetTo:
+                  type: string
+              required:
+                - _entryDate
+                - _resource
+                - _timesheetTo
   /TSTimesheetServices/TSTimesheetSubmissionService/copyLinesFromFavorites:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_copyLinesFromFavorites
       parameters: []
       responses:
@@ -137,10 +277,29 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _entryDate:
+                  type: string
+                  format: date-time
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetTo:
+                  type: string
+              required:
+                - _entryDate
+                - _resource
+                - _timesheetTo
   /TSTimesheetServices/TSTimesheetSubmissionService/copyLinesFromTimesheet:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_copyLinesFromTimesheet
       parameters: []
       responses:
@@ -148,10 +307,28 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetFrom:
+                  type: string
+                _timesheetTo:
+                  type: string
+              required:
+                - _resource
+                - _timesheetFrom
+                - _timesheetTo
   /TSTimesheetServices/TSTimesheetSubmissionService/createNewTimesheet:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_createNewTimesheet
       parameters: []
       responses:
@@ -159,10 +336,26 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetDate:
+                  type: string
+                  format: date-time
+              required:
+                - _resource
+                - _timesheetDate
   /TSTimesheetServices/TSTimesheetSubmissionService/createOrUpdateTimesheetLine:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_createOrUpdateTimesheetLine
       parameters: []
       responses:
@@ -170,10 +363,20 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _tsTimesheetEntryList: {}
+              required:
+                - _tsTimesheetEntryList
   /TSTimesheetServices/TSTimesheetSubmissionService/deleteTimesheetLine:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_deleteTimesheetLine
       parameters: []
       responses:
@@ -181,10 +384,26 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetLineRecId:
+                  type: integer
+                  format: int64
+              required:
+                - _resource
+                - _timesheetLineRecId
   /TSTimesheetServices/TSTimesheetSubmissionService/deleteTimesheets:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_deleteTimesheets
       parameters: []
       responses:
@@ -192,10 +411,24 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetNbrs: {}
+              required:
+                - _resource
+                - _timesheetNbrs
   /TSTimesheetServices/TSTimesheetSubmissionService/findOrCreateTimesheet:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_findOrCreateTimesheet
       parameters: []
       responses:
@@ -203,10 +436,26 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetDate:
+                  type: string
+                  format: date-time
+              required:
+                - _resource
+                - _timesheetDate
   /TSTimesheetServices/TSTimesheetSubmissionService/getCompletedTimesheets:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getCompletedTimesheets
       parameters: []
       responses:
@@ -214,10 +463,26 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _numOfTimesheets:
+                  type: integer
+                  format: int32
+                _resource:
+                  type: integer
+                  format: int64
+              required:
+                - _numOfTimesheets
+                - _resource
   /TSTimesheetServices/TSTimesheetSubmissionService/getLabelTranslations:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getLabelTranslations
       parameters: []
       responses:
@@ -225,10 +490,23 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _labelsToTranslate: {}
+                _language:
+                  type: string
+              required:
+                - _labelsToTranslate
+                - _language
   /TSTimesheetServices/TSTimesheetSubmissionService/getLegalEntityReferenceInformation:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getLegalEntityReferenceInformation
       parameters: []
       responses:
@@ -236,10 +514,22 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+              required:
+                - _resource
   /TSTimesheetServices/TSTimesheetSubmissionService/getProjectDetailsByProjId:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getProjectDetailsByProjId
       parameters: []
       responses:
@@ -247,10 +537,28 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _legalEntity:
+                  type: string
+                _projId:
+                  type: string
+                _resource:
+                  type: integer
+                  format: int64
+              required:
+                - _legalEntity
+                - _projId
+                - _resource
   /TSTimesheetServices/TSTimesheetSubmissionService/getProjectDetailsSearch:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getProjectDetailsSearch
       parameters: []
       responses:
@@ -258,10 +566,28 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _legalEntity:
+                  type: string
+                _resource:
+                  type: integer
+                  format: int64
+                _searchString:
+                  type: string
+              required:
+                - _legalEntity
+                - _resource
+                - _searchString
   /TSTimesheetServices/TSTimesheetSubmissionService/getRecentAndAssignedProjects:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getRecentAndAssignedProjects
       parameters: []
       responses:
@@ -269,10 +595,29 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _legalEntity:
+                  type: string
+                _resource:
+                  type: integer
+                  format: int64
+                _timeEntryDate:
+                  type: string
+                  format: date-time
+              required:
+                - _legalEntity
+                - _resource
+                - _timeEntryDate
   /TSTimesheetServices/TSTimesheetSubmissionService/getServerVersion:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getServerVersion
       parameters: []
       responses:
@@ -281,9 +626,9 @@ paths:
             There is no content to send for this request, but the headers may be
             useful. 
   /TSTimesheetServices/TSTimesheetSubmissionService/getTimesheetDetailsByNumber:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getTimesheetDetailsByNumber
       parameters: []
       responses:
@@ -291,10 +636,25 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+                _timesheetNumber:
+                  type: string
+              required:
+                - _resource
+                - _timesheetNumber
   /TSTimesheetServices/TSTimesheetSubmissionService/getTimesheetSettingsForCurrentUser:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getTimesheetSettingsForCurrentUser
       parameters: []
       responses:
@@ -303,9 +663,9 @@ paths:
             There is no content to send for this request, but the headers may be
             useful. 
   /TSTimesheetServices/TSTimesheetSubmissionService/getTimesheetSummary:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_getTimesheetSummary
       parameters: []
       responses:
@@ -313,10 +673,22 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _resource:
+                  type: integer
+                  format: int64
+              required:
+                - _resource
   /TSTimesheetServices/TSTimesheetSubmissionService/recallTimesheet:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_recallTimesheet
       parameters: []
       responses:
@@ -324,10 +696,29 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _recId:
+                  type: integer
+                  format: int64
+                _resource:
+                  type: integer
+                  format: int64
+              required:
+                - _comment
+                - _recId
+                - _resource
   /TSTimesheetServices/TSTimesheetSubmissionService/saveTimesheetLinesAsFavorite:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_saveTimesheetLinesAsFavorite
       parameters: []
       responses:
@@ -335,10 +726,20 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _tsTimesheetEntryList: {}
+              required:
+                - _tsTimesheetEntryList
   /TSTimesheetServices/TSTimesheetSubmissionService/submitTimesheet:
-    get:
+    post:
       tags:
-        - /TSTimesheetServices
+        - /TSTimesheetSubmissionService
       operationId: TSTimesheetSubmissionService_submitTimesheet
       parameters: []
       responses:
@@ -346,6 +747,25 @@ paths:
           description: >-
             There is no content to send for this request, but the headers may be
             useful. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _comment:
+                  type: string
+                _recId:
+                  type: integer
+                  format: int64
+                _resource:
+                  type: integer
+                  format: int64
+              required:
+                - _comment
+                - _recId
+                - _resource
 components: {}
 servers:
   - url: https://usnconeboxax1aos.cloud.onebox.dynamics.com/api/services

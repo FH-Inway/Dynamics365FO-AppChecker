@@ -5,7 +5,7 @@ import "@typespec/http";
 using TypeSpec.Http;
 
 @service({
-  title: "Microsoft Dynamics 365 Finance and Operations Custom Services API2",
+  title: "Microsoft Dynamics 365 Finance and Operations Custom Services API3",
   version: "0.0.1.20230730",
 })
 @server(
@@ -15,135 +15,184 @@ using TypeSpec.Http;
 namespace Microsoft.Dynamics.Services;
 
 @route("/TSTimesheetServices")
-@tag("/TSTimesheetServices")
+//@tag("/TSTimesheetServices")
 namespace TSTimesheetServices {
   @route("/TSTimesheetSubmissionService")
+  @tag("/TSTimesheetSubmissionService")
   namespace TSTimesheetSubmissionService {
     @route("/getTimesheetSettingsForCurrentUser")
-    @get
+    @post
     op getTimesheetSettingsForCurrentUser(): void;
 
     @route("/createNewTimesheet")
-    @get
-    op createNewTimesheet(): void;
+    @post
+    op createNewTimesheet(_resource: int64, _timesheetDate: utcDateTime): void;
 
     @route("/findOrCreateTimesheet")
-    @get
-    op findOrCreateTimesheet(): void;
+    @post
+    op findOrCreateTimesheet(
+      _resource: int64,
+      _timesheetDate: utcDateTime,
+    ): void;
 
     @route("/createOrUpdateTimesheetLine")
-    @get
-    op createOrUpdateTimesheetLine(): void;
+    @post
+    op createOrUpdateTimesheetLine(_tsTimesheetEntryList: unknown): void;
 
     @route("/deleteTimesheetLine")
-    @get
-    op deleteTimesheetLine(): void;
+    @post
+    op deleteTimesheetLine(_resource: int64, _timesheetLineRecId: int64): void;
 
     @route("/deleteTimesheets")
-    @get
-    op deleteTimesheets(): void;
+    @post
+    op deleteTimesheets(_resource: int64, _timesheetNbrs: unknown): void;
 
     @route("/getTimesheetDetailsByNumber")
-    @get
-    op getTimesheetDetailsByNumber(): void;
+    @post
+    op getTimesheetDetailsByNumber(
+      _resource: int64,
+      _timesheetNumber: string,
+    ): void;
 
     @route("/getTimesheetSummary")
-    @get
-    op getTimesheetSummary(): void;
+    @post
+    op getTimesheetSummary(_resource: int64): void;
 
     @route("/getCompletedTimesheets")
-    @get
-    op getCompletedTimesheets(): void;
+    @post
+    op getCompletedTimesheets(_numOfTimesheets: int32, _resource: int64): void;
 
     @route("/getLegalEntityReferenceInformation")
-    @get
-    op getLegalEntityReferenceInformation(): void;
+    @post
+    op getLegalEntityReferenceInformation(_resource: int64): void;
 
     @route("/getRecentAndAssignedProjects")
-    @get
-    op getRecentAndAssignedProjects(): void;
+    @post
+    op getRecentAndAssignedProjects(
+      _legalEntity: string,
+      _resource: int64,
+      _timeEntryDate: utcDateTime,
+    ): void;
 
     @route("/getProjectDetailsSearch")
-    @get
-    op getProjectDetailsSearch(): void;
+    @post
+    op getProjectDetailsSearch(
+      _legalEntity: string,
+      _resource: int64,
+      _searchString: string,
+    ): void;
 
     @route("/submitTimesheet")
-    @get
-    op submitTimesheet(): void;
+    @post
+    op submitTimesheet(_comment: string, _recId: int64, _resource: int64): void;
 
     @route("/recallTimesheet")
-    @get
-    op recallTimesheet(): void;
+    @post
+    op recallTimesheet(_comment: string, _recId: int64, _resource: int64): void;
 
     @route("/getLabelTranslations")
-    @get
-    op getLabelTranslations(): void;
+    @post
+    op getLabelTranslations(
+      _labelsToTranslate: unknown,
+      _language: string,
+    ): void;
 
     @route("/saveTimesheetLinesAsFavorite")
-    @get
-    op saveTimesheetLinesAsFavorite(): void;
+    @post
+    op saveTimesheetLinesAsFavorite(_tsTimesheetEntryList: unknown): void;
 
     @route("/copyLinesFromFavorites")
-    @get
-    op copyLinesFromFavorites(): void;
+    @post
+    op copyLinesFromFavorites(
+      _entryDate: utcDateTime,
+      _resource: int64,
+      _timesheetTo: string,
+    ): void;
 
     @route("/copyLinesFromAssignments")
-    @get
-    op copyLinesFromAssignments(): void;
+    @post
+    op copyLinesFromAssignments(
+      _entryDate: utcDateTime,
+      _resource: int64,
+      _timesheetTo: string,
+    ): void;
 
     @route("/copyLinesFromTimesheet")
-    @get
-    op copyLinesFromTimesheet(): void;
+    @post
+    op copyLinesFromTimesheet(
+      _resource: int64,
+      _timesheetFrom: string,
+      _timesheetTo: string,
+    ): void;
 
     @route("/getProjectDetailsByProjId")
-    @get
-    op getProjectDetailsByProjId(): void;
+    @post
+    op getProjectDetailsByProjId(
+      _legalEntity: string,
+      _projId: string,
+      _resource: int64,
+    ): void;
 
     @route("/getServerVersion")
-    @get
+    @post
     op getServerVersion(): void;
   }
 
   @route("/TSTimesheetApprovalService")
+  @tag("/TSTimesheetApprovalService")
   namespace TSTimesheetApprovalService {
     @route("/getTimesheetsForMyApproval")
-    @get
+    @post
     op getTimesheetsForMyApproval(): void;
 
     @route("/getTimesheetDetailsForMyApproval")
-    @get
-    op getTimesheetDetailsForMyApproval(): void;
+    @post
+    op getTimesheetDetailsForMyApproval(_recId: int64): void;
 
     @route("/approveTimesheets")
-    @get
-    op approveTimesheets(): void;
+    @post
+    op approveTimesheets(_comment: string, _timesheetRecIds: unknown): void;
 
     @route("/approveTimesheetLines")
-    @get
-    op approveTimesheetLines(): void;
+    @post
+    op approveTimesheetLines(
+      _comment: string,
+      _timesheetLineRecIds: unknown,
+    ): void;
 
     @route("/rejectTimesheets")
-    @get
-    op rejectTimesheets(): void;
+    @post
+    op rejectTimesheets(_comment: string, _timesheetRecIds: unknown): void;
 
     @route("/rejectTimesheetLines")
-    @get
-    op rejectTimesheetLines(): void;
+    @post
+    op rejectTimesheetLines(
+      _comment: string,
+      _timesheetLineRecIds: unknown,
+    ): void;
 
     @route("/delegateTimesheets")
-    @get
-    op delegateTimesheets(): void;
+    @post
+    op delegateTimesheets(
+      _comment: string,
+      _timesheetRecIds: unknown,
+      _user: string,
+    ): void;
 
     @route("/delegateTimesheetLines")
-    @get
-    op delegateTimesheetLines(): void;
+    @post
+    op delegateTimesheetLines(
+      _comment: string,
+      _timesheetLineRecIds: unknown,
+      _user: string,
+    ): void;
 
     @route("/getDelegatesForApproval")
-    @get
-    op getDelegatesForApproval(): void;
+    @post
+    op getDelegatesForApproval(_timesheetRecId: int64): void;
 
     @route("/getDelegatesForLineApproval")
-    @get
-    op getDelegatesForLineApproval(): void;
+    @post
+    op getDelegatesForLineApproval(_timesheetLineRecId: int64): void;
   }
 }
