@@ -14,11 +14,17 @@ let $datatypeMapping :=
     <DataType wsdl="xs:dateTime" typespec="utcDateTime" />
   </DataTypeMapping>
 
+let $models := <models>
+  model test &#123;&#125;
+</models>
+
 let $typespec := <typespec>
 
 import "@typespec/rest";
 import "@typespec/openapi3";
 import "@typespec/http";
+
+import "./models.tsp";
 
 using TypeSpec.Http;
 
@@ -89,4 +95,7 @@ namespace {$service/@name/string()} &#123;
 
 </typespec>
 
-return file:write-text("C:\Repositories\GitHub\FH-Inway\Dynamics365FO-AppChecker\Sample rules\X++\FHTypespec Extractors/main.tsp", $typespec)
+let $docs := ([$models, "models.tsp"], [$typespec, "main.tsp"])
+for $doc in $docs
+
+return file:write-text("C:\Repositories\GitHub\FH-Inway\Dynamics365FO-AppChecker\Sample rules\X++\FHTypespec Extractors/" || $doc(2), $doc(1))

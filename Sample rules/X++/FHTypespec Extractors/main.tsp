@@ -2,6 +2,8 @@ import "@typespec/rest";
 import "@typespec/openapi3";
 import "@typespec/http";
 
+import "./models.tsp";
+
 using TypeSpec.Http;
 
 @service({
