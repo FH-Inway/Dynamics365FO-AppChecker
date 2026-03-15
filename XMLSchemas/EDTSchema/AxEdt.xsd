@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:annotation>
+    <xs:documentation>
+      Draft schema for D365FO EDT metadata (AxEdt).
+      This draft is based on metrics captured from D365ApplicationExtended.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="AxBooleanLikeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true"/>
+      <xs:enumeration value="false"/>
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="0"/>
+      <xs:enumeration value="Yes"/>
+      <xs:enumeration value="No"/>
+      <xs:enumeration value="yes"/>
+      <xs:enumeration value="no"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="AxEdtCollectionType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtBaseType">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string"/>
+      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="Relations" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+
+      <xs:element name="Label" type="xs:string" minOccurs="0"/>
+      <xs:element name="Extends" type="xs:string" minOccurs="0"/>
+      <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
+      <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
+      <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
+      <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
+      <xs:element name="IsObsolete" type="AxBooleanLikeType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtString">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="StringSize" type="xs:integer" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+          <xs:element name="ChangeCase" type="xs:string" minOccurs="0"/>
+          <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
+          <xs:element name="StringSizeIsExtensible" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplayHeight" type="xs:integer" minOccurs="0"/>
+          <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+          <xs:element name="Tags" type="xs:string" minOccurs="0"/>
+          <xs:element name="CollectionLabel" type="xs:string" minOccurs="0"/>
+          <xs:element name="DatabaseStringSize" type="xs:integer" minOccurs="0"/>
+          <xs:element name="PresenceIndicatorAllowed" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="Adjustment" type="xs:string" minOccurs="0"/>
+          <xs:element name="Direction" type="xs:string" minOccurs="0"/>
+          <xs:element name="DataInteractorFactory" type="xs:string" minOccurs="0"/>
+          <xs:element name="PresenceMethod" type="xs:string" minOccurs="0"/>
+          <xs:element name="PresenceClass" type="xs:string" minOccurs="0"/>
+          <xs:element name="ControlClass" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtEnum">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="EnumType" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+          <xs:element name="Style" type="xs:string" minOccurs="0"/>
+          <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="Tags" type="xs:string" minOccurs="0"/>
+          <xs:element name="CollectionLabel" type="xs:string" minOccurs="0"/>
+          <xs:element name="PresenceIndicatorAllowed" type="AxBooleanLikeType" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtReal">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="AllowNegative" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="NoOfDecimals" type="xs:integer" minOccurs="0"/>
+          <xs:element name="ShowZero" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+          <xs:element name="NoOfDecimalsIsExtensible" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="Scale" type="xs:integer" minOccurs="0"/>
+          <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
+          <xs:element name="RotateSign" type="xs:string" minOccurs="0"/>
+          <xs:element name="FormatMST" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
+          <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="AutoInsSeparator" type="xs:string" minOccurs="0"/>
+          <xs:element name="ThousandSeparator" type="xs:string" minOccurs="0"/>
+          <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+          <xs:element name="DecimalSeparator" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtInt64">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
+          <xs:element name="AllowNegative" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="CollectionLabel" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+          <xs:element name="ShowZero" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="PresenceMethod" type="xs:string" minOccurs="0"/>
+          <xs:element name="PresenceClass" type="xs:string" minOccurs="0"/>
+          <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+          <xs:element name="ControlClass" type="xs:string" minOccurs="0"/>
+          <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtInt">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="AllowNegative" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="ShowZero" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+          <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+          <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
+          <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
+          <xs:element name="RotateSign" type="xs:string" minOccurs="0"/>
+          <xs:element name="Tags" type="xs:string" minOccurs="0"/>
+          <xs:element name="Direction" type="xs:string" minOccurs="0"/>
+          <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtDate">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateYear" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateDay" type="xs:string" minOccurs="0"/>
+          <xs:element name="MaxDateLabel" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateMonth" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateSeparator" type="xs:string" minOccurs="0"/>
+          <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
+          <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateFormat" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+          <xs:element name="PresenceIndicatorAllowed" type="AxBooleanLikeType" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtUtcDateTime">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
+          <xs:element name="TimeSeconds" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="TimeHours" type="xs:integer" minOccurs="0"/>
+          <xs:element name="TimeMinute" type="xs:integer" minOccurs="0"/>
+          <xs:element name="TimezonePreference" type="xs:string" minOccurs="0"/>
+          <xs:element name="MaxDateLabel" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateYear" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+          <xs:element name="DateDay" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateMonth" type="xs:string" minOccurs="0"/>
+          <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="DateSeparator" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtContainer">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtGuid">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AxEdtTime">
+    <xs:complexContent>
+      <xs:extension base="AxEdtBaseType">
+        <xs:sequence>
+          <xs:element name="TimeSeconds" type="AxBooleanLikeType" minOccurs="0"/>
+          <xs:element name="TimeSeparator" type="xs:string" minOccurs="0"/>
+          <xs:element name="TimeHours" type="xs:integer" minOccurs="0"/>
+          <xs:element name="TimeMinute" type="xs:integer" minOccurs="0"/>
+          <xs:element name="TimeFormat" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="AxEdt" type="AxEdtBaseType" abstract="true"/>
+
+</xs:schema>

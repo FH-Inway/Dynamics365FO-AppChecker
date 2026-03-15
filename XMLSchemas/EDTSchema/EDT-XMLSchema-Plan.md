@@ -17,9 +17,14 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
 - Completed: Compatibility constraint captured (`db:list(...)` and `collection(...)` work; `db:open(...)` not available in this setup).
 - Completed: EDT metrics collected and stored in `.txt` files in this folder.
 - Completed: Reproducible `.xq` scripts created and verified to regenerate the metrics files.
-- In progress: Transition from analysis to first XSD implementation.
-- Not started: `AxEdt.xsd` authoring.
-- Not started: Bulk XSD validation over the full AxEDT/AxEdt corpus.
+- Completed: First schema draft created in `XMLSchemas/EDTSchema/AxEdt.xsd`.
+- Completed: Root element updated to `abstract="true"` so missing `i:type` fails validation.
+- Completed: Targeted validation checks executed:
+  - valid typed sample passes
+  - missing type fails
+  - unknown type fails
+  - invalid field fails with allowed-field list from validator
+- In progress: Preparing bulk corpus validation and refinement loop.
 
 ## Observed EDT Type Variants
 From the collected BaseX output, the schema must support these EDT root type variants:
@@ -90,7 +95,12 @@ Frequently used optional elements that should be in shared/common metadata:
 - Repeat until all valid EDTs pass
 
 ## Next Step (Active)
-Create the first draft of `XMLSchemas/EDTSchema/AxEdt.xsd` based on the observed common baseline and subtype-specific fields from the collected metrics.
+Run bulk validation over AxEDT/AxEdt resources, collect failure categories, and refine `AxEdt.xsd` (ordering, optionality, and datatypes) until unexplained failures are eliminated.
+
+## Deferred TODOs
+- Revisit type error diagnostics: investigate whether richer "allowed types" messaging can be achieved for missing/invalid `i:type` without changing XML contract.
+- Current finding: with XSD 1.0/.NET validation, `xsi:type` cannot be constrained as a normal enumerated attribute with guaranteed enum-style validator output.
+- Candidate follow-up: keep schema behavior as-is and augment validator tooling to append a friendly allowed-types list when type-related failures are detected.
 
 ## Validation and Regression Strategy
 - Keep generated reports in this folder and refresh them before schema updates.
