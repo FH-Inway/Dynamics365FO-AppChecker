@@ -13,6 +13,8 @@ if (!(Test-Path -Path $astOutputPath))
     New-Item -ItemType Directory -Path $astOutputPath
 }
 
+Read-Host -Prompt "Make sure there is at least 20 GB of free disk space and that BaseX is installed with a Java VM that has at least 10 GB memory capacity. Press Enter to continue."
+
 # TODO Maybe folders without a Descriptor subfolder can be excluded directly?
 $packageFolders = Get-ChildItem -Path $packagesLocalDirectory -Exclude bin -Directory
 # Filter out folders that do not contain the packageFilter string
