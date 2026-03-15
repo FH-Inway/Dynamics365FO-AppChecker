@@ -21,17 +21,23 @@ namespace XppReasoningWpf
     /// </summary>
     public class Model : INotifyPropertyChanged
     {
+        public delegate void DatabaseChangingDelegate(string databaseName);
+        public delegate void DatabaseChangedDelegate(string databaseName);
+
         private readonly IDictionary<string, string> jobIdToQuery = new Dictionary<string, string>();
 
         /// <summary>
         /// This event is triggered when a property changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+        public event DatabaseChangingDelegate DatabaseChanging;
+        public event DatabaseChangedDelegate DatabaseChanged;
 
         private void OnPropertyChanged(string propertyName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
 
         public string Username
         {
@@ -171,6 +177,21 @@ namespace XppReasoningWpf
             }
         }
 
+        public QueryProviderType QueryProvider
+        {
+            get => (QueryProviderType)Properties.Settings.Default.Provider;
+            set
+            {
+                if (value != QueryProvider)
+                {
+                    Properties.Settings.Default.Provider = (int)value;
+                    this.OnPropertyChanged(nameof(QueryProvider));
+                }
+            }
+        }
+
+
+
         /// <summary>
         /// Gets the directory hosting the queries.
         /// </summary>
@@ -184,24 +205,29 @@ namespace XppReasoningWpf
             }
         }
 
+        public static string SystemPrompt = File.ReadAllText("Assets\\SystemPrompt.txt");
+        public static string SourceSystemPrompt = File.ReadAllText("Assets\\SourceSystemPrompt.txt");
+
         public delegate void TickEventHandler(object sender, EventArgs e);
         public event TickEventHandler Tick;
 
         public void CreateServer(string server, int port, string username, string password)
         {
-            this.Server = new BaseXInterface.BaseXServer(server, port, username, password);
+            this.Server = new BaseXServer(server, port, username, password);
+            this.Server.DatabaseOpening += (databaseName) => { this.DatabaseChanging?.Invoke(databaseName); };
+            this.Server.DatabaseOpened += (databaseName) => { this.DatabaseChanged?.Invoke(databaseName); };
         }
 
-        public void CloseConnectionToServer()
+        public async Task CloseConnectionToServerAsync()
         {
             if (this.Server != null)
-                this.Server.CloseConnection();
+                await this.Server.CloseConnectionAsync();
 
             this.Server = null;
         }
-        public DatabaseSession GetSession(string database)
+        public async Task<DatabaseSession> GetSessionAsync(string database)
         {
-            return this.Server.GetSession(database);
+            return await this.Server.GetSessionAsync(database);
         }
 
         public async Task<bool>  IsServerOnlineAsync(string host, int port, string username, string password)

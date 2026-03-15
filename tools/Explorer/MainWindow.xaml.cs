@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.Win32;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using System.ComponentModel;
@@ -17,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 
+#nullable enable
 namespace XppReasoningWpf
 {
     using System.Xml.XPath;
@@ -31,54 +30,37 @@ namespace XppReasoningWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        // public static ICommand ExitCommand = new ApplicationExitCommand();
+        public Model Model { get; set; }
 
-        public static ICommand SaveResultCommand = new RoutedUICommand("Save Result", "SaveResult", typeof(MainWindow));
-
-        public static ICommand IncreaseQueryFontSizeCommand = new RoutedUICommand("Increase query font size", "IncreaseQueryFontSize", typeof(MainWindow));
-        public static ICommand DecreaseQueryFontSizeCommand = new RoutedUICommand("Decrease query font size", "DecreaseQueryFontSize", typeof(MainWindow));
-        public static ICommand IncreaseSourceFontSizeCommand = new RoutedUICommand("Increase source font size", "IncreaseSourceFontSize", typeof(MainWindow));
-        public static ICommand DecreaseSourceFontSizeCommand = new RoutedUICommand("Decrease source font size", "DecreaseSourceFontSize", typeof(MainWindow));
-        public static ICommand IncreaseResultsFontSizeCommand = new RoutedUICommand("Increase results font size", "IncreaseResultsFontSize", typeof(MainWindow));
-        public static ICommand DecreaseResultsFontSizeCommand = new RoutedUICommand("Decrease results font size", "DecreaseResultsFontSize", typeof(MainWindow));
-        public static ICommand ShowExternalVariablesDialogCommand = new RoutedUICommand("External Variables", "ExternalVariables", typeof(MainWindow));
-
-        public static ICommand ExecuteHelpXQueryCommand = new RoutedUICommand("Help for XQuery", "HelpForXQuery", typeof(MainWindow));
-        public static ICommand ExecuteHelpBaseXCommand = new RoutedUICommand("Help for BaseX", "HelpForBaseX", typeof(MainWindow));
-
-        public static ICommand AboutBoxCommand =
-            new RoutedUICommand("About", "About", typeof(MainWindow));
-
-        public Model Model;
-
-        private ViewModels.ViewModel ViewModel;
+        private readonly ViewModels.ViewModel ViewModel;
 
         public MainWindow()
         {
-            SplashScreen splash = new SplashScreen("Images/SplashScreen with socrates.png");
+            SplashScreen splash = new SplashScreen("Images/SplashScreen with Descartes.png");
             splash.Show(false);
             Thread.Sleep(2000);
 
             this.Model = new Model();
+            this.ViewModel = new ViewModels.ViewModel(this, this.Model);
+            this.DataContext = this.ViewModel;
 
             Properties.Settings.Default.PropertyChanged += SettingsChanged;
 
             InitializeComponent();
 
-            this.ViewModel = new ViewModels.ViewModel(this, this.Model);
-            this.DataContext = this.ViewModel;
-
-            // For some reason this is required for getting the commandparameter 
+            // For some reason this is required for getting the command parameter 
             // binding mechanism to work for menu items
             this.ExecuteQueryMenuItem.DataContext = this.ViewModel;
 
             this.ResultsEditor.TextArea.Caret.PositionChanged += ResultNavigated;
+            DetailsTab.SelectionChanged += this.ViewModel.DetailsTab_SelectionChanged;
 
             // var isOnline = this.Model.Server.IsServerOnline();
 
             // If this is not zero, the combobox below disappears...
             splash.Close(TimeSpan.FromSeconds(0));
 
+#if !DEBUG
             ConnectionWindow w = new ConnectionWindow(this.Model);
             var result = w.ShowDialog();
 
@@ -87,12 +69,15 @@ namespace XppReasoningWpf
                 Environment.Exit(0);
                 return;
             }
+#else
+            this.Model.CreateServer(Properties.Settings.Default.Server, Properties.Settings.Default.Port, "admin", "admin");
 
+#endif
             try
             {
                 // This call may throw when Basex complains when connecting or
                 // asking for the active databases.
-                this.PopulateUIFromServer();
+                this.PopulateUIFromServerAsync();
             }
             catch(Exception e)
             {
@@ -101,6 +86,27 @@ namespace XppReasoningWpf
 
             // Create the first query page
             this.ViewModel.CreateNewQueryTabItem();
+
+            // TODO: REMOVE
+            var newTab = new TabItem() { Header = new TextBlock() { Text = "Test" } };
+            this.DetailsTab.Items.Add(newTab);
+            var newEditor = new XppSourceEditor();
+            newEditor.Text = @"
+/// <Summary>
+/// This is a test class
+/// </Summary>
+class C
+{
+    /// <Summary>
+    /// This is a test method that does nothing.
+    /// </Summary>
+    public void foo()
+    {
+    }
+}";
+            newEditor.WordWrap = true;
+            newEditor.IsReadOnly = false;
+            newTab.Content = newEditor;
         }
 
         /// <summary>
@@ -115,9 +121,9 @@ namespace XppReasoningWpf
             Properties.Settings.Default.Save();
         }
 
-        private void PopulateUIFromServer()
+        private async void PopulateUIFromServerAsync()
         {
-            Model.Databases = this.Model.Server.GetDatabases();
+            Model.Databases = await this.Model.Server.GetDatabasesAsync();
 
             // Initialize the model dropdown from the value stored in the settings
             // If that value no longer exists, set it to the first one.
@@ -173,51 +179,23 @@ namespace XppReasoningWpf
         /// Called when the system is irretrievably closing down
         /// </summary>
         /// <param name="e">Not used</param>
-        protected override void OnClosed(EventArgs e)
+        protected async override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
 
-            this.ViewModel.Closedown();
-        }
-
-        private void CommandBinding_SaveResultExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            SaveFileDialog dialog = new SaveFileDialog
-            {
-                DefaultExt = ".xml",
-                AddExtension = true,
-                Filter = "XML files (*.xml)|*.xml|CSV (Comma delimited) (*.csv)|*.csv|All files (*.*)|*.*",
-            };
-
-            var documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            dialog.InitialDirectory = string.Format(Properties.Settings.Default.QueriesPath, documentsFolder);
-
-            bool? res = dialog.ShowDialog();
-
-            if (res.HasValue && res.Value)
-            {
-                var stream = dialog.OpenFile();
-                this.ResultsEditor.Save(stream);
-            }
-        }
-
-        private void CommandBinding_SaveResultCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
+            await this.ViewModel.ClosedownAsync();
         }
 
         private static bool IsCompoundName(string name)
         {
             var parts = name.Split(':');
-            return parts.Count() == 2;
+            return parts.Length == 2;
         }
 
         private async Task<string> GetSourceDocAsync(string query)
         {
-            using (var session = this.Model.GetSession(this.Model.SelectedDatabase.Name))
-            {
-                return await session.DoQueryAsync(query);
-            }
+            using var session = await this.Model.GetSessionAsync(this.Model.SelectedDatabase.Name);
+            return await session.DoQueryAsync(query);
         }
 
         /// <summary>
@@ -263,13 +241,20 @@ namespace XppReasoningWpf
                 }
                 else if (language == "C#")
                 {
-                    string xquery = "No source for " + name;
+                    string xquery;
                     if (IsCompoundName(name))
                     {
                         var parts = name.Split(':');
                         var kind = parts[0];
 
-                        xquery = string.Format(@"for $c in //CompilationUnit for $cd in $c//{1}[@FullName='{0}']", name, kind) + " return <Source Language='{$c/@Language}'>{$c/@Source}</Source>";
+                        if (kind == "Type") // This comes from information extracted from assembly
+                        {
+                            xquery = string.Format(@"for $c in /Type[@Artifact='{0}']", name) + " return <Source Language='{$c/@Language}'>{$c/@Source}</Source>";
+                        }
+                        else
+                        {
+                            xquery = string.Format(@"for $c in //CompilationUnit for $cd in $c//{1}[@FullName='{0}']", name, kind) + " return <Source Language='{$c/@Language}'>{$c/@Source}</Source>";
+                        }
                     }
                     else
                     {
@@ -305,8 +290,31 @@ namespace XppReasoningWpf
                 || string.Compare(name, "Query", StringComparison.OrdinalIgnoreCase) == 0
                 || string.Compare(name, "Map", StringComparison.OrdinalIgnoreCase) == 0
                 || string.Compare(name, "View", StringComparison.OrdinalIgnoreCase) == 0
-                || string.Compare(name, "Form", StringComparison.OrdinalIgnoreCase) == 0;
+                || string.Compare(name, "Form", StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare(name, "Type", StringComparison.OrdinalIgnoreCase) == 0;
         }
+
+        private static bool ContainsCoordinates(XElement node)
+        {
+            if (node == null)
+                throw new ArgumentException(nameof(node));
+
+            if ((node.Attribute("StartLine") != null)
+               && (node.Attribute("EndLine") != null))
+            {
+                return true;
+            }
+            return false;  
+        }
+
+        private static string? GetArtifactFromAncestorsOrSelf(XElement node)
+        {
+            if (node == null)
+                throw new ArgumentException(nameof(node));
+
+            return node.XPathSelectElement("ancestor-or-self::*[@Artifact]")?.Attribute("Artifact")?.Value ?? null;
+        }
+
 
         /// <summary>
         /// Called when the user changes the position in the result view.
@@ -350,7 +358,7 @@ namespace XppReasoningWpf
                             FindPositionsInSelfOrAncestor(positionElement, ref sl, ref sc, ref el, ref ec);
 
                             if (rootArtifact.Attribute("Name") != null && !string.IsNullOrEmpty(rootArtifact.Attribute("Name").Value))
-                                this.ShowSourceAt(rootArtifact.Attribute("Name").Value, "X++", sl, sc, el, ec);
+                                this.ShowSourceAt(rootArtifact.Name.LocalName.ToLower() + ":" + rootArtifact.Attribute("Name").Value, "X++", sl, sc, el, ec);
                         }
                         else
                         {
@@ -456,16 +464,15 @@ namespace XppReasoningWpf
                                         // Artifact contains an encoded definition of the kind of artifact (i.e.
                                         // class, table, query, or form) that is requested, like Artifact="form:MyForm".
                                         var parts = artifact.Split(':');
-                                        if (parts.Count() == 2)
+                                        if (parts.Length == 2)
                                         {
                                             var kind = parts[0].ToLower();
-                                            var name = parts[1];
 
                                             int sl = -1, sc = -1, el = -1, ec = -1;
                                             FindPositionsInSelf(positionElement, ref sl, ref sc, ref el, ref ec);
 
-                                            if (kind == "form" 
-                                             || kind == "query" 
+                                            if (kind == "form"
+                                             || kind == "query"
                                              || kind == "table" || kind == "map" || kind == "view"
                                              || kind == "class"
                                              || kind == "dataentity")
@@ -473,10 +480,32 @@ namespace XppReasoningWpf
                                                 this.ShowSourceAt(artifact, "X++", sl, sc, el, ec);
                                                 return;
                                             }
+                                            else if (kind == "type")
+                                            {
+                                                this.ShowSourceAt(artifact, "C#", sl, sc, el, ec);
+                                            }
+                                            else
+                                            {
+                                                this.ShowSourceAt(artifact, "X++", sl, sc, el, ec);
+                                                return;
+                                            }
                                         }
                                     }
                                 }
+                                else if (ContainsCoordinates(positionElement))
+                                {
+                                    int sl = -1, sc = -1, el = -1, ec = -1;
+                                    FindPositionsInSelfOrAncestor(positionElement, ref sl, ref sc, ref el, ref ec);
 
+                                    // The current element contains positional information. Look for the
+                                    // artifact information in self or ancestor nodes.
+                                    string? artifactProperty = GetArtifactFromAncestorsOrSelf(positionElement);
+                                    if (artifactProperty != null)
+                                    {
+                                        this.ShowSourceAt(artifactProperty, "X++", sl, sc, el, ec);
+                                        return;
+                                    }
+                                }
                                 positionElement = positionElement.Parent;
                             }
                         }
@@ -511,7 +540,7 @@ namespace XppReasoningWpf
             {
                 var parts = name.Split(':');
 
-                if (parts.Count() == 2)
+                if (parts.Length == 2)
                 {
                     // Only support class for now.
                     // dynamics://Open/Class/SrsReportRunController/Line/1413/Column/74/ToLine/1415/ToColumn/10 
@@ -531,7 +560,8 @@ namespace XppReasoningWpf
             TabControl details = this.DetailsTab;
             foreach (Wpf.Controls.TabItem item in details.Items)
             {
-                string id = item.Tag as string;
+                var tag = (string)item.Tag; 
+                string id = tag;
                 if (id == name)
                 {
                     // Got it. Go there and set the position.
@@ -568,13 +598,12 @@ namespace XppReasoningWpf
             else 
                 editor = new SourceEditor();
 
+            var text = await sourcePromise;
+            editor.Text = text ?? "No source found for " + name + " in " + language;
+
             tab.Content = editor;
             details.Items.Add(tab);
             details.SelectedItem = tab;
-
-            var text = await sourcePromise;
-
-            editor.Text = text ?? "No source found for " + name + " in " + language;
 
             await editor.Dispatcher.BeginInvoke(new Action(delegate { editor.SetPosition(sl, sc, el, ec); }), DispatcherPriority.ApplicationIdle);
 
@@ -627,92 +656,14 @@ namespace XppReasoningWpf
         }
 
         #region Font size handling
-        private void CommandBinding_IncreaseQueryFontSize(object sender, ExecutedRoutedEventArgs e)
-        {
-            Properties.Settings.Default.QueryFontSize += 2;
-        }
-        private void CommandBinding_DecreaseQueryFontSize(object sender, ExecutedRoutedEventArgs e)
-        {
-            Properties.Settings.Default.QueryFontSize -= 2;
-        }
-        private void CommandBinding_CanIncreaseQueryFontSize(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (this.queryTabPage == null)
-                e.CanExecute = false;
-            else
-            {
-                QueryEditor queryEditor = this.queryTabPage.SelectedContent as QueryEditor;
-                e.CanExecute = queryEditor == null ? false : queryEditor.FontSize < 48;
-            }
-        }
-        private void CommandBinding_CanDecreaseQueryFontSize(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (this.queryTabPage == null)
-                e.CanExecute = false;
-            else
-            {
-                QueryEditor queryEditor = this.queryTabPage.SelectedContent as QueryEditor;
-                e.CanExecute = queryEditor == null ? false : queryEditor.FontSize > 8;
-            }
-        }
 
-        private void CommandBinding_IncreaseResultsFontSize(object sender, ExecutedRoutedEventArgs e)
-        {
-            Properties.Settings.Default.ResultsFontSize += 2;
-        }
-        private void CommandBinding_DecreaseResultsFontSize(object sender, ExecutedRoutedEventArgs e)
-        {
-            Properties.Settings.Default.ResultsFontSize -= 2;
-        }
-        private void CommandBinding_CanIncreaseResultsFontSize(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = this.ResultsEditor == null ? false : this.ResultsEditor.FontSize < 48;
-        }
-        private void CommandBinding_CanDecreaseResultsFontSize(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = this.ResultsEditor == null ? false : this.ResultsEditor.FontSize > 8;
-        }
 
-        private void CommandBinding_IncreaseSourceFontSize(object sender, ExecutedRoutedEventArgs e)
-        {
-            Properties.Settings.Default.SourceFontSize += 2;
-        }
-        private void CommandBinding_DecreaseSourceFontSize(object sender, ExecutedRoutedEventArgs e)
-        {
-            Properties.Settings.Default.SourceFontSize -= 2;
-        }
-        private void CommandBinding_CanIncreaseSourceFontSize(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Properties.Settings.Default.SourceFontSize < 48;
-        }
-        private void CommandBinding_CanDecreaseSourceFontSize(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Properties.Settings.Default.SourceFontSize > 8;
-        }
+
+
 
         #endregion
 
-        private void CommandBinding_HelpBaseX(object sender, ExecutedRoutedEventArgs e)
-        {
-            Process.Start("http://BaseX.org");
-        }
 
-        private void CommandBinding_ShowExternalVariablesDialog(object sender, ExecutedRoutedEventArgs e)
-        {
-            var window = new ExternalVariablesControl();
-            window.ShowDialog();
-        }
-
-        private void CommandBinding_HelpXQuery(object sender, ExecutedRoutedEventArgs e)
-        {
-            Process.Start("http://www.w3.org/standards/xml/query");
-        }
-
-        private void CommandBinding_AboutBoxExecute(object sender, ExecutedRoutedEventArgs e)
-        {
-            var aboutBox = new XppReasoningWpf.Views.AboutBox();
-            aboutBox.Show();
-        }
 
         private async void ModelDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -721,10 +672,8 @@ namespace XppReasoningWpf
                 var db = e.AddedItems[0] as BaseXInterface.Database;
                 this.Model.Status = $"{db.Name}. Items: {db.Resources}, Size: {db.Size}";
 
-                using (var session = this.Model.GetSession(""))
-                {
-                    this.ResultsEditor.Text = await session.DoQueryAsync($"db:info('{db.Name}')");
-                }
+                using var session = await this.Model.GetSessionAsync("");
+                this.ResultsEditor.Text = await session.DoQueryAsync($"db:info('{db.Name}')");
             }
         }
 
@@ -759,5 +708,7 @@ namespace XppReasoningWpf
                 this.ViewModel.OpenFileInTab(filename);
             }
         }
+
+
     }
 }

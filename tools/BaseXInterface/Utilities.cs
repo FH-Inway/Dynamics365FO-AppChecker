@@ -81,30 +81,21 @@ namespace BaseXInterface
             return result;
         }
 
-        private static string CalculateExternalDeclarations(params string[] vars)
-        {
-            string result = string.Empty;
-
-            foreach (var v in vars)
-            {
-                if (ValidateVariableName(v))
-                {
-                    result += "declare variable $" + v + " external;\n";
-                }
-            }
-
-            return result;
-        }
-
         public static void OpenDatabase(this Session session, string database)
         {
             session.Execute("open " + database);
         }
 
+        public async static Task OpenDatabaseAsync(this Session session, string database)
+        {
+            await session.ExecuteAsync("open " + database);
+        }
+
         /// <summary>
         /// Execute the query against the database in the current session
         /// </summary>
-        /// <param name="query">The query to execute.</parthis Session sessionam>
+        /// <param name="session">The session in which this query is executed.</param>
+        /// <param name="query">The query to execute.</param>
         /// <param name="externalVars">The external variables to be referenced in the query.</param>
         /// <returns>The result of the query</returns>
         public static async Task<string> DoQueryAsync(this Session session, string query, params Tuple<string, string>[] externalVars)
@@ -114,15 +105,10 @@ namespace BaseXInterface
             if (externalVars != null)
             {
                 string bindingsString = CalculateBindingsString(externalVars);
-                result = await session.SetBindingsAsync(bindingsString);
+                _ = await session.SetBindingsAsync(bindingsString);
+            }
 
-                string externalDeclarations = ""; // CalculateExternalDeclarations(externalVars.Select(t => t.Item1).ToArray());
-                result = await session.ExecuteAsync(@"xquery " + externalDeclarations + query);
-            }
-            else
-            {
-                result = await session.ExecuteAsync(@"xquery " + query);
-            }
+            result = await session.ExecuteAsync(@"xquery " + query);
             return result;
         }
 

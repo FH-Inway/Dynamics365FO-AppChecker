@@ -54,7 +54,7 @@ namespace BaseXInterface
             }
 
             Send(username);
-            Send(MD5(MD5(code) + nonce));
+            Send(MD5Encode(MD5Encode(code) + nonce));
             if (stream.ReadByte() != 0)
             {
                 throw new IOException("Access denied.");
@@ -190,16 +190,7 @@ namespace BaseXInterface
 
         private async Task SendAsync(Stream s)
         {
-            while (true)
-            {
-                int t = s.ReadByte();
-                if (t == -1) break;
-                if (t == 0x00 || t == 0xFF)
-                    stream.WriteByte(Convert.ToByte(0xFF));
-
-                stream.WriteByte(Convert.ToByte(t));
-            }
-            stream.WriteByte(0);
+            this.SendStream(s);
             info = await ReceiveAsync();
             if (!(await this.OkAsync()))
             {
@@ -209,6 +200,20 @@ namespace BaseXInterface
 
         private void Send(Stream s)
         {
+            SendStream(s);
+            info = Receive();
+            if (!Ok())
+            {
+                throw new IOException(info);
+            }
+        }
+
+        /// <summary>
+        /// Send the content of the given stream, ending with a 0 byte.
+        /// </summary>
+        /// <param name="s">The stream to send.</param>
+        private void SendStream(Stream s)
+        {
             while (true)
             {
                 int t = s.ReadByte();
@@ -217,11 +222,6 @@ namespace BaseXInterface
                 stream.WriteByte(Convert.ToByte(t));
             }
             stream.WriteByte(0);
-            info = Receive();
-            if (!Ok())
-            {
-                throw new IOException(info);
-            }
         }
 
         private async Task<bool> OkAsync()
@@ -234,10 +234,10 @@ namespace BaseXInterface
             return Read() == 0;
         }
 
-        private string MD5(string input)
+        private string MD5Encode(string input)
         {
-            MD5CryptoServiceProvider MD5 = new MD5CryptoServiceProvider();
-            byte[] hash = MD5.ComputeHash(Encoding.UTF8.GetBytes(input));
+            var provider = MD5.Create();
+            byte[] hash = provider.ComputeHash(Encoding.UTF8.GetBytes(input));
 
             StringBuilder sb = new StringBuilder();
             foreach (byte h in hash)

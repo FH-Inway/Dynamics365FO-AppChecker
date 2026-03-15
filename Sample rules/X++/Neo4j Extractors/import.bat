@@ -1,5 +1,5 @@
  neo4j-admin import ^
-    --ignore-missing-nodes=true ^
+    --skip-bad-relationships ^
     --nodes=..\import\ClassNodes.csv ^
     --nodes=..\import\ClassDelegateNodes.csv ^
     --nodes=..\import\ClassFieldNodes.csv ^
@@ -8,6 +8,7 @@
     --nodes=..\import\FormsMethodNodes.csv ^
     --nodes=..\import\InterfaceMethodNodes.csv ^
     --nodes=..\import\InterfaceNodes.csv ^
+    --nodes=..\import\TableFieldNodes.csv ^
     --nodes=..\import\TableMethodNodes.csv ^
     --nodes=..\import\TableNodes.csv ^
     --nodes=..\import\ViewFieldNodes.csv ^
@@ -26,6 +27,7 @@
     --nodes=..\import\FormDatasourceMethodNodes.csv ^
     --nodes=..\import\FormDatasourceDataFieldMethodNodes.csv ^
     --nodes=..\import\FormDataSourceDataFieldNodes.csv ^
+    --nodes=..\import\FunctionNodes.csv ^
     --relationships=..\import\Class_DECLARES_Delegate.csv ^
     --relationships=..\import\Class_DECLARES_Field.csv ^
     --relationships=..\import\Class_DECLARES_Method.csv ^
@@ -34,6 +36,7 @@
     --relationships=..\import\Interface_DECLARES_Method.csv ^
     --relationships=..\import\Interface_INHERITS_Interface.csv ^
     --relationships=..\import\Table_DECLARES_Method.csv ^
+    --relationships=..\import\Table_FIELD_TableField.csv ^
     --relationships=..\import\Query_DECLARES_Method.csv ^
     --relationships=..\import\Query_REFERENCES_Table.csv ^
     --relationships=..\import\Map_DECLARES_Method.csv ^
@@ -59,3 +62,4 @@
     --relationships=..\import\Class_EXTENSIONOF_Table.csv ^
     --relationships=..\import\Class_EXTENSIONOF_View.csv ^
     --relationships=..\import\Method_CALLS_Method.csv ^
+    --relationships=..\import\Method_DECLARES_Function.csv ^

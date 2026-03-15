@@ -17,13 +17,14 @@ namespace XppReasoningWpf
     /// </summary>
     public partial class ConnectionWindow : Window
     {
-        private Model model;
+        private readonly Model model;
 
         public ConnectionWindow(Model model)
         {
-            InitializeComponent();
             this.DataContext = model;
             this.model = model;
+
+            InitializeComponent();
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -51,7 +52,6 @@ namespace XppReasoningWpf
 
             try
             {
-
                 bool connectionEstablished = await this.model.IsServerOnlineAsync(
                     Properties.Settings.Default.Server, Properties.Settings.Default.Port,
                     this.Username, this.Password);
@@ -136,7 +136,26 @@ namespace XppReasoningWpf
         /// <param name="e">Not used</param>
         private void UserNameTextChanged(object sender, TextChangedEventArgs e)
         {
-            this.StatusControl.Content = string.Empty;
+            if (this.StatusControl != null)
+            {
+                this.StatusControl.Content = string.Empty;
+            }
+        }
+
+        private void PortControl_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (this.StatusControl != null)
+            {
+                this.StatusControl.Content = string.Empty;
+            }
+        }
+
+        private void ServerNameControl_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (this.StatusControl != null)
+            {
+                this.StatusControl.Content = string.Empty;
+            }
         }
     }
 }
