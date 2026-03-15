@@ -4,6 +4,11 @@ $packageFilter = ""
 
 $stopwatch = [Diagnostics.Stopwatch]::StartNew()
 
+if (!(Test-Path -Path $astOutputPath))
+{
+    New-Item -ItemType Directory -Path $astOutputPath
+}
+
 # TODO Maybe folders without a Descriptor subfolder can be excluded directly?
 $packageFolders = Get-ChildItem -Path $packagesLocalDirectory -Exclude bin -Directory
 # Filter out folders that do not contain the packageFilter string
@@ -13,6 +18,7 @@ $processedPackageCount = 0
 $count = 1
 
 # Compile modules and create AST content
+Read-Host "Make sure there is at least 20 GB of free disk space and at least 16 GB of free memory available, then press Enter to start compiling modules and creating AST content. This process can take a while (about 30 minutes), especially for larger models like Application Suite. If you want to compile only specific models, use the -packageFilter variable to specify a filter for the package folder names (e.g. 'ApplicationSuite*' to compile only Application Suite)."
 $compilationStopWatch = [Diagnostics.Stopwatch]::StartNew()
 foreach ($folder in $packageFolders)
 {

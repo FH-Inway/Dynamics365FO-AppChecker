@@ -8,6 +8,11 @@ $packageFilter = ""
 
 $stopwatch = [Diagnostics.Stopwatch]::StartNew()
 
+if (!(Test-Path -Path $astOutputPath))
+{
+    New-Item -ItemType Directory -Path $astOutputPath
+}
+
 # TODO Maybe folders without a Descriptor subfolder can be excluded directly?
 $packageFolders = Get-ChildItem -Path $packagesLocalDirectory -Exclude bin -Directory
 # Filter out folders that do not contain the packageFilter string
@@ -47,15 +52,27 @@ function Add-Folder {
 # This is done in a separate call to basex.bat to avoid an issue where basex seems to maximize memory and cpu consumption without ever finishing
 
 # Add Application Suite AST content first; adding it later seems to maximize memory and cpu consumption by BaseX without ever finishing
-$astFolders = Get-ChildItem -Path $astOutputPath\ApplicationSuite -Directory
+$astFolders = Get-ChildItem -Path $astOutputPath\ApplicationSuite -Directory -ErrorAction SilentlyContinue
+$totalApplicationSuiteAstFolders = @($astFolders).Count
+$processedApplicationSuiteAstFolders = 0
 foreach ($astFolder in $astFolders)
 {
+    $processedApplicationSuiteAstFolders++
+    $percentComplete = if ($totalApplicationSuiteAstFolders -gt 0) { [math]::Round(($processedApplicationSuiteAstFolders / $totalApplicationSuiteAstFolders) * 100, 0) } else { 100 }
+    Write-Progress -Id 1 -Activity "Adding ApplicationSuite AST folders" -Status "Processing $($astFolder.Name) ($processedApplicationSuiteAstFolders/$totalApplicationSuiteAstFolders)" -PercentComplete $percentComplete
     Add-Folder($astFolder)
 }
+Write-Progress -Id 1 -Activity "Adding ApplicationSuite AST folders" -Completed
 
 # Add other modules
+$totalPackageFolderCount = @($packageFolders).Count
+$processedPackageFolderCount = 0
 foreach ($packageFolder in $packageFolders)
 {
+    $processedPackageFolderCount++
+    $modulePercentComplete = if ($totalPackageFolderCount -gt 0) { [math]::Round(($processedPackageFolderCount / $totalPackageFolderCount) * 100, 0) } else { 100 }
+    Write-Progress -Id 2 -Activity "Adding module content to BaseX" -Status "Processing $($packageFolder.Name) ($processedPackageFolderCount/$totalPackageFolderCount)" -PercentComplete $modulePercentComplete
+
     # If there is a Descriptor subfolder, the module was compiled and has content for the basex database.
     if (Test-Path "$($packageFolder.FullName)\Descriptor")
     {
@@ -65,10 +82,16 @@ foreach ($packageFolder in $packageFolders)
         
         # Add xml files of extended data types
         $edtFolders = Get-ChildItem -Path $packageFolder.FullName -Recurse -Filter "AxEdt" -Directory
+        $totalEdtFolders = @($edtFolders).Count
+        $processedEdtFolders = 0
         foreach ($edtFolder in $edtFolders)
         {
+            $processedEdtFolders++
+            $edtPercentComplete = if ($totalEdtFolders -gt 0) { [math]::Round(($processedEdtFolders / $totalEdtFolders) * 100, 0) } else { 100 }
+            Write-Progress -Id 3 -ParentId 2 -Activity "Adding AxEdt folders for $($packageFolder.Name)" -Status "Processing $($edtFolder.FullName) ($processedEdtFolders/$totalEdtFolders)" -PercentComplete $edtPercentComplete
             Add-Folder($edtFolder)
         }
+        Write-Progress -Id 3 -Activity "Adding AxEdt folders for $($packageFolder.Name)" -Completed
         
         # Is there AST content for this module?   
         if (Test-Path "$($astOutputPath)\$($packageFolder.Name)")
@@ -77,14 +100,21 @@ foreach ($packageFolder in $packageFolders)
             if ($packageFolder.Name -ne "ApplicationSuite")
             {
                 $astFolders = Get-ChildItem -Path $astOutputPath\$($packageFolder.Name) -Directory
+                $totalAstFolders = @($astFolders).Count
+                $processedAstFolders = 0
                 foreach ($astFolder in $astFolders)
                 {
+                    $processedAstFolders++
+                    $astPercentComplete = if ($totalAstFolders -gt 0) { [math]::Round(($processedAstFolders / $totalAstFolders) * 100, 0) } else { 100 }
+                    Write-Progress -Id 4 -ParentId 2 -Activity "Adding AST folders for $($packageFolder.Name)" -Status "Processing $($astFolder.Name) ($processedAstFolders/$totalAstFolders)" -PercentComplete $astPercentComplete
                     Add-Folder($astFolder)
                 }
+                Write-Progress -Id 4 -Activity "Adding AST folders for $($packageFolder.Name)" -Completed
             }
         }
     }
 }
+Write-Progress -Id 2 -Activity "Adding module content to BaseX" -Completed
 
 $baseXStopWatch.Stop()
 Write-Host @"
