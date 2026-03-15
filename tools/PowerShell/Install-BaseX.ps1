@@ -11,9 +11,9 @@ function CheckJava {
       $javaVersion = $javaVersionString.Matches.Groups[1].Value
   }
 
-  # Check if the Java version is available and greater than or equal to 11
-  if (-not $javaVersion -or [Version]$javaVersion -lt [Version]'11.0') {
-      Write-Host "Please install Java 11 or higher before proceeding."
+  # Check if the Java version is available and greater than or equal to 17
+  if (-not $javaVersion -or [Version]$javaVersion -lt [Version]'17.0') {
+      Write-Host "Please install Java 17 or higher before proceeding."
       return $false
   }
 
@@ -24,25 +24,46 @@ function CheckJava {
 if (-not (CheckJava)) {
   # Download and install Java
   Write-Host "Installing Java..."
-  # choco install temurin17
-  choco install temurin17
+  # choco install temurin
+  choco install temurin
 }
 
 # Download BaseX
 Write-Host "Downloading BaseX..."
-$baseXReleasesUrl = "http://files.basex.org/releases/"
+$baseXReleasesUrl = "https://files.basex.org/releases/"
+
+# In Windows PowerShell 5.1, IE-based parsing may be unavailable.
+$invokeWebRequestParams = @{}
+if ($PSVersionTable.PSVersion.Major -lt 6) {
+  $invokeWebRequestParams.UseBasicParsing = $true
+}
+
 # Find latest version folder
-$baseXLatestVersion = Invoke-WebRequest -Uri $baseXReleasesUrl | Select-Object -ExpandProperty Links | Where-Object {$_.href -match "^\d{2}.\d\/$"} | Select-Object -ExpandProperty href | Sort-Object -Descending | Select-Object -First 1
+$baseXLatestVersion = Invoke-WebRequest -Uri $baseXReleasesUrl @invokeWebRequestParams | 
+  Select-Object -ExpandProperty Links | 
+  Where-Object {$_.href -match "^\d{2}.\d\/$"} | 
+  Select-Object -ExpandProperty href | 
+  Sort-Object -Descending | 
+  Select-Object -First 1
 $baseXLatestVersionUrl = $baseXReleasesUrl + $baseXLatestVersion
 # Download .exe file in latest version folder
-$baseXWindowsInstallerExecutable = Invoke-WebRequest -Uri $baseXLatestVersionUrl | Select-Object -ExpandProperty Links | Where-Object {$_.href -like "BaseX*.exe"} | Select-Object -ExpandProperty href | Select-Object -First 1
+$baseXWindowsInstallerExecutable = Invoke-WebRequest -Uri $baseXLatestVersionUrl @invokeWebRequestParams | 
+  Select-Object -ExpandProperty Links | 
+  Where-Object {$_.href -like "BaseX*.exe"} | 
+  Select-Object -ExpandProperty href | 
+  Select-Object -First 1
 $baseXWindowsInstallerExecutableUrl = $baseXLatestVersionUrl + $baseXWindowsInstallerExecutable
 $downloadFolder = "$env:USERPROFILE\Downloads"
-Invoke-WebRequest -Uri $baseXWindowsInstallerExecutableUrl -OutFile "$downloadFolder\$baseXWindowsInstallerExecutable"
+$installerPath = "$downloadFolder\$baseXWindowsInstallerExecutable"
+Invoke-WebRequest -Uri $baseXWindowsInstallerExecutableUrl -OutFile $installerPath @invokeWebRequestParams
+
+if (-not (Test-Path -Path $installerPath -PathType Leaf)) {
+  throw "BaseX installer was not downloaded successfully: $installerPath"
+}
 
 # Install BaseX
-Write-Host "Installing BaseX..."
-Start-Process -FilePath "$downloadFolder\$baseXWindowsInstallerExecutable" -Wait
+Write-Host "Installing BaseX $baseXLatestVersion..."
+Start-Process -FilePath $installerPath -Wait
 
 # Set environment variable BASEX_JVM = -Xmx10G
 Write-Host "Setting environment variable BASEX_JVM..."
