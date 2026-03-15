@@ -7,7 +7,19 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
 - Data source: BaseX database `D365ApplicationExtended`
 - Metrics file: `XMLSchemas/EDTSchema/edt-child-element-counts.txt`
 - Metrics file: `XMLSchemas/EDTSchema/edt-elements-by-type.txt`
-- Metrics file: `XMLSchemas/EDTSchema/edt-type-counts.txt` (currently empty; should be regenerated if type counts are needed in the document)
+- Metrics file: `XMLSchemas/EDTSchema/edt-type-counts.txt`
+- Repro script: `XMLSchemas/EDTSchema/edt-child-element-counts.xq`
+- Repro script: `XMLSchemas/EDTSchema/edt-elements-by-type.xq`
+- Repro script: `XMLSchemas/EDTSchema/edt-type-counts.xq`
+
+## Current Status
+- Completed: BaseX query guidance reviewed and adjusted for this environment.
+- Completed: Compatibility constraint captured (`db:list(...)` and `collection(...)` work; `db:open(...)` not available in this setup).
+- Completed: EDT metrics collected and stored in `.txt` files in this folder.
+- Completed: Reproducible `.xq` scripts created and verified to regenerate the metrics files.
+- In progress: Transition from analysis to first XSD implementation.
+- Not started: `AxEdt.xsd` authoring.
+- Not started: Bulk XSD validation over the full AxEDT/AxEdt corpus.
 
 ## Observed EDT Type Variants
 From the collected BaseX output, the schema must support these EDT root type variants:
@@ -76,6 +88,9 @@ Frequently used optional elements that should be in shared/common metadata:
 5. Iterate to closure:
 - Adjust minOccurs/maxOccurs and types from failure evidence
 - Repeat until all valid EDTs pass
+
+## Next Step (Active)
+Create the first draft of `XMLSchemas/EDTSchema/AxEdt.xsd` based on the observed common baseline and subtype-specific fields from the collected metrics.
 
 ## Validation and Regression Strategy
 - Keep generated reports in this folder and refresh them before schema updates.
