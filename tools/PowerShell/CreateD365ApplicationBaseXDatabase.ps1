@@ -12,32 +12,6 @@ $stopwatch = [Diagnostics.Stopwatch]::StartNew()
 $packageFolders = Get-ChildItem -Path $packagesLocalDirectory -Exclude bin -Directory
 # Filter out folders that do not contain the packageFilter string
 $packageFolders = $packageFolders | Where-Object {$_.Name -like "*$($packageFilter)*"}
-$count = 1
-
-# Compile modules and create AST content
-$compilationStopWatch = [Diagnostics.Stopwatch]::StartNew()
-foreach ($folder in $packageFolders)
-{
-    $folder.Name
-    # If there is a Descriptor subfolder, this should be a folder of a compileable module.
-    if (Test-Path "$($folder.FullName)\Descriptor")
-    {
-        # For an unknown reason, the compilation of the ApplicationFoundation module with -includeSourceInAsts results in an error message, but the compilation completes nevertheless and the source seems to be included in the AST xml files
-        C:\AOSService\PackagesLocalDirectory\bin\xppc.exe -metadata="$($packagesLocalDirectory)" -referencefolder="$($packagesLocalDirectory)" -writeAsts -astOutputPath="$($astOutputPath)" -includeSourceInAsts -modelmodule="$($folder.Name)" -output="$($folder.FullName)\bin"
-        $count++
-        <#
-        if ($count -eq 3)
-        {
-            break
-        }
-        #>
-    }
-}
-$compilationStopWatch.Stop()
-Write-Host @"
-Compilation run time:
-"@
-$compilationStopWatch.Elapsed
 
 #########################
 # Create BaseX database #
@@ -48,7 +22,7 @@ $baseXCreationFile = New-Item -Path "$($astOutputPath)\CreateBaseXDatabase.bxs" 
 Add-Content -Path $baseXCreationFile.FullName -Value "DROP DB $($baseXDatabaseName)"
 Add-Content -Path $baseXCreationFile.FullName -Value "CREATE DB $($baseXDatabaseName)"
 Add-Content -Path $baseXCreationFile.FullName -Value 'CLOSE'
-cd "C:\Program Files (x86)\BaseX\bin\"
+Set-Location "C:\Program Files (x86)\BaseX\bin\"
 .\basex.bat -v $baseXCreationFile.FullName
 
 ##################################
@@ -65,7 +39,7 @@ function Add-Folder {
     $value = 'ADD TO ' + $folder.Name + ' ' + $folder.FullName
     Add-Content -Path $baseXAddFile.FullName -Value $value
     Add-Content -Path $baseXAddFile.FullName -Value 'CLOSE'
-    cd "C:\Program Files (x86)\BaseX\bin\"
+    Set-Location "C:\Program Files (x86)\BaseX\bin\"
     .\basex.bat -v $baseXAddFile.FullName
 }
 
