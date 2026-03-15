@@ -38,12 +38,15 @@ Set-Location "C:\Program Files (x86)\BaseX\bin\"
 
 function Add-Folder {
 
-    Param($folder)
+    Param(
+        $folder,
+        [string]$TargetRoot = $folder.Name
+    )
 
     "adding folder $($folder.FullName)"
     $baseXAddFile = New-Item -Path "$($astOutputPath)\Add$($folder.Name).bxs" -ItemType File -Force
     Add-Content -Path $baseXAddFile.FullName -Value "OPEN $($baseXDatabaseName)"
-    $value = 'ADD TO ' + $folder.Name + ' ' + $folder.FullName
+    $value = 'ADD TO ' + $TargetRoot + ' ' + $folder.FullName
     Add-Content -Path $baseXAddFile.FullName -Value $value
     Add-Content -Path $baseXAddFile.FullName -Value 'CLOSE'
     Set-Location "C:\Program Files (x86)\BaseX\bin\"
@@ -90,10 +93,10 @@ foreach ($packageFolder in $packageFolders)
         {
             $processedEdtFolders++
             $edtPercentComplete = if ($totalEdtFolders -gt 0) { [math]::Round(($processedEdtFolders / $totalEdtFolders) * 100, 0) } else { 100 }
-            Write-Progress -Id 3 -ParentId 2 -Activity "Adding AxEdt folders for $($packageFolder.Name)" -Status "Processing $($edtFolder.FullName) ($processedEdtFolders/$totalEdtFolders)" -PercentComplete $edtPercentComplete
-            Add-Folder($edtFolder)
+            Write-Progress -Id 3 -ParentId 2 -Activity "Adding AxEDT folders for $($packageFolder.Name)" -Status "Processing $($edtFolder.FullName) ($processedEdtFolders/$totalEdtFolders)" -PercentComplete $edtPercentComplete
+            Add-Folder -folder $edtFolder -TargetRoot "AxEDT"
         }
-        Write-Progress -Id 3 -Activity "Adding AxEdt folders for $($packageFolder.Name)" -Completed
+        Write-Progress -Id 3 -Activity "Adding AxEDT folders for $($packageFolder.Name)" -Completed
         
         # Is there AST content for this module?   
         if (Test-Path "$($astOutputPath)\$($packageFolder.Name)")
