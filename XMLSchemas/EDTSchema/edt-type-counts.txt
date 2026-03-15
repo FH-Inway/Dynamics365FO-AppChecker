@@ -1,0 +1,10 @@
+﻿AxEdtString | 9750
+AxEdtEnum | 4510
+AxEdtReal | 3075
+AxEdtInt64 | 2512
+AxEdtInt | 2082
+AxEdtDate | 943
+AxEdtUtcDateTime | 547
+AxEdtContainer | 188
+AxEdtGuid | 130
+AxEdtTime | 109
