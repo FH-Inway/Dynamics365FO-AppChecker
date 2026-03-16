@@ -17,6 +17,7 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
 - Completed: Compatibility constraint captured (`db:list(...)` and `collection(...)` work; `db:open(...)` not available in this setup).
 - Completed: EDT metrics collected and stored in `.txt` files in this folder.
 - Completed: Reproducible `.xq` scripts created and verified to regenerate the metrics files.
+- Completed: Bulk validation script created and smoke-tested against package data.
 - Completed: First schema draft created as `XMLSchemas/EDTSchema/AxEdt.1.0.xsd`.
 - Completed: XSD 1.1 variant created as `XMLSchemas/EDTSchema/AxEdt.1.1.xsd`.
 - Completed: Root element updated to `abstract="true"` so missing `i:type` fails validation.
@@ -25,7 +26,11 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
   - missing type fails
   - unknown type fails
   - invalid field fails with allowed-field list from validator
-- In progress: Preparing bulk corpus validation and refinement loop.
+- Completed: Initial bulk validation run over `ApplicationCommon` (`39` XML files) reduced from `14/39` pass to `39/39` pass after correcting base-sequence ordering.
+- Completed: Full BaseX corpus order analysis executed with `edt-verify-element-order.xq` over `23,846` EDTs.
+- Completed: Universal pre-collection fields confirmed from full-corpus analysis and moved into the common base sequence in both schemas.
+- Completed: Non-universal pre-collection fields documented, including occurrence and non-occurrence by EDT type.
+- In progress: Refining the remaining non-universal pre-collection fields to decide which should be promoted into the common base sequence versus left type-specific.
 
 ## Observed EDT Type Variants
 From the collected BaseX output, the schema must support these EDT root type variants:
@@ -55,6 +60,30 @@ Frequently used optional elements that should be in shared/common metadata:
 - HelpText
 - ReferenceTable
 - IsObsolete
+
+## Corpus Ordering Findings
+The full BaseX run using `edt-verify-element-order.xq` established two important structural facts:
+
+1. The collection block order is stable across the full checked corpus:
+- ArrayElements
+- Relations
+- TableReferences
+
+2. Several optional fields are legitimately emitted before the collection block.
+
+Fields observed before the collection block in all 10 EDT types:
+- Label
+- Extends
+- ConfigurationKey
+- CountryRegionCodes
+- HelpText
+
+Fields observed before the collection block in more than one, but not all, EDT types are documented in `XMLSchemas/EDTSchema/EDT-PreCollection-NonUniversal-Elements.md`.
+
+Full-corpus order analysis snapshot:
+- Checked EDTs: `23,846`
+- Violations against the earlier narrow pre-collection rule: `15,988`
+- Most common pre-collection fields beyond the universal set included `ReferenceTable`, `ButtonImage`, `DisplayLength`, and `IsObsolete`.
 
 ## Schema Design Approach
 1. Define a base complex type for common EDT structure.
@@ -90,13 +119,14 @@ Frequently used optional elements that should be in shared/common metadata:
   - unexpected element
   - invalid datatype
   - subtype mismatch
+  - ordering mismatch
 
 5. Iterate to closure:
 - Adjust minOccurs/maxOccurs and types from failure evidence
 - Repeat until all valid EDTs pass
 
 ## Next Step (Active)
-Run bulk validation over AxEDT/AxEdt resources, collect failure categories, and refine `AxEdt.1.0.xsd` and `AxEdt.1.1.xsd` (ordering, optionality, and datatypes) until unexplained failures are eliminated.
+Use `EDT-PreCollection-NonUniversal-Elements.md` and broader package validation runs to decide which non-universal pre-collection fields should move into the common base sequence and which should remain type-specific, then re-run bulk validation to measure the reduction in ordering failures.
 
 ## Deferred TODOs
 - Revisit type error diagnostics: investigate whether richer "allowed types" messaging can be achieved for missing/invalid `i:type` without changing XML contract.
@@ -107,6 +137,7 @@ Run bulk validation over AxEDT/AxEdt resources, collect failure categories, and 
 - Keep generated reports in this folder and refresh them before schema updates.
 - Store a repeatable query script for type and element metrics.
 - Add a lightweight validation script to run XSD checks in batch and emit a summary file.
+- Keep the XQuery order-analysis script (`edt-verify-element-order.xq`) aligned with the current schema assumptions so ordering decisions remain evidence-based.
 - Require report + validation refresh when updating the schema.
 
 ## Risks and Mitigations
