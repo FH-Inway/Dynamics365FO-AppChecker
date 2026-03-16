@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:xerces="http://xerces.apache.org"
            elementFormDefault="qualified"
            attributeFormDefault="unqualified">
 
   <xs:annotation>
     <xs:documentation>
-      Draft schema for D365FO EDT metadata (AxEdt).
-      This draft is based on metrics captured from D365ApplicationExtended.
+      XSD 1.1 schema definition for D365FO EDT metadata (AxEdt).
+      This schema is intended for XSD 1.1 validators (for example Xerces-J).
+      It enforces presence of xsi:type and constrains it to known AxEdt types
+      using an xs:assert expression.
+      Based on metrics captured from D365ApplicationExtended.
     </xs:documentation>
   </xs:annotation>
 
@@ -46,6 +50,22 @@
       <xs:element name="IsObsolete" type="AxBooleanLikeType" minOccurs="0"/>
     </xs:sequence>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
+    <xs:assert
+      test="
+        exists(@xsi:type)
+        and string(@xsi:type) = (
+          'AxEdtString',
+          'AxEdtEnum',
+          'AxEdtReal',
+          'AxEdtInt64',
+          'AxEdtInt',
+          'AxEdtDate',
+          'AxEdtUtcDateTime',
+          'AxEdtContainer',
+          'AxEdtGuid',
+          'AxEdtTime'
+        )"
+      xerces:message="Invalid or missing xsi:type on AxEdt. Allowed types: AxEdtString, AxEdtEnum, AxEdtReal, AxEdtInt64, AxEdtInt, AxEdtDate, AxEdtUtcDateTime, AxEdtContainer, AxEdtGuid, AxEdtTime."/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtString">
@@ -232,6 +252,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:element name="AxEdt" type="AxEdtBaseType" abstract="true"/>
+  <xs:element name="AxEdt" type="AxEdtBaseType"/>
 
 </xs:schema>

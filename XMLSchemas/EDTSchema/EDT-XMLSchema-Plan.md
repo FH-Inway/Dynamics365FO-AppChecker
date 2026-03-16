@@ -17,7 +17,8 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
 - Completed: Compatibility constraint captured (`db:list(...)` and `collection(...)` work; `db:open(...)` not available in this setup).
 - Completed: EDT metrics collected and stored in `.txt` files in this folder.
 - Completed: Reproducible `.xq` scripts created and verified to regenerate the metrics files.
-- Completed: First schema draft created in `XMLSchemas/EDTSchema/AxEdt.xsd`.
+- Completed: First schema draft created as `XMLSchemas/EDTSchema/AxEdt.1.0.xsd`.
+- Completed: XSD 1.1 variant created as `XMLSchemas/EDTSchema/AxEdt.1.1.xsd`.
 - Completed: Root element updated to `abstract="true"` so missing `i:type` fails validation.
 - Completed: Targeted validation checks executed:
   - valid typed sample passes
@@ -68,7 +69,7 @@ Frequently used optional elements that should be in shared/common metadata:
 6. Add limited extension tolerance (`xs:any`) only where justified to avoid blocking unknown future metadata.
 
 ## Implementation Plan
-1. Create `XMLSchemas/EDTSchema/AxEdt.xsd` with:
+1. Create `XMLSchemas/EDTSchema/AxEdt.1.0.xsd` with:
 - Shared simple types for booleans, integers, and common text nodes
 - `AxEdt` root declaration
 - Base complex type for shared EDT elements
@@ -95,7 +96,7 @@ Frequently used optional elements that should be in shared/common metadata:
 - Repeat until all valid EDTs pass
 
 ## Next Step (Active)
-Run bulk validation over AxEDT/AxEdt resources, collect failure categories, and refine `AxEdt.xsd` (ordering, optionality, and datatypes) until unexplained failures are eliminated.
+Run bulk validation over AxEDT/AxEdt resources, collect failure categories, and refine `AxEdt.1.0.xsd` and `AxEdt.1.1.xsd` (ordering, optionality, and datatypes) until unexplained failures are eliminated.
 
 ## Deferred TODOs
 - Revisit type error diagnostics: investigate whether richer "allowed types" messaging can be achieved for missing/invalid `i:type` without changing XML contract.
@@ -119,7 +120,7 @@ Run bulk validation over AxEDT/AxEdt resources, collect failure categories, and 
 - Mitigation: Always query both path variants or normalize paths before analysis.
 
 ## Definition of Done
-- `AxEdt.xsd` exists under `XMLSchemas/EDTSchema`.
+- `AxEdt.1.0.xsd` and `AxEdt.1.1.xsd` exist under `XMLSchemas/EDTSchema`.
 - All known EDT subtype variants are represented.
 - Schema validates current corpus with zero unexplained failures.
 - Validation process is scriptable and repeatable.
