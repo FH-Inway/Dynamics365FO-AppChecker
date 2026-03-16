@@ -37,15 +37,18 @@
   <xs:complexType name="AxEdtBaseType">
     <xs:sequence>
       <xs:element name="Name" type="xs:string"/>
+      <!-- Fields that appear before the collection elements in D365FO XML output -->
+      <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
+      <xs:element name="Extends" type="xs:string" minOccurs="0"/>
+      <xs:element name="Label" type="xs:string" minOccurs="0"/>
+        <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
+        <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
+        <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
+      <!-- Core collection elements (always present) -->
       <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
       <xs:element name="TableReferences" type="AxEdtCollectionType"/>
-
-      <xs:element name="Label" type="xs:string" minOccurs="0"/>
-      <xs:element name="Extends" type="xs:string" minOccurs="0"/>
-      <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
-      <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
-      <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
+      <!-- Optional fields after collections -->
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxBooleanLikeType" minOccurs="0"/>
     </xs:sequence>
@@ -73,7 +76,6 @@
       <xs:extension base="AxEdtBaseType">
         <xs:sequence>
           <xs:element name="StringSize" type="xs:integer" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
           <xs:element name="ChangeCase" type="xs:string" minOccurs="0"/>
           <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
           <xs:element name="StringSizeIsExtensible" type="AxBooleanLikeType" minOccurs="0"/>
@@ -101,7 +103,6 @@
       <xs:extension base="AxEdtBaseType">
         <xs:sequence>
           <xs:element name="EnumType" type="xs:string" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
           <xs:element name="Style" type="xs:string" minOccurs="0"/>
           <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
           <xs:element name="Tags" type="xs:string" minOccurs="0"/>
@@ -119,7 +120,6 @@
           <xs:element name="AllowNegative" type="AxBooleanLikeType" minOccurs="0"/>
           <xs:element name="NoOfDecimals" type="xs:integer" minOccurs="0"/>
           <xs:element name="ShowZero" type="AxBooleanLikeType" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
           <xs:element name="NoOfDecimalsIsExtensible" type="AxBooleanLikeType" minOccurs="0"/>
           <xs:element name="Scale" type="xs:integer" minOccurs="0"/>
           <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
@@ -143,7 +143,6 @@
           <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
           <xs:element name="AllowNegative" type="AxBooleanLikeType" minOccurs="0"/>
           <xs:element name="CollectionLabel" type="xs:string" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
           <xs:element name="ShowZero" type="AxBooleanLikeType" minOccurs="0"/>
           <xs:element name="PresenceMethod" type="xs:string" minOccurs="0"/>
           <xs:element name="PresenceClass" type="xs:string" minOccurs="0"/>
@@ -161,7 +160,6 @@
         <xs:sequence>
           <xs:element name="AllowNegative" type="AxBooleanLikeType" minOccurs="0"/>
           <xs:element name="ShowZero" type="AxBooleanLikeType" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
           <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
           <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
           <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
@@ -188,7 +186,6 @@
           <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
           <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
           <xs:element name="DateFormat" type="xs:string" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
           <xs:element name="PresenceIndicatorAllowed" type="AxBooleanLikeType" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
@@ -206,7 +203,6 @@
           <xs:element name="TimezonePreference" type="xs:string" minOccurs="0"/>
           <xs:element name="MaxDateLabel" type="xs:string" minOccurs="0"/>
           <xs:element name="DateYear" type="xs:string" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
           <xs:element name="DateDay" type="xs:string" minOccurs="0"/>
           <xs:element name="DateMonth" type="xs:string" minOccurs="0"/>
           <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
@@ -221,7 +217,6 @@
       <xs:extension base="AxEdtBaseType">
         <xs:sequence>
           <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -232,7 +227,6 @@
       <xs:extension base="AxEdtBaseType">
         <xs:sequence>
           <xs:element name="EnforceHierarchy" type="AxBooleanLikeType" minOccurs="0"/>
-          <xs:element name="DisplayLength" type="xs:integer" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
