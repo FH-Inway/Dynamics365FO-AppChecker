@@ -7,16 +7,23 @@ Behavior:
 - Runs both validators:
   - XSD 1.0 via .NET XmlSchemaSet
   - XSD 1.1 via Xerces-J
+- Either validator can be disabled with a switch parameter.
+- Validation can stop on the first failure with a switch parameter.
 #>
 param(
     [Parameter(Mandatory = $true)]
     [string]$BaseFolder = "C:\AOSService\PackagesLocalDirectory",
 
     [string[]]$SubFolders = @(),
+    [string[]]$ExcludeSubFolders = @(),
 
     [string]$Xsd10SchemaPath = "$PSScriptRoot\AxEdt.1.0.xsd",
     [string]$Xsd11SchemaPath = "$PSScriptRoot\AxEdt.1.1.xsd",
     [string]$XercesInstallFolder = "$PSScriptRoot\..\.tools",
+
+    [switch]$SkipXsd10,
+    [switch]$SkipXsd11,
+    [switch]$StopOnFailure,
 
     [string]$OutputCsvPath = (Join-Path $PSScriptRoot ("edt-bulk-validation-" + (Get-Date -Format "yyyyMMdd-HHmmss") + ".csv"))
 )
@@ -76,6 +83,32 @@ function Get-FirstNonEmptyLine {
     }
 
     return ($Lines | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -First 1)
+}
+
+function Test-PathUnderRoots {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+        [string[]]$Roots = @()
+    )
+
+    if ($Roots.Count -eq 0) {
+        return $false
+    }
+
+    $candidatePath = [System.IO.Path]::GetFullPath($Path).TrimEnd('\')
+    foreach ($root in $Roots) {
+        $rootPath = [System.IO.Path]::GetFullPath($root).TrimEnd('\')
+        if ($candidatePath.Equals($rootPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+            return $true
+        }
+
+        if ($candidatePath.StartsWith($rootPath + '\', [System.StringComparison]::OrdinalIgnoreCase)) {
+            return $true
+        }
+    }
+
+    return $false
 }
 
 function Test-Xsd10 {
@@ -180,21 +213,160 @@ function Test-Xsd11 {
     return [PSCustomObject]@{ Result = "PASS"; Error = "" }
 }
 
+function Split-XmlPathsIntoChunks {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string[]]$XmlPaths,
+        [int]$MaxArgumentChars = 24000
+    )
+
+    $chunks = @()
+    $current = @()
+    $currentChars = 0
+
+    foreach ($xmlPath in $XmlPaths) {
+        $addedChars = $xmlPath.Length + 1
+        if (@($current).Count -gt 0 -and ($currentChars + $addedChars) -gt $MaxArgumentChars) {
+            $chunks += ,@($current)
+            $current = @()
+            $currentChars = 0
+        }
+
+        $current += $xmlPath
+        $currentChars += $addedChars
+    }
+
+    if (@($current).Count -gt 0) {
+        $chunks += ,@($current)
+    }
+
+    return ,$chunks
+}
+
+function Test-Xsd11Batch {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string[]]$XmlPaths,
+        [Parameter(Mandatory = $true)]
+        [string]$SchemaPath,
+        [Parameter(Mandatory = $true)]
+        [string]$ClassPath,
+        [bool]$JavaAvailable
+    )
+
+    $results = @{}
+    foreach ($xmlPath in $XmlPaths) {
+        $results[$xmlPath] = [PSCustomObject]@{ Result = "PASS"; Error = "" }
+    }
+
+    if (-not $JavaAvailable) {
+        foreach ($xmlPath in $XmlPaths) {
+            $results[$xmlPath] = [PSCustomObject]@{ Result = "SKIPPED"; Error = "Java runtime not found on PATH." }
+        }
+        return $results
+    }
+
+    $nameToPaths = @{}
+    foreach ($xmlPath in $XmlPaths) {
+        $fileName = [System.IO.Path]::GetFileName($xmlPath).ToLowerInvariant()
+        if (-not $nameToPaths.ContainsKey($fileName)) {
+            $nameToPaths[$fileName] = New-Object System.Collections.Generic.List[string]
+        }
+        $nameToPaths[$fileName].Add($xmlPath) | Out-Null
+    }
+
+    $nativePrefSet = Test-Path Variable:PSNativeCommandUseErrorActionPreference
+    if ($nativePrefSet) {
+        $previousNativePref = $PSNativeCommandUseErrorActionPreference
+        $PSNativeCommandUseErrorActionPreference = $false
+    }
+
+    try {
+        $previousErrorAction = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        try {
+            $javaArgs = @("-cp", $ClassPath, "jaxp.SourceValidator", "-xsd11", "-a", $SchemaPath, "-i") + $XmlPaths
+            $output = & java @javaArgs 2>&1 | ForEach-Object { $_.ToString() }
+            $javaExitCode = $LASTEXITCODE
+        }
+        finally {
+            $ErrorActionPreference = $previousErrorAction
+        }
+    }
+    finally {
+        if ($nativePrefSet) {
+            $PSNativeCommandUseErrorActionPreference = $previousNativePref
+        }
+    }
+
+    $hasAnyError = $false
+    $errorByPath = @{}
+    $ambiguousNames = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+
+    foreach ($line in $output) {
+        if ([string]$line -notmatch '^\[Error\]\s+(.+?\.xml):\d+:\d+:\s*(.*)$') {
+            continue
+        }
+
+        $hasAnyError = $true
+        $reportedName = [System.IO.Path]::GetFileName($matches[1]).ToLowerInvariant()
+
+        if (-not $nameToPaths.ContainsKey($reportedName)) {
+            continue
+        }
+
+        $candidatePaths = $nameToPaths[$reportedName]
+        if ($candidatePaths.Count -eq 1) {
+            $xmlPath = $candidatePaths[0]
+            if (-not $errorByPath.ContainsKey($xmlPath)) {
+                $errorByPath[$xmlPath] = $line
+            }
+        }
+        else {
+            $ambiguousNames.Add($reportedName) | Out-Null
+        }
+    }
+
+    foreach ($xmlPath in $errorByPath.Keys) {
+        $results[$xmlPath] = [PSCustomObject]@{ Result = "FAIL"; Error = $errorByPath[$xmlPath] }
+    }
+
+    foreach ($name in $ambiguousNames) {
+        foreach ($xmlPath in $nameToPaths[$name]) {
+            $results[$xmlPath] = Test-Xsd11 -XmlPath $xmlPath -SchemaPath $SchemaPath -ClassPath $ClassPath -JavaAvailable $JavaAvailable
+        }
+    }
+
+    if ($javaExitCode -ne 0 -and -not $hasAnyError) {
+        foreach ($xmlPath in $XmlPaths) {
+            if ($results[$xmlPath].Result -eq "PASS") {
+                $results[$xmlPath] = [PSCustomObject]@{ Result = "FAIL"; Error = "XSD 1.1 validator returned a non-zero exit code." }
+            }
+        }
+    }
+
+    return $results
+}
+
 if (-not (Test-Path -Path $BaseFolder)) {
     throw "Base folder not found: $BaseFolder"
 }
 
-if (-not (Test-Path -Path $Xsd10SchemaPath)) {
+if ($SkipXsd10 -and $SkipXsd11) {
+    throw "At least one validator must remain enabled. Do not specify both -SkipXsd10 and -SkipXsd11."
+}
+
+if (-not $SkipXsd10 -and -not (Test-Path -Path $Xsd10SchemaPath)) {
     throw "XSD 1.0 schema not found: $Xsd10SchemaPath"
 }
 
-if (-not (Test-Path -Path $Xsd11SchemaPath)) {
+if (-not $SkipXsd11 -and -not (Test-Path -Path $Xsd11SchemaPath)) {
     throw "XSD 1.1 schema not found: $Xsd11SchemaPath"
 }
 
 $resolvedBaseFolder = (Resolve-Path -Path $BaseFolder).Path
-$resolvedXsd10 = (Resolve-Path -Path $Xsd10SchemaPath).Path
-$resolvedXsd11 = (Resolve-Path -Path $Xsd11SchemaPath).Path
+$resolvedXsd10 = if ($SkipXsd10) { "DISABLED" } else { (Resolve-Path -Path $Xsd10SchemaPath).Path }
+$resolvedXsd11 = if ($SkipXsd11) { "DISABLED" } else { (Resolve-Path -Path $Xsd11SchemaPath).Path }
 
 $roots = @()
 if ($SubFolders.Count -gt 0) {
@@ -210,52 +382,74 @@ else {
     $roots += $resolvedBaseFolder
 }
 
+$excludedRoots = @()
+if ($ExcludeSubFolders.Count -gt 0) {
+    foreach ($sub in $ExcludeSubFolders) {
+        $candidate = Join-Path $resolvedBaseFolder $sub
+        if (-not (Test-Path -Path $candidate)) {
+            throw "Specified excluded sub folder does not exist under base folder: $candidate"
+        }
+        $excludedRoots += (Resolve-Path -Path $candidate).Path
+    }
+}
+
 Write-Host "BASE_FOLDER=$resolvedBaseFolder"
 Write-Host ("ROOTS={0}" -f ($roots -join '; '))
+Write-Host ("EXCLUDED_ROOTS={0}" -f $(if ($excludedRoots.Count -gt 0) { $excludedRoots -join '; ' } else { '<none>' }))
 Write-Host "XSD1.0=$resolvedXsd10"
 Write-Host "XSD1.1=$resolvedXsd11"
 Write-Host "OUTPUT_CSV=$OutputCsvPath"
 
-$schemaSet10 = New-Object System.Xml.Schema.XmlSchemaSet
-$schemaSet10.Add("", $resolvedXsd10) | Out-Null
-$schemaSet10.Compile()
+$schemaSet10 = $null
+if (-not $SkipXsd10) {
+    $schemaSet10 = New-Object System.Xml.Schema.XmlSchemaSet
+    $schemaSet10.Add("", $resolvedXsd10) | Out-Null
+    $schemaSet10.Compile()
+}
 
-$javaAvailable = $null -ne (Get-Command java -ErrorAction SilentlyContinue)
+$javaAvailable = $false
 $xsd11ClassPath = ""
 $xsd11InitError = ""
 
-if ($javaAvailable) {
-    try {
-        $xercesHome = Resolve-XercesHome -InstallPath $XercesInstallFolder
-        $requiredJars = @("xercesImpl.jar", "xml-apis.jar", "xercesSamples.jar")
-        foreach ($jar in $requiredJars) {
-            $jarPath = Join-Path $xercesHome $jar
-            if (-not (Test-Path $jarPath)) {
-                throw "Required Xerces jar not found: $jarPath"
-            }
-        }
-
-        $cpParts = @(
-            (Join-Path $xercesHome "xercesImpl.jar"),
-            (Join-Path $xercesHome "xml-apis.jar"),
-            (Join-Path $xercesHome "xercesSamples.jar")
-        )
-
-        foreach ($jar in @("org.eclipse.wst.xml.xpath2.processor_1.2.1.jar", "org.eclipse.wst.xml.xpath2.processor_1.2.0.jar", "icu4j.jar", "cupv10k-runtime.jar")) {
-            $jarPath = Join-Path $xercesHome $jar
-            if (Test-Path $jarPath) {
-                $cpParts += $jarPath
-            }
-        }
-
-        $xsd11ClassPath = $cpParts -join ';'
-    }
-    catch {
-        $xsd11InitError = $_.Exception.Message
-    }
+if ($SkipXsd11) {
+    $xsd11InitError = "XSD 1.1 validation disabled by parameter."
 }
 else {
-    $xsd11InitError = "Java runtime not found on PATH."
+    $javaAvailable = $null -ne (Get-Command java -ErrorAction SilentlyContinue)
+
+    if ($javaAvailable) {
+        try {
+            $xercesHome = Resolve-XercesHome -InstallPath $XercesInstallFolder
+            $requiredJars = @("xercesImpl.jar", "xml-apis.jar", "xercesSamples.jar")
+            foreach ($jar in $requiredJars) {
+                $jarPath = Join-Path $xercesHome $jar
+                if (-not (Test-Path $jarPath)) {
+                    throw "Required Xerces jar not found: $jarPath"
+                }
+            }
+
+            $cpParts = @(
+                (Join-Path $xercesHome "xercesImpl.jar"),
+                (Join-Path $xercesHome "xml-apis.jar"),
+                (Join-Path $xercesHome "xercesSamples.jar")
+            )
+
+            foreach ($jar in @("org.eclipse.wst.xml.xpath2.processor_1.2.1.jar", "org.eclipse.wst.xml.xpath2.processor_1.2.0.jar", "icu4j.jar", "cupv10k-runtime.jar")) {
+                $jarPath = Join-Path $xercesHome $jar
+                if (Test-Path $jarPath) {
+                    $cpParts += $jarPath
+                }
+            }
+
+            $xsd11ClassPath = $cpParts -join ';'
+        }
+        catch {
+            $xsd11InitError = $_.Exception.Message
+        }
+    }
+    else {
+        $xsd11InitError = "Java runtime not found on PATH."
+    }
 }
 
 $axEdtFolders = New-Object System.Collections.Generic.List[string]
@@ -272,6 +466,14 @@ foreach ($root in $roots) {
 $uniqueFolders = $axEdtFolders |
     Sort-Object -Unique
 
+if ($excludedRoots.Count -gt 0) {
+    $uniqueFolders = @(
+        $uniqueFolders | Where-Object {
+            -not (Test-PathUnderRoots -Path $_ -Roots $excludedRoots)
+        }
+    )
+}
+
 $xmlFiles = foreach ($folder in $uniqueFolders) {
     Get-ChildItem -Path $folder -Filter "*.xml" -File -ErrorAction SilentlyContinue
 }
@@ -280,19 +482,63 @@ $xmlFiles = @($xmlFiles)
 Write-Host ("AXEDT_FOLDERS_FOUND={0}" -f $uniqueFolders.Count)
 Write-Host ("XML_FILES_FOUND={0}" -f $xmlFiles.Count)
 
+$totalXmlFiles = $xmlFiles.Count
+$processedXmlFiles = 0
+
+$xsd11BatchResults = @{}
+if ([string]::IsNullOrWhiteSpace($xsd11InitError) -and $xmlFiles.Count -gt 0) {
+    $xmlPathsForXsd11 = @($xmlFiles | ForEach-Object { $_.FullName })
+    $xsd11Chunks = Split-XmlPathsIntoChunks -XmlPaths $xmlPathsForXsd11
+    Write-Host ("XSD1.1_BATCH_MODE=ON | CHUNKS={0}" -f $xsd11Chunks.Count)
+
+    $chunkIndex = 0
+    foreach ($chunk in $xsd11Chunks) {
+        $chunkIndex++
+        $chunkPercent = [int](($chunkIndex / $xsd11Chunks.Count) * 100)
+        Write-Progress -Activity "Running XSD 1.1 batch validation" -Status ("chunk {0}/{1} ({2} files)" -f $chunkIndex, $xsd11Chunks.Count, $chunk.Count) -PercentComplete $chunkPercent
+
+        $chunkResults = Test-Xsd11Batch -XmlPaths $chunk -SchemaPath $resolvedXsd11 -ClassPath $xsd11ClassPath -JavaAvailable $javaAvailable
+        foreach ($xmlPath in $chunkResults.Keys) {
+            $xsd11BatchResults[$xmlPath] = $chunkResults[$xmlPath]
+        }
+    }
+
+    Write-Progress -Activity "Running XSD 1.1 batch validation" -Completed
+}
+
 $rows = foreach ($xml in $xmlFiles) {
+    $processedXmlFiles++
     $xmlPath = $xml.FullName
 
-    $res10 = Test-Xsd10 -XmlPath $xmlPath -SchemaSet $schemaSet10
+    $percentComplete = if ($totalXmlFiles -gt 0) {
+        [int](($processedXmlFiles / $totalXmlFiles) * 100)
+    }
+    else {
+        100
+    }
+
+    Write-Progress -Activity "Validating EDT XML files" -Status ("{0}/{1}: {2}" -f $processedXmlFiles, $totalXmlFiles, $xml.Name) -PercentComplete $percentComplete
+
+    if ($SkipXsd10) {
+        $res10 = [PSCustomObject]@{ Result = "SKIPPED"; Error = "XSD 1.0 validation disabled by parameter." }
+    }
+    else {
+        $res10 = Test-Xsd10 -XmlPath $xmlPath -SchemaSet $schemaSet10
+    }
 
     if ([string]::IsNullOrWhiteSpace($xsd11InitError)) {
-        $res11 = Test-Xsd11 -XmlPath $xmlPath -SchemaPath $resolvedXsd11 -ClassPath $xsd11ClassPath -JavaAvailable $javaAvailable
+        if ($xsd11BatchResults.ContainsKey($xmlPath)) {
+            $res11 = $xsd11BatchResults[$xmlPath]
+        }
+        else {
+            $res11 = Test-Xsd11 -XmlPath $xmlPath -SchemaPath $resolvedXsd11 -ClassPath $xsd11ClassPath -JavaAvailable $javaAvailable
+        }
     }
     else {
         $res11 = [PSCustomObject]@{ Result = "SKIPPED"; Error = $xsd11InitError }
     }
 
-    [PSCustomObject]@{
+    $row = [PSCustomObject]@{
         XmlFile = $xmlPath
         AxEdtFolder = $xml.DirectoryName
         XmlFileName = $xml.Name
@@ -301,19 +547,40 @@ $rows = foreach ($xml in $xmlFiles) {
         Xsd11Result = $res11.Result
         Xsd11Error = $res11.Error
     }
+
+    $row
+
+    if ($StopOnFailure -and ($res10.Result -eq "FAIL" -or $res11.Result -eq "FAIL")) {
+        Write-Host ""
+        Write-Host "STOP_ON_FAILURE=TRUE"
+        Write-Host ("FAILED_XML={0}" -f $xmlPath)
+
+        if ($res10.Result -eq "FAIL") {
+            Write-Host ("XSD1.0_ERROR={0}" -f $res10.Error)
+        }
+
+        if ($res11.Result -eq "FAIL") {
+            Write-Host ("XSD1.1_ERROR={0}" -f $res11.Error)
+        }
+
+        break
+    }
 }
+
+Write-Progress -Activity "Validating EDT XML files" -Completed
 
 $rows | Export-Csv -Path $OutputCsvPath -NoTypeInformation -Encoding UTF8
 
 $pass10 = @($rows | Where-Object { $_.Xsd10Result -eq "PASS" }).Count
 $fail10 = @($rows | Where-Object { $_.Xsd10Result -eq "FAIL" }).Count
+$skip10 = @($rows | Where-Object { $_.Xsd10Result -eq "SKIPPED" }).Count
 $pass11 = @($rows | Where-Object { $_.Xsd11Result -eq "PASS" }).Count
 $fail11 = @($rows | Where-Object { $_.Xsd11Result -eq "FAIL" }).Count
 $skip11 = @($rows | Where-Object { $_.Xsd11Result -eq "SKIPPED" }).Count
 
 Write-Host ""
 Write-Host "SUMMARY"
-Write-Host ("XSD1.0 | PASS={0} | FAIL={1}" -f $pass10, $fail10)
+Write-Host ("XSD1.0 | PASS={0} | FAIL={1} | SKIPPED={2}" -f $pass10, $fail10, $skip10)
 Write-Host ("XSD1.1 | PASS={0} | FAIL={1} | SKIPPED={2}" -f $pass11, $fail11, $skip11)
 Write-Host ("CSV={0}" -f $OutputCsvPath)
 
