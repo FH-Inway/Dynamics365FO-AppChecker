@@ -25,6 +25,8 @@ param(
     [switch]$SkipXsd11,
     [switch]$StopOnFailure,
 
+    [string]$RetryFailuresCsvPath = "",
+
     [string]$OutputCsvPath = (Join-Path $PSScriptRoot ("edt-bulk-validation-" + (Get-Date -Format "yyyyMMdd-HHmmss") + ".csv"))
 )
 
@@ -364,9 +366,14 @@ if (-not $SkipXsd11 -and -not (Test-Path -Path $Xsd11SchemaPath)) {
     throw "XSD 1.1 schema not found: $Xsd11SchemaPath"
 }
 
+if (-not [string]::IsNullOrWhiteSpace($RetryFailuresCsvPath) -and -not (Test-Path -Path $RetryFailuresCsvPath)) {
+    throw "Retry failures CSV not found: $RetryFailuresCsvPath"
+}
+
 $resolvedBaseFolder = (Resolve-Path -Path $BaseFolder).Path
 $resolvedXsd10 = if ($SkipXsd10) { "DISABLED" } else { (Resolve-Path -Path $Xsd10SchemaPath).Path }
 $resolvedXsd11 = if ($SkipXsd11) { "DISABLED" } else { (Resolve-Path -Path $Xsd11SchemaPath).Path }
+$resolvedRetryFailuresCsv = if ([string]::IsNullOrWhiteSpace($RetryFailuresCsvPath)) { "DISABLED" } else { (Resolve-Path -Path $RetryFailuresCsvPath).Path }
 
 $roots = @()
 if ($SubFolders.Count -gt 0) {
@@ -398,6 +405,7 @@ Write-Host ("ROOTS={0}" -f ($roots -join '; '))
 Write-Host ("EXCLUDED_ROOTS={0}" -f $(if ($excludedRoots.Count -gt 0) { $excludedRoots -join '; ' } else { '<none>' }))
 Write-Host "XSD1.0=$resolvedXsd10"
 Write-Host "XSD1.1=$resolvedXsd11"
+Write-Host "RETRY_FAILURES_CSV=$resolvedRetryFailuresCsv"
 Write-Host "OUTPUT_CSV=$OutputCsvPath"
 
 $schemaSet10 = $null
@@ -479,6 +487,49 @@ $xmlFiles = foreach ($folder in $uniqueFolders) {
 }
 
 $xmlFiles = @($xmlFiles)
+
+if (-not [string]::IsNullOrWhiteSpace($RetryFailuresCsvPath)) {
+    $retryRows = Import-Csv -Path $resolvedRetryFailuresCsv
+
+    $failedFromCsv = New-Object System.Collections.Generic.HashSet[string]([System.StringComparer]::OrdinalIgnoreCase)
+    foreach ($row in $retryRows) {
+        if ([string]::IsNullOrWhiteSpace($row.XmlFile)) {
+            continue
+        }
+
+        $isFailed10 = $row.PSObject.Properties.Name -contains "Xsd10Result" -and $row.Xsd10Result -eq "FAIL"
+        $isFailed11 = $row.PSObject.Properties.Name -contains "Xsd11Result" -and $row.Xsd11Result -eq "FAIL"
+
+        $isFailed = if (-not $SkipXsd10 -and -not $SkipXsd11) {
+            $isFailed10 -or $isFailed11
+        }
+        elseif (-not $SkipXsd10) {
+            $isFailed10
+        }
+        else {
+            $isFailed11
+        }
+
+        if ($isFailed) {
+            try {
+                $normalizedFailedPath = [System.IO.Path]::GetFullPath($row.XmlFile)
+                $failedFromCsv.Add($normalizedFailedPath) | Out-Null
+            }
+            catch {
+                # Ignore malformed paths in retry CSV rows.
+            }
+        }
+    }
+
+    $xmlFiles = @(
+        $xmlFiles | Where-Object {
+            $failedFromCsv.Contains([System.IO.Path]::GetFullPath($_.FullName))
+        }
+    )
+
+    Write-Host ("RETRY_FAILURES_MATCHED={0}" -f $xmlFiles.Count)
+}
+
 Write-Host ("AXEDT_FOLDERS_FOUND={0}" -f $uniqueFolders.Count)
 Write-Host ("XML_FILES_FOUND={0}" -f $xmlFiles.Count)
 
