@@ -20,7 +20,9 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
 - Completed: Bulk validation script created and smoke-tested against package data.
 - Completed: First schema draft created as `XMLSchemas/EDTSchema/AxEdt.1.0.xsd`.
 - Completed: XSD 1.1 variant created as `XMLSchemas/EDTSchema/AxEdt.1.1.xsd`.
-- Completed: Root element updated to `abstract="true"` so missing `i:type` fails validation.
+- Completed: Root/type polymorphism finalized:
+  - XSD 1.0 uses abstract `AxEdt` root + `i:type` targeting standalone concrete types
+  - XSD 1.1 uses concrete `AxEdt` root typed as abstract base; missing/invalid `i:type` fails
 - Completed: Targeted validation checks executed:
   - valid typed sample passes
   - missing type fails
@@ -30,7 +32,21 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
 - Completed: Full BaseX corpus order analysis executed with `edt-verify-element-order.xq` over `23,846` EDTs.
 - Completed: Universal pre-collection fields confirmed from full-corpus analysis and moved into the common base sequence in both schemas.
 - Completed: Non-universal pre-collection fields documented, including occurrence and non-occurrence by EDT type.
-- In progress: Refining the remaining non-universal pre-collection fields to decide which should be promoted into the common base sequence versus left type-specific.
+- Completed: Order-conflict analysis proved that no single fixed pre-collection sequence can satisfy the full corpus.
+- Completed: `AxEdt.1.0.xsd` was redesigned to use standalone per-type `xs:all` complex types so each EDT type exposes only its allowed elements while still permitting any element order.
+- Completed: Broader XSD 1.0 package validation executed:
+  - `ApplicationCommon`: `39/39` pass
+  - `AdvancedQualityManagement`: `238/238` pass
+- Completed: `AxEdt.1.1.xsd` aligned to XSD 1.1 inheritance model using `xs:all` extension merging:
+  - abstract `AxEdtBaseType` with shared EDT fields
+  - concrete derived types extending the base with type-specific `xs:all`
+  - concrete `AxEdt` root element typed as abstract base, with `i:type` selecting concrete subtype
+- Completed: XSD 1.1 compatibility fixes applied from live package failures:
+  - reordered `xs:anyAttribute` / `xs:assert` to valid XSD 1.1 content order
+  - switched collection wildcard processing to `processContents="skip"` so nested relation/table-reference subtype payloads do not require local type declarations
+- Completed: Bulk XSD 1.1 validation performance improvement implemented:
+  - `Validate-EdtBulk.ps1` now batches many XML files per single JVM invocation (`jaxp.SourceValidator -i <many files>`) with chunking for command-length safety
+- In progress: Running broader XSD 1.1 package validation with the new batched validator and triaging any remaining edge cases.
 
 ## Observed EDT Type Variants
 From the collected BaseX output, the schema must support these EDT root type variants:
@@ -86,26 +102,30 @@ Full-corpus order analysis snapshot:
 - Most common pre-collection fields beyond the universal set included `ReferenceTable`, `ButtonImage`, `DisplayLength`, and `IsObsolete`.
 
 ## Schema Design Approach
-1. Define a base complex type for common EDT structure.
+1. For XSD 1.0, define one standalone complex type per observed EDT variant using `xs:all` so allowed elements can appear in any order.
 2. Model polymorphism through the `i:type` value on the `AxEdt` root.
-3. Define one subtype complex type per observed EDT variant.
-4. Keep subtype-specific fields only where they are observed, for example:
+3. Keep each EDT type explicit and redundant by design so every type lists only the elements observed for that type.
+4. For XSD 1.1, use an abstract shared base type plus derived subtype extensions, each with `xs:all`, relying on XSD 1.1 merge semantics for unordered combined content.
+5. Keep shared collection payloads (`ArrayElements`, `Relations`, `TableReferences`) permissive via wildcard container typing, and use `processContents="skip"` for XSD 1.1 to avoid false failures from nested, out-of-scope subtype declarations.
+6. Keep subtype-specific fields only where they are observed, for example:
 - String-centric: StringSize, StringSizeIsExtensible, ChangeCase, DisplayHeight
 - Enum-centric: EnumType, Style
 - Numeric-centric: AllowNegative, ShowZero, NoOfDecimals, Scale, SignDisplay
 - Date/time-centric: DateYear, DateMonth, DateDay, DateSeparator, TimeSeconds, TimeHours, TimeMinute, TimeSeparator, TimezonePreference, TimeFormat
-5. Use strict element typing where stable, but avoid over-constraining first iteration.
-6. Add limited extension tolerance (`xs:any`) only where justified to avoid blocking unknown future metadata.
+6. Document inside the schema which elements are shared by all types, shared by a subset of types, or unique to a single type.
+7. Use strict element typing where stable, but avoid over-constraining first iteration.
+8. Add limited extension tolerance (`xs:any`) only where justified to avoid blocking unknown future metadata.
 
 ## Implementation Plan
 1. Create `XMLSchemas/EDTSchema/AxEdt.1.0.xsd` with:
 - Shared simple types for booleans, integers, and common text nodes
 - `AxEdt` root declaration
-- Base complex type for shared EDT elements
-- Derived complex types for each observed EDT subtype
+- Standalone `xs:all` complex types for each observed EDT subtype
+- In-schema comments identifying common, subset-shared, and single-type elements
 
 2. Add subtype mapping strategy in XSD:
-- Prefer type extension/restriction around a common base
+- For XSD 1.0, use an abstract `AxEdt` element with `xsi:type` targeting standalone concrete types
+- For XSD 1.1, use abstract `AxEdtBaseType` + derived complex types with `xs:all` extension merging
 - Ensure support for the existing XML namespace pattern and `i:type` usage
 
 3. Add schema annotations:
@@ -114,6 +134,7 @@ Full-corpus order analysis snapshot:
 
 4. Validate against corpus:
 - Run bulk validation over AxEDT/AxEdt resources
+- Use batched XSD 1.1 validation mode to keep one JVM alive for many XML files
 - Capture validation failures by category:
   - missing required element
   - unexpected element
@@ -126,7 +147,7 @@ Full-corpus order analysis snapshot:
 - Repeat until all valid EDTs pass
 
 ## Next Step (Active)
-Use `EDT-PreCollection-NonUniversal-Elements.md` and broader package validation runs to decide which non-universal pre-collection fields should move into the common base sequence and which should remain type-specific, then re-run bulk validation to measure the reduction in ordering failures.
+Run broader XSD 1.1 batched validation beyond `ApplicationCommon` (for example `AdvancedQualityManagement` and `ApplicationPlatform`), capture any remaining failures, and finalize regression baselines for both XSD 1.0 and XSD 1.1.
 
 ## Deferred TODOs
 - Revisit type error diagnostics: investigate whether richer "allowed types" messaging can be achieved for missing/invalid `i:type` without changing XML contract.
@@ -155,4 +176,5 @@ Use `EDT-PreCollection-NonUniversal-Elements.md` and broader package validation 
 - All known EDT subtype variants are represented.
 - Schema validates current corpus with zero unexplained failures.
 - Validation process is scriptable and repeatable.
+- XSD 1.1 bulk validation runs in batched JVM mode with acceptable throughput for package-scale checks.
 - Documentation in this folder explains assumptions and refresh steps.
