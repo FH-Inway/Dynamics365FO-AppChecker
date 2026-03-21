@@ -156,12 +156,50 @@ This is the most robust option when the query is long or contains many `$` varia
 basex -bdb=D365ApplicationExtended -bsample-limit=50 ./tools/BaseXMaintenance/Rename-Paths/rename-paths-collision-precheck.xq
 ```
 
+### G) Pipe `.xq` script output through PowerShell with `2>&1`
+
+When calling a `.xq` file and piping its output through PowerShell cmdlets such as `Select-Object`, `Where-Object`, or `Group-Object`, always merge stderr into stdout with `2>&1`. Without it, BaseX diagnostic lines travel on stderr and PowerShell's pipeline silently drops the stdout results in some terminal configurations, producing empty output.
+
+```powershell
+# Empty output — avoid
+basex '.\XMLSchemas\EDTSchema\edt-verify-order-conflicts.xq' | Select-Object -First 20
+
+# Correct — merge stderr/stdout first
+basex '.\XMLSchemas\EDTSchema\edt-verify-order-conflicts.xq' 2>&1 | Select-Object -First 20
+```
+
+Capturing to a variable before piping is equally safe:
+
+```powershell
+$out = basex '.\XMLSchemas\EDTSchema\edt-verify-order-conflicts.xq' 2>&1
+$out | Select-Object -First 20
+```
+
+### H) External variable quoting for `.xq` files
+
+When calling a `.xq` file with `-b` bindings, pass the binding as a bare `key=value` string **without** wrapping single quotes around it. Single-quoting the entire binding (common when escaping `$` in inline `-q` queries) causes BaseX to receive the quotes as part of the variable name and silently ignore the override, leaving the script's declared default in effect.
+
+```powershell
+# Binding ignored — limit default is used
+basex -b 'limit=500' '.\file.xq'
+
+# Correct — bare key=value, no surrounding quotes
+basex -b limit=500 '.\file.xq'
+```
+
+If the script declares `declare variable $limit external := "0"`, you can omit `-b` entirely to use the default:
+
+```powershell
+basex '.\XMLSchemas\EDTSchema\edt-verify-order-conflicts.xq'
+```
+
 ### Recommended practice
 
 - For one number: capture to a variable and print a labeled line.
 - For reports: return one line per item and filter in PowerShell.
 - For long output: write to a file first, then inspect the file.
-- For repeatable operational queries: keep them in `.xq` files and pass parameters with `-b...`.
+- For repeatable operational queries: keep them in `.xq` files and pass parameters with bare `-b key=value` bindings.
+- Always use `2>&1` when piping `.xq` script output through PowerShell cmdlets.
 
 ## 11) Troubleshooting
 
@@ -170,6 +208,33 @@ basex -bdb=D365ApplicationExtended -bsample-limit=50 ./tools/BaseXMaintenance/Re
 Likely cause: shell quoting around XQuery.
 
 Fix: move query to `.xq` file and call `basex` with `-b` variable bindings.
+
+### Symptom: piping `.xq` script output through PowerShell produces empty output
+
+Likely cause: BaseX writes diagnostic/progress lines to stderr; PowerShell's native command pipeline drops stdout when stderr is not merged.
+
+Fix: add `2>&1` before the pipe:
+
+```powershell
+basex '.\script.xq' 2>&1 | Select-Object -First 20
+```
+
+Alternately, capture to a variable first:
+
+```powershell
+$out = basex '.\script.xq' 2>&1
+$out | Where-Object { $_ -match 'FIELD_PAIR' }
+```
+
+### Symptom: `-b` external variable override has no effect on `.xq` file
+
+Likely cause: the binding is wrapped in single quotes, so BaseX receives the quotes as part of the name.
+
+Fix: pass the binding bare, without surrounding quotes:
+
+```powershell
+basex -b limit=500 '.\my-query.xq'
+```
 
 ### Symptom: unknown function errors for `db:open(...)`
 
