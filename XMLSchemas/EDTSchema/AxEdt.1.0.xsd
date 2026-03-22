@@ -14,19 +14,7 @@
     </xs:documentation>
   </xs:annotation>
 
-  <xs:simpleType name="AxYesNoType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Yes"/>
-      <xs:enumeration value="No"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="AxTrueFalseType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="true"/>
-      <xs:enumeration value="false"/>
-    </xs:restriction>
-  </xs:simpleType>
+  <xs:include schemaLocation="AxEdt.SharedTypes.xsd"/>
 
   <xs:complexType name="AxEdtCollectionType">
     <xs:sequence>
@@ -82,7 +70,7 @@
       <!-- Elements shared by a subset of EDT types -->
       <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
       <xs:element name="DisplayHeight" type="xs:integer" minOccurs="0"/>
-      <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+      <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
       <xs:element name="Tags" type="xs:string" minOccurs="0"/>
       <xs:element name="CollectionLabel" type="xs:string" minOccurs="0"/>
@@ -94,7 +82,8 @@
       <xs:element name="ControlClass" type="xs:string" minOccurs="0"/>
       <!-- Elements used only by AxEdtString -->
       <xs:element name="StringSize" type="xs:integer" minOccurs="0"/>
-      <xs:element name="ChangeCase" type="xs:string" minOccurs="0"/>
+      <!-- Hidden legacy element on AxEdtString; use with care. -->
+      <xs:element name="ChangeCase" type="AxChangeCaseType" minOccurs="0"/>
       <xs:element name="StringSizeIsExtensible" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="DatabaseStringSize" type="xs:integer" minOccurs="0"/>
       <xs:element name="Adjustment" type="xs:string" minOccurs="0"/>
@@ -149,7 +138,7 @@
       <xs:element name="AllowNegative" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="ShowZero" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
-      <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+      <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
       <xs:element name="RotateSign" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
@@ -187,7 +176,7 @@
       <xs:element name="ShowZero" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="PresenceMethod" type="xs:string" minOccurs="0"/>
       <xs:element name="PresenceClass" type="xs:string" minOccurs="0"/>
-      <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+      <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="ControlClass" type="xs:string" minOccurs="0"/>
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
     </xs:all>
@@ -212,7 +201,7 @@
       <!-- Elements shared by a subset of EDT types -->
       <xs:element name="AllowNegative" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="ShowZero" type="AxYesNoType" minOccurs="0"/>
-      <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+      <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
       <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
       <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
@@ -247,7 +236,7 @@
       <xs:element name="DateMonth" type="xs:string" minOccurs="0"/>
       <xs:element name="DateSeparator" type="xs:string" minOccurs="0"/>
       <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
-      <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
+      <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="PresenceIndicatorAllowed" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements used only by AxEdtDate -->
       <xs:element name="DateFormat" type="xs:string" minOccurs="0"/>

@@ -46,6 +46,7 @@ Add dedicated simple types for these elements and use them in both schemas.
 
 - `Alignment`: `Center`, `Left`, `Right`
 - `ChangeCase`: `LowerCase`, `None`, `UpperCase`
+  - `ChangeCase` is hidden on `AxEdtString`, appears to be legacy, and should be used with care.
 - `DateDay`: `Digits2`, `None`
 - `DateMonth`: `Digits2`, `Long`, `None`
 - `DateSeparator`: `Dash_None`, `Dot_None`, `None_None`
@@ -183,6 +184,9 @@ Do not infer a closed set from current corpus evidence alone for these fields.
 - `CollectionLabel`
 
 These may look small or sparse in the current corpus, but they are especially likely to vary by module, extension, or future platform update.
+
+## Legacy / Hidden Elements
+- `ChangeCase` on `AxEdtString`: now suitable for `AxChangeCaseType`, but it appears to be a hidden legacy element and should be used with care.
 
 ## XSD 1.0 vs XSD 1.1 Guidance
 ### XSD 1.0
