@@ -167,4 +167,18 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="AxAdjustmentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Right"/>
+      <xs:enumeration value="Left"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxTimezonePreferenceType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NoConversion"/>
+      <xs:enumeration value="User"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>

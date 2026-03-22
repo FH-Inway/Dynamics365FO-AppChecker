@@ -69,7 +69,7 @@
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
       <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
-      <xs:element name="DisplayHeight" type="xs:integer" minOccurs="0"/>
+      <xs:element name="DisplayHeight" type="xs:nonNegativeInteger" minOccurs="0"/>
       <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
       <xs:element name="Tags" type="xs:string" minOccurs="0"/>
@@ -85,8 +85,8 @@
       <!-- Hidden legacy element on AxEdtString; use with care. -->
       <xs:element name="ChangeCase" type="AxChangeCaseType" minOccurs="0"/>
       <xs:element name="StringSizeIsExtensible" type="AxYesNoType" minOccurs="0"/>
-      <xs:element name="DatabaseStringSize" type="xs:integer" minOccurs="0"/>
-      <xs:element name="Adjustment" type="xs:string" minOccurs="0"/>
+      <xs:element name="DatabaseStringSize" type="xs:nonNegativeInteger" minOccurs="0"/>
+      <xs:element name="Adjustment" type="AxAdjustmentType" minOccurs="0"/>
       <xs:element name="DataInteractorFactory" type="xs:string" minOccurs="0"/>
     </xs:all>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
@@ -141,11 +141,11 @@
       <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="SignDisplay" type="AxSignDisplayType" minOccurs="0"/>
       <xs:element name="RotateSign" type="AxYesNoType" minOccurs="0"/>
-      <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
+      <xs:element name="DisplaceNegative" type="xs:nonNegativeInteger" minOccurs="0"/>
       <!-- Elements used only by AxEdtReal -->
-      <xs:element name="NoOfDecimals" type="xs:integer" minOccurs="0"/>
+      <xs:element name="NoOfDecimals" type="xs:nonNegativeInteger" minOccurs="0"/>
       <xs:element name="NoOfDecimalsIsExtensible" type="AxTrueFalseType" minOccurs="0"/>
-      <xs:element name="Scale" type="xs:integer" minOccurs="0"/>
+      <xs:element name="Scale" type="xs:nonNegativeInteger" minOccurs="0"/>
       <xs:element name="FormatMST" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="AutoInsSeparator" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="ThousandSeparator" type="AxThousandSeparatorType" minOccurs="0"/>
@@ -204,7 +204,7 @@
       <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
       <xs:element name="SignDisplay" type="AxSignDisplayType" minOccurs="0"/>
       <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
-      <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
+      <xs:element name="DisplaceNegative" type="xs:nonNegativeInteger" minOccurs="0"/>
       <xs:element name="RotateSign" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="Tags" type="xs:string" minOccurs="0"/>
       <xs:element name="Direction" type="AxDirectionType" minOccurs="0"/>
@@ -271,7 +271,7 @@
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="DateSeparator" type="AxDateSeparatorType" minOccurs="0"/>
       <!-- Elements used only by AxEdtUtcDateTime -->
-      <xs:element name="TimezonePreference" type="xs:string" minOccurs="0"/>
+      <xs:element name="TimezonePreference" type="AxTimezonePreferenceType" minOccurs="0"/>
     </xs:all>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>

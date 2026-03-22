@@ -91,11 +91,13 @@ These elements show limited ranges or small observed sets, but the evidence is w
 3. Restrict `Scale` as `xs:integer` with `minInclusive="0"`.
 4. Restrict `DatabaseStringSize` as `xs:integer` with `minInclusive="0"`.
 
+Restrictions were implemented.
+
 ### Other Small-Set Candidates To Review Carefully
-- `TimezonePreference`
-- `DisplaceNegative`
-- `Adjustment`
-- `MaxDateLabel`
+- `TimezonePreference`: `NoConversion`, `User`
+- `DisplaceNegative`: nonNegativeInteger
+- `Adjustment`: `Right`, `Left`
+- `MaxDateLabel`: no restriction, keep as `xs:string` for now
 
 These should not be hard-coded until the full distinct-value set and platform semantics are reviewed.
 
