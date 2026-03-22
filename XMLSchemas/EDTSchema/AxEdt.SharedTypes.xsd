@@ -41,4 +41,73 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="AxDateDayType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Digits2"/>
+      <xs:enumeration value="Digits1or2"/>
+      <xs:enumeration value="None"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxDateMonthType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Digits2"/>
+      <xs:enumeration value="Digits1or2"/>
+      <xs:enumeration value="Short"/>
+      <xs:enumeration value="Long"/>
+      <xs:enumeration value="None"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxDateSeparatorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Slash_Slash"/>
+      <xs:enumeration value="Slash_Dash"/>
+      <xs:enumeration value="Slash_Dot"/>
+      <xs:enumeration value="Slash_Space"/>
+      <xs:enumeration value="Slash_None"/>
+      <xs:enumeration value="Dash_Slash"/>
+      <xs:enumeration value="Dash_Dash"/>
+      <xs:enumeration value="Dash_Dot"/>
+      <xs:enumeration value="Dash_Space"/>
+      <xs:enumeration value="Dash_None"/>
+      <xs:enumeration value="Dot_Slash"/>
+      <xs:enumeration value="Dot_Dash"/>
+      <xs:enumeration value="Dot_Dot"/>
+      <xs:enumeration value="Dot_Space"/>
+      <xs:enumeration value="Dot_None"/>
+      <xs:enumeration value="Space_Slash"/>
+      <xs:enumeration value="Space_Dash"/>
+      <xs:enumeration value="Space_Dot"/>
+      <xs:enumeration value="Space_Space"/>
+      <xs:enumeration value="Space_None"/>
+      <xs:enumeration value="None_Slash"/>
+      <xs:enumeration value="None_Dash"/>
+      <xs:enumeration value="None_Dot"/>
+      <xs:enumeration value="None_Space"/>
+      <xs:enumeration value="None_None"/>
+      <xs:enumeration value="ChineseFormal"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxDateYearType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Digits2"/>
+      <xs:enumeration value="Digits4"/>
+      <xs:enumeration value="None"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxDateFormatType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DMY"/>
+      <xs:enumeration value="YMD"/>
+      <xs:enumeration value="YDM"/>
+      <xs:enumeration value="MYD"/>
+      <xs:enumeration value="DYM"/>
+      <xs:enumeration value="MDY"/>
+      <xs:enumeration value="DMY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>

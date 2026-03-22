@@ -161,15 +161,15 @@
       <xs:extension base="AxEdtBaseType">
         <xs:all>
           <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
-          <xs:element name="DateYear" type="xs:string" minOccurs="0"/>
-          <xs:element name="DateDay" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateYear" type="AxDateYearType" minOccurs="0"/>
+          <xs:element name="DateDay" type="AxDateDayType" minOccurs="0"/>
           <xs:element name="MaxDateLabel" type="xs:string" minOccurs="0"/>
-          <xs:element name="DateMonth" type="xs:string" minOccurs="0"/>
-          <xs:element name="DateSeparator" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateMonth" type="AxDateMonthType" minOccurs="0"/>
+          <xs:element name="DateSeparator" type="AxDateSeparatorType" minOccurs="0"/>
           <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
           <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
           <xs:element name="PresenceIndicatorAllowed" type="AxYesNoType" minOccurs="0"/>
-          <xs:element name="DateFormat" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateFormat" type="AxDateFormatType" minOccurs="0"/>
         </xs:all>
       </xs:extension>
     </xs:complexContent>
@@ -184,11 +184,11 @@
           <xs:element name="TimeHours" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="TimeMinute" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="MaxDateLabel" type="xs:string" minOccurs="0"/>
-          <xs:element name="DateYear" type="xs:string" minOccurs="0"/>
-          <xs:element name="DateDay" type="xs:string" minOccurs="0"/>
-          <xs:element name="DateMonth" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateYear" type="AxDateYearType" minOccurs="0"/>
+          <xs:element name="DateDay" type="AxDateDayType" minOccurs="0"/>
+          <xs:element name="DateMonth" type="AxDateMonthType" minOccurs="0"/>
           <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
-          <xs:element name="DateSeparator" type="xs:string" minOccurs="0"/>
+          <xs:element name="DateSeparator" type="AxDateSeparatorType" minOccurs="0"/>
           <xs:element name="TimezonePreference" type="xs:string" minOccurs="0"/>
         </xs:all>
       </xs:extension>

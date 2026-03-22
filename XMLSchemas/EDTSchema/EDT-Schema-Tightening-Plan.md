@@ -47,10 +47,10 @@ Add dedicated simple types for these elements and use them in both schemas.
 - `Alignment`: `Center`, `Left`, `Right`
 - `ChangeCase`: `LowerCase`, `None`, `UpperCase`
   - `ChangeCase` is hidden on `AxEdtString`, appears to be legacy, and should be used with care.
-- `DateDay`: `Digits2`, `None`
-- `DateMonth`: `Digits2`, `Long`, `None`
-- `DateSeparator`: `Dash_None`, `Dot_None`, `None_None`
-- `DateYear`: `Digits4`, `None`
+- `DateDay`: `Digits2`, `Digits1or2`, `None`
+- `DateMonth`: `Digits2`, `Digits1or2`, `Short`, `Long`, `None`
+- `DateSeparator`: `Slash_Slash`, `Slash_Dash`, `Slash_Dot`, `Slash_Space`, `Slash_None`, `Dash_Slash`, `Dash_Dash`, `Dash_Dot`, `Dash_Space`, `Dash_None`, `Dot_Slash`, `Dot_Dash`, `Dot_Dot`, `Dot_Space`, `Dot_None`, `Space_Slash`, `Space_Dash`, `Space_Dot`, `Space_Space`, `Space_None`, `None_Slash`, `None_Dash`, `None_Dot`, `None_Space`, `None_None`, `ChineseFormal`
+- `DateYear`: `Digits2`, `Digits4`, `None`
 - `DecimalSeparator`: `Comma`, `Dot`
 - `Direction`: `LTR`
 - `SignDisplay`: `None`, `Parentheses`, `Prefixed`
