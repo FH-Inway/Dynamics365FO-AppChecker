@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:annotation>
+    <xs:documentation>
+      Shared simple types used by both AxEdt.1.0.xsd and AxEdt.1.1.xsd.
+      Keep this file limited to XSD 1.0-compatible constructs so it can be
+      included from both schema versions.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="AxYesNoType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes"/>
+      <xs:enumeration value="No"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxTrueFalseType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true"/>
+      <xs:enumeration value="false"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxAlignmentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Center"/>
+      <xs:enumeration value="Left"/>
+      <xs:enumeration value="Right"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxChangeCaseType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LowerCase"/>
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="UpperCase"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
