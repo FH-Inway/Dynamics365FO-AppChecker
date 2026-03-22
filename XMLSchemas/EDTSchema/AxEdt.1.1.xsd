@@ -16,10 +16,10 @@
           with an xs:all containing its type-specific elements.
         - XSD 1.1 merges the two xs:all groups into a single flat unordered set,
           so all elements from both the base and the extension may appear in any order.
-        - The root element AxEdt is typed as AxEdtBaseType (abstract=true).
-          Instances use xsi:type to select the concrete derived type; no xs:alternative needed.
-        - All elements in the base xs:all must be minOccurs="0" (XSD 1.1 cos-ct-extends).
-          Name is enforced as required via xs:assert on the base type.
+        - The root element AxEdt uses XSD 1.1 xs:alternative dispatch on xsi:type.
+          A fallback alternative provides an explicit allowed-types message.
+        - Name, ArrayElements, Relations, and TableReferences are required by element cardinality.
+        - Additional XSD 1.1 asserts are used to provide friendlier diagnostics for common data issues.
     </xs:documentation>
   </xs:annotation>
 
@@ -59,6 +59,9 @@
       <xs:element name="IsObsolete" type="AxBooleanLikeType" minOccurs="0"/>
     </xs:all>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
+    <xs:assert
+      test="normalize-space(Name) ne ''"
+      xerces:message="AxEdt/Name must not be empty or whitespace."/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtString">
@@ -236,7 +239,28 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <!-- xsi:type on instances selects the concrete derived type; no xs:alternative needed. -->
-  <xs:element name="AxEdt" type="AxEdtBaseType"/>
+  <xs:complexType name="AxEdtInvalidType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##any" processContents="skip"/>
+    <xs:assert
+      test="false()"
+      xerces:message="Invalid or missing xsi:type on AxEdt. Allowed types: AxEdtString, AxEdtEnum, AxEdtReal, AxEdtInt64, AxEdtInt, AxEdtDate, AxEdtUtcDateTime, AxEdtContainer, AxEdtGuid, AxEdtTime."/>
+  </xs:complexType>
+
+  <xs:element name="AxEdt">
+    <xs:alternative test="@xsi:type = 'AxEdtString'" type="AxEdtString"/>
+    <xs:alternative test="@xsi:type = 'AxEdtEnum'" type="AxEdtEnum"/>
+    <xs:alternative test="@xsi:type = 'AxEdtReal'" type="AxEdtReal"/>
+    <xs:alternative test="@xsi:type = 'AxEdtInt64'" type="AxEdtInt64"/>
+    <xs:alternative test="@xsi:type = 'AxEdtInt'" type="AxEdtInt"/>
+    <xs:alternative test="@xsi:type = 'AxEdtDate'" type="AxEdtDate"/>
+    <xs:alternative test="@xsi:type = 'AxEdtUtcDateTime'" type="AxEdtUtcDateTime"/>
+    <xs:alternative test="@xsi:type = 'AxEdtContainer'" type="AxEdtContainer"/>
+    <xs:alternative test="@xsi:type = 'AxEdtGuid'" type="AxEdtGuid"/>
+    <xs:alternative test="@xsi:type = 'AxEdtTime'" type="AxEdtTime"/>
+    <xs:alternative type="AxEdtInvalidType"/>
+  </xs:element>
 
 </xs:schema>

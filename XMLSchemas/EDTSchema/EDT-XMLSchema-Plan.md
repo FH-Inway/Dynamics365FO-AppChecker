@@ -44,6 +44,8 @@ Create an XML Schema (XSD) for Dynamics 365 Finance and Operations Extended Data
 - Completed: XSD 1.1 compatibility fixes applied from live package failures:
   - reordered `xs:anyAttribute` / `xs:assert` to valid XSD 1.1 content order
   - switched collection wildcard processing to `processContents="skip"` so nested relation/table-reference subtype payloads do not require local type declarations
+- Completed: XSD 1.1 root switched to `xs:alternative` with fallback `AxEdtInvalidType` assertion so missing `i:type` reports an explicit allowed-types list.
+- Completed: Clarified XSD 1.1 limitation: unknown `i:type` values still fail early with Xerces type-resolution error (`cvc-elt.4.2`) before fallback assertion messaging can override it.
 - Completed: Bulk XSD 1.1 validation performance improvement implemented:
   - `Validate-EdtBulk.ps1` now batches many XML files per single JVM invocation (`jaxp.SourceValidator -i <many files>`) with chunking for command-length safety
 - In progress: Running broader XSD 1.1 package validation with the new batched validator and triaging any remaining edge cases.
@@ -150,9 +152,11 @@ Full-corpus order analysis snapshot:
 Run broader XSD 1.1 batched validation beyond `ApplicationCommon` (for example `AdvancedQualityManagement` and `ApplicationPlatform`), capture any remaining failures, and finalize regression baselines for both XSD 1.0 and XSD 1.1.
 
 ## Deferred TODOs
-- Revisit type error diagnostics: investigate whether richer "allowed types" messaging can be achieved for missing/invalid `i:type` without changing XML contract.
-- Current finding: with XSD 1.0/.NET validation, `xsi:type` cannot be constrained as a normal enumerated attribute with guaranteed enum-style validator output.
-- Candidate follow-up: keep schema behavior as-is and augment validator tooling to append a friendly allowed-types list when type-related failures are detected.
+- Current finding (XSD 1.0/.NET): `xsi:type` cannot be constrained as a normal enumerated attribute with guaranteed enum-style validator output.
+- Current finding (XSD 1.1/Xerces):
+  - Missing `i:type` can be routed to a fallback `xs:alternative` type and produce a custom allowed-types assertion message.
+  - Unknown `i:type` fails during QName/type resolution (`cvc-elt.4.2`) before fallback assertion messaging can be applied.
+- Candidate follow-up: keep schema behavior as-is and augment validator tooling to append a friendly allowed-types list when type-related failures are detected (especially unknown `i:type`).
 
 ## Validation and Regression Strategy
 - Keep generated reports in this folder and refresh them before schema updates.
