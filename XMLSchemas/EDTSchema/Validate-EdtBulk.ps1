@@ -9,6 +9,7 @@ Behavior:
   - XSD 1.1 via Xerces-J
 - Either validator can be disabled with a switch parameter.
 - Validation can stop on the first failure with a switch parameter.
+- Takes about 7 minutes for the standard application edts.
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -31,6 +32,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$scriptStartTime = Get-Date
 
 function Resolve-XercesHome {
     param(
@@ -482,9 +484,25 @@ if ($excludedRoots.Count -gt 0) {
     )
 }
 
-$xmlFiles = foreach ($folder in $uniqueFolders) {
-    Get-ChildItem -Path $folder -Filter "*.xml" -File -ErrorAction SilentlyContinue
+$xmlFiles = @()
+$folderCount = @($uniqueFolders).Count
+$folderIndex = 0
+
+foreach ($folder in $uniqueFolders) {
+    $folderIndex++
+    $discoverPercent = if ($folderCount -gt 0) {
+        [int](($folderIndex / $folderCount) * 100)
+    }
+    else {
+        100
+    }
+
+    Write-Progress -Activity "Collecting EDT XML files" -Status ("{0}/{1}: {2}" -f $folderIndex, $folderCount, $folder) -PercentComplete $discoverPercent
+
+    $xmlFiles += Get-ChildItem -Path $folder -Filter "*.xml" -File -ErrorAction SilentlyContinue
 }
+
+Write-Progress -Activity "Collecting EDT XML files" -Completed
 
 $xmlFiles = @($xmlFiles)
 
@@ -634,6 +652,7 @@ Write-Host "SUMMARY"
 Write-Host ("XSD1.0 | PASS={0} | FAIL={1} | SKIPPED={2}" -f $pass10, $fail10, $skip10)
 Write-Host ("XSD1.1 | PASS={0} | FAIL={1} | SKIPPED={2}" -f $pass11, $fail11, $skip11)
 Write-Host ("CSV={0}" -f $OutputCsvPath)
+Write-Host ("TOTAL_RUNTIME={0}" -f ((Get-Date) - $scriptStartTime).ToString())
 
 if ($fail10 -gt 0 -or $fail11 -gt 0) {
     exit 1
