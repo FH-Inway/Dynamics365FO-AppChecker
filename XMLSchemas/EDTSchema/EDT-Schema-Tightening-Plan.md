@@ -59,6 +59,8 @@ Add dedicated simple types for these elements and use them in both schemas.
 - `TimeFormat`: `Hour24`, `AMPM`
 - `TimeSeparator`: `Colon`, `Dot`, `Space`, `Comma`, `Slash`
 
+Enum types were added.
+
 ### Recommended Shared Types
 - `AxAlignmentType`
 - `AxChangeCaseType`
@@ -85,9 +87,9 @@ These elements show limited ranges or small observed sets, but the evidence is w
 
 ### Recommended Approach
 1. Restrict `DisplayHeight` to `xs:integer` with `minInclusive="0"`.
-2. Restrict `NoOfDecimals` to `xs:integer` with `minInclusive="0"` and `maxInclusive="12"`.
-3. Keep `Scale` as `xs:integer` for now unless platform evidence confirms the observed set is exhaustive.
-4. Keep `DatabaseStringSize` as `xs:integer` for now unless platform evidence confirms only `10`, `20`, and `100` are valid.
+2. Restrict `NoOfDecimals` to `xs:integer` with `minInclusive="0"`.
+3. Restrict `Scale` as `xs:integer` with `minInclusive="0"`.
+4. Restrict `DatabaseStringSize` as `xs:integer` with `minInclusive="0"`.
 
 ### Other Small-Set Candidates To Review Carefully
 - `TimezonePreference`
