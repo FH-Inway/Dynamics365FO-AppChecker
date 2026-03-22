@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This file is intentionally invalid. It should FAIL XSD 1.0 and XSD 1.1 validation.
+
+  The following enum type violations are present:
+    - Alignment="Middle"          violates AxAlignmentType  (valid: Center, Left, Right)
+    - ChangeCase="Capitalize"     violates AxChangeCaseType (valid: LowerCase, None, UpperCase)
+    - StringSizeIsExtensible="Y"  violates AxYesNoType      (valid: Yes, No)
+    - NoOfDecimalsIsExtensible="1" is intentionally covered
+      by AxTrueFalseType via a Real EDT would be a separate file;
+      this file covers the String type with three violations above.
+-->
+<AxEdt xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="" i:type="AxEdtString">
+  <Name>ContosoDemoInvalidEnumValues</Name>
+  <ArrayElements />
+  <Relations />
+  <TableReferences />
+  <StringSize>40</StringSize>
+  <Alignment>Middle</Alignment>
+  <ChangeCase>Capitalize</ChangeCase>
+  <StringSizeIsExtensible>Y</StringSizeIsExtensible>
+</AxEdt>

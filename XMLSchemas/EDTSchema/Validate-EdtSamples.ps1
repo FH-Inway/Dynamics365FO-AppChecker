@@ -7,6 +7,7 @@ param(
     [string[]]$SampleFiles = @(
         ".\XMLSchemas\EDTSchema\Sample-NewEdt.xml",
         ".\XMLSchemas\EDTSchema\Sample-NewEdt-Invalid.xml",
+        ".\XMLSchemas\EDTSchema\Sample-NewEdt-InvalidEnumValues.xml",
         ".\XMLSchemas\EDTSchema\Sample-NewEdt-NoType.xml",
         ".\XMLSchemas\EDTSchema\Sample-NewEdt-UnknownType.xml"
     )
