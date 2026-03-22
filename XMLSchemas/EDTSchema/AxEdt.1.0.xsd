@@ -151,14 +151,14 @@
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="Alignment" type="xs:string" minOccurs="0"/>
       <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
-      <xs:element name="RotateSign" type="xs:string" minOccurs="0"/>
+      <xs:element name="RotateSign" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
       <!-- Elements used only by AxEdtReal -->
       <xs:element name="NoOfDecimals" type="xs:integer" minOccurs="0"/>
       <xs:element name="NoOfDecimalsIsExtensible" type="AxTrueFalseType" minOccurs="0"/>
       <xs:element name="Scale" type="xs:integer" minOccurs="0"/>
-      <xs:element name="FormatMST" type="xs:string" minOccurs="0"/>
-      <xs:element name="AutoInsSeparator" type="xs:string" minOccurs="0"/>
+      <xs:element name="FormatMST" type="AxYesNoType" minOccurs="0"/>
+      <xs:element name="AutoInsSeparator" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="ThousandSeparator" type="xs:string" minOccurs="0"/>
       <xs:element name="DecimalSeparator" type="xs:string" minOccurs="0"/>
     </xs:all>
@@ -216,7 +216,7 @@
       <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
       <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
       <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
-      <xs:element name="RotateSign" type="xs:string" minOccurs="0"/>
+      <xs:element name="RotateSign" type="AxYesNoType" minOccurs="0"/>
       <xs:element name="Tags" type="xs:string" minOccurs="0"/>
       <xs:element name="Direction" type="xs:string" minOccurs="0"/>
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>

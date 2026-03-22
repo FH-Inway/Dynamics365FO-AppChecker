@@ -37,6 +37,9 @@ These are already modeled with `AxBooleanLikeType`. It should be investigated wh
 - `FormatMST`
 - `RotateSign`
 - `AutoInsSeparator`
+- `EnforceHierarchy`
+
+Elements were remodeled to use more specific enum types.
 
 ### Strong Enum Candidates
 Add dedicated simple types for these elements and use them in both schemas.
