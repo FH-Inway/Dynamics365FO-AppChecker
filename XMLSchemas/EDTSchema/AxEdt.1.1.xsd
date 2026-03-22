@@ -47,7 +47,6 @@
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
     <xs:assert
       test="normalize-space(Name) ne ''"
       xerces:message="AxEdt/Name must not be empty or whitespace."/>

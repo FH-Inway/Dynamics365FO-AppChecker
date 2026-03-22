@@ -89,7 +89,6 @@
       <xs:element name="Adjustment" type="AxAdjustmentType" minOccurs="0"/>
       <xs:element name="DataInteractorFactory" type="xs:string" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtEnum">
@@ -116,7 +115,6 @@
       <xs:element name="EnumType" type="xs:string" minOccurs="0"/>
       <xs:element name="Style" type="AxStyleType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtReal">
@@ -151,7 +149,6 @@
       <xs:element name="ThousandSeparator" type="AxThousandSeparatorType" minOccurs="0"/>
       <xs:element name="DecimalSeparator" type="AxDecimalSeparatorType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtInt64">
@@ -180,7 +177,6 @@
       <xs:element name="ControlClass" type="xs:string" minOccurs="0"/>
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtInt">
@@ -210,7 +206,6 @@
       <xs:element name="Direction" type="AxDirectionType" minOccurs="0"/>
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtDate">
@@ -241,7 +236,6 @@
       <!-- Elements used only by AxEdtDate -->
       <xs:element name="DateFormat" type="AxDateFormatType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtUtcDateTime">
@@ -273,7 +267,6 @@
       <!-- Elements used only by AxEdtUtcDateTime -->
       <xs:element name="TimezonePreference" type="AxTimezonePreferenceType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtContainer">
@@ -294,7 +287,6 @@
       <!-- Elements shared by a subset of EDT types -->
       <xs:element name="ButtonImage" type="xs:string" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtGuid">
@@ -315,7 +307,6 @@
       <!-- Elements shared by a subset of EDT types -->
       <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:complexType name="AxEdtTime">
@@ -341,7 +332,6 @@
       <xs:element name="TimeSeparator" type="AxTimeSeparatorType" minOccurs="0"/>
       <xs:element name="TimeFormat" type="AxTimeFormatType" minOccurs="0"/>
     </xs:all>
-    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <xs:element name="AxEdt" type="xs:anyType" abstract="true"/>

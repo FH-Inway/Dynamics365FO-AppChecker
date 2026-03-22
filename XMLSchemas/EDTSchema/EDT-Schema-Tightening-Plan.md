@@ -7,8 +7,11 @@ The goal is to improve schema precision without overfitting the current corpus a
 
 ## Evidence Base
 - Source report: `XMLSchemas/EDTSchema/edt-element-value-summary.txt`
+- Attribute report: `XMLSchemas/EDTSchema/edt-attribute-value-summary.txt`
 - Corpus size analyzed: `23,846` EDTs
-- Summary generation query: `XMLSchemas/EDTSchema/edt-element-value-summary.xq`
+- Summary generation queries:
+  - `XMLSchemas/EDTSchema/edt-element-value-summary.xq`
+  - `XMLSchemas/EDTSchema/edt-attribute-value-summary.xq`
 
 ## Guiding Principles
 1. Restrict low-cardinality closed vocabularies first.
@@ -101,6 +104,8 @@ Restrictions were implemented.
 
 These should not be hard-coded until the full distinct-value set and platform semantics are reviewed.
 
+Restrictions were implemented.
+
 ## Tier 3: Do Not Restrict Yet
 These fields are high-cardinality identifiers, labels, or free-text-like values and should remain `xs:string`.
 
@@ -140,6 +145,17 @@ Create dedicated XQueries that inspect:
 4. repeated structure patterns
 
 Only after that should collection payload schemas be tightened.
+
+## Attribute Usage Findings
+The attribute report shows only `xsi:type` usage in the EDT corpus:
+
+- `AxEdt/@xsi:type`
+- `AxEdtRelation/@xsi:type`
+- `AxEdtTableReference/@xsi:type`
+
+No other attribute patterns were observed in the analyzed EDT XMLs.
+
+As a result, the permissive `xs:anyAttribute` wildcards were removed from the valid EDT type definitions in both schemas. The XSD 1.1 invalid fallback type still accepts arbitrary attributes so it can continue producing diagnostics for malformed inputs.
 
 ## First Tightening Pass
 Apply these changes first in both `AxEdt.1.0.xsd` and `AxEdt.1.1.xsd`.
