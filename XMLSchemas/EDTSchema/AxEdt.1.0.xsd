@@ -62,9 +62,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -101,9 +101,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -127,9 +127,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -161,9 +161,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -189,9 +189,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -218,9 +218,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -248,9 +248,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -279,9 +279,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -299,9 +299,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->
@@ -319,9 +319,9 @@
       <xs:element name="ConfigurationKey" type="xs:string" minOccurs="0"/>
       <xs:element name="CountryRegionCodes" type="xs:string" minOccurs="0"/>
       <xs:element name="HelpText" type="xs:string" minOccurs="0"/>
-      <xs:element name="ArrayElements" type="AxEdtCollectionType"/>
+      <xs:element name="ArrayElements" type="AxEdtArrayElementsType"/>
       <xs:element name="Relations" type="AxEdtCollectionType"/>
-      <xs:element name="TableReferences" type="AxEdtCollectionType"/>
+      <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
       <xs:element name="ReferenceTable" type="xs:string" minOccurs="0"/>
       <xs:element name="IsObsolete" type="AxYesNoType" minOccurs="0"/>
       <!-- Elements shared by a subset of EDT types -->

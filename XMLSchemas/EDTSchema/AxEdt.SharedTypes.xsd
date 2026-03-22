@@ -181,4 +181,64 @@
     </xs:restriction>
   </xs:simpleType>
 
+    <!-- ===== AxEdtTableReference types ===== -->
+
+    <!-- Base type for a table reference entry (RelatedField + Table). -->
+    <xs:complexType name="AxEdtTableReferenceType">
+      <xs:sequence>
+        <xs:element name="RelatedField" type="xs:string"/>
+        <xs:element name="Table" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- Filter variant: extends AxEdtTableReferenceType with an optional Value element.
+         Used via xsi:type="AxEdtTableReferenceFilter" on an AxEdtTableReference element. -->
+    <xs:complexType name="AxEdtTableReferenceFilterType">
+      <xs:complexContent>
+        <xs:extension base="AxEdtTableReferenceType">
+          <xs:sequence>
+            <xs:element name="Value" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Typed collection of AxEdtTableReference entries. -->
+    <xs:complexType name="AxEdtTableReferencesType">
+      <xs:sequence>
+        <xs:element name="AxEdtTableReference" type="AxEdtTableReferenceType"
+                    minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- ===== AxEdtRelation types ===== -->
+    <xs:complexType name="AxEdtRelationsType">
+      <xs:sequence>
+        <xs:sequence>
+          <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+        </xs:sequence>
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- ===== AxEdtArrayElement types ===== -->
+
+    <!-- A single array element within an EDT ArrayElements list. -->
+    <xs:complexType name="AxEdtArrayElementType">
+      <xs:sequence>
+        <xs:element name="Name" type="xs:string"/>
+        <xs:element name="Index" type="xs:positiveInteger"/>
+        <xs:element name="Label" type="xs:string" minOccurs="0"/>
+        <xs:element name="Relations" type="AxEdtRelationsType"/>
+        <xs:element name="TableReferences" type="AxEdtTableReferencesType"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- Typed collection of AxEdtArrayElement entries. -->
+    <xs:complexType name="AxEdtArrayElementsType">
+      <xs:sequence>
+        <xs:element name="AxEdtArrayElement" type="AxEdtArrayElementType"
+                    minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+
 </xs:schema>
