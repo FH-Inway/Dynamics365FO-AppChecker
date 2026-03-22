@@ -110,4 +110,61 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="AxDecimalSeparatorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Comma"/>
+      <xs:enumeration value="Dot"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxDirectionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LTR"/>
+      <xs:enumeration value="RTL"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxSignDisplayType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Parentheses"/>
+      <xs:enumeration value="Prefixed"/>
+      <xs:enumeration value="Suffixed"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxStyleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Combobox"/>
+      <xs:enumeration value="Radiobutton"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxThousandSeparatorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Comma"/>
+      <xs:enumeration value="Dot"/>
+      <xs:enumeration value="Space"/>
+      <xs:enumeration value="Apostrophe"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxTimeFormatType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Hour24"/>
+      <xs:enumeration value="AMPM"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AxTimeSeparatorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Colon"/>
+      <xs:enumeration value="Dot"/>
+      <xs:enumeration value="Space"/>
+      <xs:enumeration value="Comma"/>
+      <xs:enumeration value="Slash"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>

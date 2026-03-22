@@ -65,7 +65,7 @@
           <xs:element name="CollectionLabel" type="xs:string" minOccurs="0"/>
           <xs:element name="PresenceIndicatorAllowed" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
-          <xs:element name="Direction" type="xs:string" minOccurs="0"/>
+          <xs:element name="Direction" type="AxDirectionType" minOccurs="0"/>
           <xs:element name="PresenceMethod" type="xs:string" minOccurs="0"/>
           <xs:element name="PresenceClass" type="xs:string" minOccurs="0"/>
           <xs:element name="ControlClass" type="xs:string" minOccurs="0"/>
@@ -90,7 +90,7 @@
           <xs:element name="CollectionLabel" type="xs:string" minOccurs="0"/>
           <xs:element name="PresenceIndicatorAllowed" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="EnumType" type="xs:string" minOccurs="0"/>
-          <xs:element name="Style" type="xs:string" minOccurs="0"/>
+          <xs:element name="Style" type="AxStyleType" minOccurs="0"/>
         </xs:all>
       </xs:extension>
     </xs:complexContent>
@@ -104,7 +104,7 @@
           <xs:element name="ShowZero" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
-          <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
+          <xs:element name="SignDisplay" type="AxSignDisplayType" minOccurs="0"/>
           <xs:element name="RotateSign" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
           <xs:element name="NoOfDecimals" type="xs:integer" minOccurs="0"/>
@@ -112,8 +112,8 @@
           <xs:element name="Scale" type="xs:integer" minOccurs="0"/>
           <xs:element name="FormatMST" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="AutoInsSeparator" type="AxYesNoType" minOccurs="0"/>
-          <xs:element name="ThousandSeparator" type="xs:string" minOccurs="0"/>
-          <xs:element name="DecimalSeparator" type="xs:string" minOccurs="0"/>
+          <xs:element name="ThousandSeparator" type="AxThousandSeparatorType" minOccurs="0"/>
+          <xs:element name="DecimalSeparator" type="AxDecimalSeparatorType" minOccurs="0"/>
         </xs:all>
       </xs:extension>
     </xs:complexContent>
@@ -144,12 +144,12 @@
           <xs:element name="AllowNegative" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="ShowZero" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="Alignment" type="AxAlignmentType" minOccurs="0"/>
-          <xs:element name="SignDisplay" type="xs:string" minOccurs="0"/>
+          <xs:element name="SignDisplay" type="AxSignDisplayType" minOccurs="0"/>
           <xs:element name="FormHelp" type="xs:string" minOccurs="0"/>
           <xs:element name="DisplaceNegative" type="xs:string" minOccurs="0"/>
           <xs:element name="RotateSign" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="Tags" type="xs:string" minOccurs="0"/>
-          <xs:element name="Direction" type="xs:string" minOccurs="0"/>
+          <xs:element name="Direction" type="AxDirectionType" minOccurs="0"/>
           <xs:element name="EnforceHierarchy" type="AxYesNoType" minOccurs="0"/>
         </xs:all>
       </xs:extension>
@@ -222,8 +222,8 @@
           <xs:element name="TimeSeconds" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="TimeHours" type="AxYesNoType" minOccurs="0"/>
           <xs:element name="TimeMinute" type="AxYesNoType" minOccurs="0"/>
-          <xs:element name="TimeSeparator" type="xs:string" minOccurs="0"/>
-          <xs:element name="TimeFormat" type="xs:string" minOccurs="0"/>
+          <xs:element name="TimeSeparator" type="AxTimeSeparatorType" minOccurs="0"/>
+          <xs:element name="TimeFormat" type="AxTimeFormatType" minOccurs="0"/>
         </xs:all>
       </xs:extension>
     </xs:complexContent>

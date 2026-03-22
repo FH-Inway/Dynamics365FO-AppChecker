@@ -52,12 +52,12 @@ Add dedicated simple types for these elements and use them in both schemas.
 - `DateSeparator`: `Slash_Slash`, `Slash_Dash`, `Slash_Dot`, `Slash_Space`, `Slash_None`, `Dash_Slash`, `Dash_Dash`, `Dash_Dot`, `Dash_Space`, `Dash_None`, `Dot_Slash`, `Dot_Dash`, `Dot_Dot`, `Dot_Space`, `Dot_None`, `Space_Slash`, `Space_Dash`, `Space_Dot`, `Space_Space`, `Space_None`, `None_Slash`, `None_Dash`, `None_Dot`, `None_Space`, `None_None`, `ChineseFormal`
 - `DateYear`: `Digits2`, `Digits4`, `None`
 - `DecimalSeparator`: `Comma`, `Dot`
-- `Direction`: `LTR`
-- `SignDisplay`: `None`, `Parentheses`, `Prefixed`
+- `Direction`: `LTR`, `RTL`
+- `SignDisplay`: `None`, `Parentheses`, `Prefixed`, `Suffixed`
 - `Style`: `Combobox`, `Radiobutton`
-- `ThousandSeparator`: `None`
-- `TimeFormat`: `Hour24`
-- `TimeSeparator`: `Colon`
+- `ThousandSeparator`: `None`, `Comma`, `Dot`, `Space`, `Apostrophe`
+- `TimeFormat`: `Hour24`, `AMPM`
+- `TimeSeparator`: `Colon`, `Dot`, `Space`, `Comma`, `Slash`
 
 ### Recommended Shared Types
 - `AxAlignmentType`
