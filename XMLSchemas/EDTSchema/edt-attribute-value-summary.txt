@@ -1,0 +1,19 @@
+﻿CHECKED_EDTS=23846
+DETAIL_THRESHOLD=10
+ATTRIBUTE_GROUPS_FOUND=3
+ATTRIBUTE_VALUE_SUMMARY
+ATTRIBUTE={http://www.w3.org/2001/XMLSchema-instance}type | PARENT=AxEdtRelation | OCCURRENCES=220 | DISTINCT_VALUES=1
+  VALUE=AxEdtRelationFixed | COUNT=220 | SAMPLE_EDT=DEL_DimensionExtCodeId
+ATTRIBUTE={http://www.w3.org/2001/XMLSchema-instance}type | PARENT=AxEdtTableReference | OCCURRENCES=135 | DISTINCT_VALUES=1
+  VALUE=AxEdtTableReferenceFilter | COUNT=135 | SAMPLE_EDT=LanguageId
+ATTRIBUTE={http://www.w3.org/2001/XMLSchema-instance}type | PARENT=AxEdt | OCCURRENCES=23846 | DISTINCT_VALUES=10
+  VALUE=AxEdtContainer | COUNT=188 | SAMPLE_EDT=QMSRoundsToSkip
+  VALUE=AxEdtDate | COUNT=943 | SAMPLE_EDT=QMSApprovedCustomerExpirationDate
+  VALUE=AxEdtEnum | COUNT=4510 | SAMPLE_EDT=QMSActivateSignature
+  VALUE=AxEdtGuid | COUNT=130 | SAMPLE_EDT=AppCopilotAgentTaskConversationId
+  VALUE=AxEdtInt | COUNT=2082 | SAMPLE_EDT=VendInvoiceAttachmentCount
+  VALUE=AxEdtInt64 | COUNT=2512 | SAMPLE_EDT=QMSApprovedCustomerListRecId
+  VALUE=AxEdtReal | COUNT=3075 | SAMPLE_EDT=QMSAQLOriginalLotQty
+  VALUE=AxEdtString | COUNT=9750 | SAMPLE_EDT=QMSApprovedCustomerGroupId
+  VALUE=AxEdtTime | COUNT=109 | SAMPLE_EDT=WorkflowConfigDateStartTime
+  VALUE=AxEdtUtcDateTime | COUNT=547 | SAMPLE_EDT=QMSSampleRegisteredDateTime
