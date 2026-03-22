@@ -1,165 +1,166 @@
-CHECKED_EDTS=23846
+﻿CHECKED_EDTS=23846
 DETAIL_THRESHOLD=10
 ELEMENTS_FOUND=56
 ELEMENT_VALUE_SUMMARY
 ELEMENT=Adjustment | OCCURRENCES=5 | DISTINCT_VALUES=1
-  VALUE=Right | COUNT=5
+  VALUE=Right | COUNT=5 | SAMPLE_EDT=AmountString
 ELEMENT=Alignment | OCCURRENCES=66 | DISTINCT_VALUES=3
-  VALUE=Center | COUNT=1
-  VALUE=Left | COUNT=17
-  VALUE=Right | COUNT=48
+  VALUE=Center | COUNT=1 | SAMPLE_EDT=EntAssetChecklistStatus
+  VALUE=Left | COUNT=17 | SAMPLE_EDT=QMSUsage
+  VALUE=Right | COUNT=48 | SAMPLE_EDT=QMSCreationDate
 ELEMENT=AllowNegative | OCCURRENCES=1265 | DISTINCT_VALUES=2
-  VALUE=No | COUNT=971
-  VALUE=Yes | COUNT=294
+  VALUE=No | COUNT=971 | SAMPLE_EDT=QMSAQLDefectAcceptanceNumber
+  VALUE=Yes | COUNT=294 | SAMPLE_EDT=QMSPdsImpactedCWQty
 ELEMENT=ArrayElements | OCCURRENCES=23846 | DISTINCT_VALUES=80
-  MIN=1 2 @SYS24273 2 3 @SYS24274 3 4 @SYS24275 4 5 @SYS24276 5 6 @SYS24277 6 7 @SYS24278 7 8 @SYS24279 8 9 @SYS24280 9 10 @SYS24281 | MAX=_2 2 @SYS24274 _3 3 @SYS24275 _4 4 @SYS24276 _5 5 @SYS24277 _6 6 @SYS24278 _7 7 @SYS24279 _8 8 @SYS24280 _9 9 @SYS24281 _10 10 @SYS94673 _11 11 @SYS94674 _12 12 @SYS94675 _13 13 @SYS315594 _14 14 @SYS315595 _15 15 @SYS315596 _16 16 @SYS315597 _17 17 @SYS315598 _18 18 @SYS315599 _19 19 @SYS315600 _20 20 @SYS96312 _21 21 @SYS315601 _22 22 @SYS315602 _23 23 @SYS315603 _24 24 @SYS315605 _25 25 @SYS315606
+  MIN=1 2 @SYS24273 2 3 @SYS24274 3 4 @SYS24275 4 5 @SYS24276 5 6 @SYS24277 6 7 @SYS24278 7 8 @SYS24279 8 9 @SYS24280 9 10 @SYS24281 | MIN_SAMPLE_EDT=FinancialDim_RU | MAX=_2 2 @SYS24274 _3 3 @SYS24275 _4 4 @SYS24276 _5 5 @SYS24277 _6 6 @SYS24278 _7 7 @SYS24279 _8 8 @SYS24280 _9 9 @SYS24281 _10 10 @SYS94673 _11 11 @SYS94674 _12 12 @SYS94675 _13 13 @SYS315594 _14 14 @SYS315595 _15 15 @SYS315596 _16 16 @SYS315597 _17 17 @SYS315598 _18 18 @SYS315599 _19 19 @SYS315600 _20 20 @SYS96312 _21 21 @SYS315601 _22 22 @SYS315602 _23 23 @SYS315603 _24 24 @SYS315605 _25 25 @SYS315606 | MAX_SAMPLE_EDT=EntAssetAttributeValueArray
 ELEMENT=AutoInsSeparator | OCCURRENCES=4 | DISTINCT_VALUES=1
-  VALUE=No | COUNT=4
+  VALUE=No | COUNT=4 | SAMPLE_EDT=RealBase
 ELEMENT=ButtonImage | OCCURRENCES=1220 | DISTINCT_VALUES=7
-  VALUE=Calendar | COUNT=1113
-  VALUE=Mail | COUNT=8
-  VALUE=OpenFile | COUNT=39
-  VALUE=Phone | COUNT=15
-  VALUE=RightArrow | COUNT=1
-  VALUE=ThreeDots | COUNT=23
-  VALUE=URL | COUNT=21
+  VALUE=Calendar | COUNT=1113 | SAMPLE_EDT=QMSApprovedCustomerExpirationDate
+  VALUE=Mail | COUNT=8 | SAMPLE_EDT=Email
+  VALUE=OpenFile | COUNT=39 | SAMPLE_EDT=DMFLocalFilePath
+  VALUE=Phone | COUNT=15 | SAMPLE_EDT=Pager
+  VALUE=RightArrow | COUNT=1 | SAMPLE_EDT=PrintMgmtSetupDestinationDesc
+  VALUE=ThreeDots | COUNT=23 | SAMPLE_EDT=BIDateDimensionLabel
+  VALUE=URL | COUNT=21 | SAMPLE_EDT=SysWindowsAzureEndpoint
 ELEMENT=ChangeCase | OCCURRENCES=574 | DISTINCT_VALUES=3
-  VALUE=LowerCase | COUNT=1
-  VALUE=None | COUNT=558
-  VALUE=UpperCase | COUNT=15
+  VALUE=LowerCase | COUNT=1 | SAMPLE_EDT=DMFDefaultExtension
+  VALUE=None | COUNT=558 | SAMPLE_EDT=QMSBatchProdId
+  VALUE=UpperCase | COUNT=15 | SAMPLE_EDT=QMSSIGPrintedName
 ELEMENT=CollectionLabel | OCCURRENCES=31 | DISTINCT_VALUES=25
-  MIN=@Budget:AlternateLayoutDisplayName | MAX=RU
+  MIN=@Budget:AlternateLayoutDisplayName | MIN_SAMPLE_EDT=BudgetPlanAlternateLayoutRecId | MAX=RU | MAX_SAMPLE_EDT=RetailItemQtyFilter
 ELEMENT=ConfigurationKey | OCCURRENCES=11481 | DISTINCT_VALUES=237
-  MIN=ASOHOrderHold | MAX=smmSMSalesProcess
+  MIN=ASOHOrderHold | MIN_SAMPLE_EDT=ASOHDefaultField | MAX=smmSMSalesProcess | MAX_SAMPLE_EDT=smmOpportunitySalesProcess
 ELEMENT=ControlClass | OCCURRENCES=3 | DISTINCT_VALUES=3
-  VALUE=DimensionEntryControl | COUNT=1
-  VALUE=HyperLinkControl | COUNT=1
-  VALUE=SegmentedEntryControl | COUNT=1
+  VALUE=DimensionEntryControl | COUNT=1 | SAMPLE_EDT=DimensionDefault
+  VALUE=HyperLinkControl | COUNT=1 | SAMPLE_EDT=SysOpSampleHyperlinkControlEDT
+  VALUE=SegmentedEntryControl | COUNT=1 | SAMPLE_EDT=LedgerDimensionBase
 ELEMENT=CountryRegionCodes | OCCURRENCES=3562 | DISTINCT_VALUES=100
-  MIN=AE | MAX=WHSandTMS
+  MIN=AE | MIN_SAMPLE_EDT=DeclarantName_AE | MAX=WHSandTMS | MAX_SAMPLE_EDT=WHSEWShipmentOrderRequestId
 ELEMENT=DataInteractorFactory | OCCURRENCES=4 | DISTINCT_VALUES=4
-  VALUE=AssetDataInteractorFactory | COUNT=1
-  VALUE=CaseAssociationLinkDataInteractorFactory | COUNT=1
-  VALUE=CustomerDataInteractorFactory | COUNT=1
-  VALUE=VendorDataInteractorFactory | COUNT=1
+  VALUE=AssetDataInteractorFactory | COUNT=1 | SAMPLE_EDT=AssetId
+  VALUE=CaseAssociationLinkDataInteractorFactory | COUNT=1 | SAMPLE_EDT=CaseAssociationLinkId
+  VALUE=CustomerDataInteractorFactory | COUNT=1 | SAMPLE_EDT=CustAccount
+  VALUE=VendorDataInteractorFactory | COUNT=1 | SAMPLE_EDT=VendAccount
 ELEMENT=DatabaseStringSize | OCCURRENCES=12 | DISTINCT_VALUES=3
-  VALUE=10 | COUNT=1
-  VALUE=20 | COUNT=1
-  VALUE=100 | COUNT=10
+  VALUE=10 | COUNT=1 | SAMPLE_EDT=GUPDiscountVendorClaimFeeId
+  VALUE=20 | COUNT=1 | SAMPLE_EDT=ProjSubConIdBase
+  VALUE=100 | COUNT=10 | SAMPLE_EDT=DocumentNum
 ELEMENT=DateDay | OCCURRENCES=19 | DISTINCT_VALUES=2
-  VALUE=Digits2 | COUNT=2
-  VALUE=None | COUNT=17
+  VALUE=Digits2 | COUNT=2 | SAMPLE_EDT=dateDDMMYYYY
+  VALUE=None | COUNT=17 | SAMPLE_EDT=ACOCostMonthClosingDate_BR
 ELEMENT=DateFormat | OCCURRENCES=1 | DISTINCT_VALUES=1
-  VALUE=DMY | COUNT=1
+  VALUE=DMY | COUNT=1 | SAMPLE_EDT=dateDDMMYYYY
 ELEMENT=DateMonth | OCCURRENCES=10 | DISTINCT_VALUES=3
-  VALUE=Digits2 | COUNT=4
-  VALUE=Long | COUNT=1
-  VALUE=None | COUNT=5
+  VALUE=Digits2 | COUNT=4 | SAMPLE_EDT=dateDDMMYYYY
+  VALUE=Long | COUNT=1 | SAMPLE_EDT=TransDate_CN
+  VALUE=None | COUNT=5 | SAMPLE_EDT=RAssetYear
 ELEMENT=DateSeparator | OCCURRENCES=6 | DISTINCT_VALUES=3
-  VALUE=Dash_None | COUNT=1
-  VALUE=Dot_None | COUNT=1
-  VALUE=None_None | COUNT=4
+  VALUE=Dash_None | COUNT=1 | SAMPLE_EDT=FiscalDocumentDateTime_BR
+  VALUE=Dot_None | COUNT=1 | SAMPLE_EDT=TransDate_CN
+  VALUE=None_None | COUNT=4 | SAMPLE_EDT=dateDDMMYYYY
 ELEMENT=DateYear | OCCURRENCES=36 | DISTINCT_VALUES=2
-  VALUE=Digits4 | COUNT=30
-  VALUE=None | COUNT=6
+  VALUE=Digits4 | COUNT=30 | SAMPLE_EDT=EndDate
+  VALUE=None | COUNT=6 | SAMPLE_EDT=HcmPositionForecastBasisDate
 ELEMENT=DecimalSeparator | OCCURRENCES=2 | DISTINCT_VALUES=2
-  VALUE=Comma | COUNT=1
-  VALUE=Dot | COUNT=1
+  VALUE=Comma | COUNT=1 | SAMPLE_EDT=TaxAmountBE
+  VALUE=Dot | COUNT=1 | SAMPLE_EDT=MCRCustMaxCheckAmount
 ELEMENT=Direction | OCCURRENCES=5 | DISTINCT_VALUES=1
-  VALUE=LTR | COUNT=5
+  VALUE=LTR | COUNT=5 | SAMPLE_EDT=Phone
 ELEMENT=DisplaceNegative | OCCURRENCES=10 | DISTINCT_VALUES=2
-  VALUE=0 | COUNT=7
-  VALUE=10 | COUNT=3
+  VALUE=0 | COUNT=7 | SAMPLE_EDT=DummyStr2Int
+  VALUE=10 | COUNT=3 | SAMPLE_EDT=AmountMSTDebCred
 ELEMENT=DisplayHeight | OCCURRENCES=86 | DISTINCT_VALUES=11
-  MIN=0 | MAX=20
+  MIN=0 | MIN_SAMPLE_EDT=UserGroupId | MAX=20 | MAX_SAMPLE_EDT=EntAssetTimelineDetails
 ELEMENT=DisplayLength | OCCURRENCES=826 | DISTINCT_VALUES=46
-  MIN=0 | MAX=255
+  MIN=0 | MIN_SAMPLE_EDT=NoYesId | MAX=255 | MAX_SAMPLE_EDT=SysSecObjectDescription
 ELEMENT=EnforceHierarchy | OCCURRENCES=22 | DISTINCT_VALUES=1
-  VALUE=Yes | COUNT=22
+  VALUE=Yes | COUNT=22 | SAMPLE_EDT=WHSCoordinate
 ELEMENT=EnumType | OCCURRENCES=4508 | DISTINCT_VALUES=578
-  MIN=ABCModel | MAX=smmTransLogUpdateAction
+  MIN=ABCModel | MIN_SAMPLE_EDT=ABCModelType | MAX=smmTransLogUpdateAction | MAX_SAMPLE_EDT=smmTransLogUpdate
 ELEMENT=Extends | OCCURRENCES=11994 | DISTINCT_VALUES=1452
-  MIN=AccountNum | MAX=str60
+  MIN=AccountNum | MIN_SAMPLE_EDT=LedgerAccount | MAX=str60 | MAX_SAMPLE_EDT=IntegrationName
 ELEMENT=FormHelp | OCCURRENCES=224 | DISTINCT_VALUES=169
-  MIN=AssetLookup | MAX=vendaccountItemLookup
+  MIN=AssetLookup | MIN_SAMPLE_EDT=AssetIdOpen | MAX=vendaccountItemLookup | MAX_SAMPLE_EDT=ItemPrimaryVendId
 ELEMENT=FormatMST | OCCURRENCES=7 | DISTINCT_VALUES=2
-  VALUE=No | COUNT=1
-  VALUE=Yes | COUNT=6
+  VALUE=No | COUNT=1 | SAMPLE_EDT=PaymentProcessProgress
+  VALUE=Yes | COUNT=6 | SAMPLE_EDT=CostAmountNonMonetary
 ELEMENT=HelpText | OCCURRENCES=2501 | DISTINCT_VALUES=2378
-  MIN=@AccountsPayable:AllowedTaxInvoicePostingPeriodHelpText | MAX=WHSInventoryUpdateLogUpdateReferenceIdHelp     
+  MIN=@AccountsPayable:AllowedTaxInvoicePostingPeriodHelpText | MIN_SAMPLE_EDT=AllowedTaxInvoicePostingPeriod_TH | MAX=WHSInventoryUpdateLogUpdateReferenceIdHelp | MAX_SAMPLE_EDT=WHSInventoryUpdateLogUpdateReferenceId
 ELEMENT=IsObsolete | OCCURRENCES=153 | DISTINCT_VALUES=1
-  VALUE=Yes | COUNT=153
+  VALUE=Yes | COUNT=153 | SAMPLE_EDT=HomepageSiteId
 ELEMENT=Label | OCCURRENCES=21028 | DISTINCT_VALUES=17412
-  MIN=20 | MAX=an url
+  MIN=20 | MIN_SAMPLE_EDT=HrmBirthdayAge | MAX=an url | MAX_SAMPLE_EDT=URLTest
 ELEMENT=MaxDateLabel | OCCURRENCES=15 | DISTINCT_VALUES=5
-  VALUE=@FinancialReporting:ExpireNever | COUNT=1
-  VALUE=@HCM:MaxDateNever | COUNT=11
-  VALUE=@SubBill:MaxDateNever | COUNT=1
-  VALUE=Never | COUNT=1
-  VALUE=Object still in service | COUNT=1
+  VALUE=@FinancialReporting:ExpireNever | COUNT=1 | SAMPLE_EDT=FinancialReportExpirationDate
+  VALUE=@HCM:MaxDateNever | COUNT=11 | SAMPLE_EDT=HcmPositionRetirementDateTime
+  VALUE=@SubBill:MaxDateNever | COUNT=1 | SAMPLE_EDT=SubBillEscalationEndDate
+  VALUE=Never | COUNT=1 | SAMPLE_EDT=JournalizingDefinitionValidToDate
+  VALUE=Object still in service | COUNT=1 | SAMPLE_EDT=EntAssetActiveTo
 ELEMENT=Name | OCCURRENCES=23846 | DISTINCT_VALUES=23846
-  MIN=ABCModelType | MAX=sysExtModelElementName
+  MIN=ABCModelType | MIN_SAMPLE_EDT=ABCModelType | MAX=sysExtModelElementName | MAX_SAMPLE_EDT=sysExtModelElementName
 ELEMENT=NoOfDecimals | OCCURRENCES=214 | DISTINCT_VALUES=11
-  MIN=0 | MAX=12
+  MIN=0 | MIN_SAMPLE_EDT=QMSPdsImpactedCWQty | MAX=12 | MAX_SAMPLE_EDT=AssetIntercompanyTransferPercent
 ELEMENT=NoOfDecimalsIsExtensible | OCCURRENCES=70 | DISTINCT_VALUES=1
-  VALUE=true | COUNT=70
+  VALUE=true | COUNT=70 | SAMPLE_EDT=ProductQuantity
 ELEMENT=PresenceClass | OCCURRENCES=12 | DISTINCT_VALUES=3
-  VALUE=DirPresenceInfo | COUNT=6
-  VALUE=DirPresenceInfoEx | COUNT=5
-  VALUE=DirPresenceInfo_Hcm | COUNT=1
+  VALUE=DirPresenceInfo | COUNT=6 | SAMPLE_EDT=SalesPerson
+  VALUE=DirPresenceInfoEx | COUNT=5 | SAMPLE_EDT=ProjWorkerResourceRecId
+  VALUE=DirPresenceInfo_Hcm | COUNT=1 | SAMPLE_EDT=HcmWorkerRecId
 ELEMENT=PresenceIndicatorAllowed | OCCURRENCES=9 | DISTINCT_VALUES=1
-  VALUE=No | COUNT=9
+  VALUE=No | COUNT=9 | SAMPLE_EDT=DocuPath
 ELEMENT=PresenceMethod | OCCURRENCES=14 | DISTINCT_VALUES=5
-  VALUE=RefRecId | COUNT=1
-  VALUE=The name of the wish list | COUNT=1
-  VALUE=contactPersonInfo | COUNT=1
-  VALUE=partyInfo | COUNT=6
-  VALUE=workerInfo | COUNT=5
+  VALUE=RefRecId | COUNT=1 | SAMPLE_EDT=QueueWorkflowWorkitemRef
+  VALUE=The name of the wish list | COUNT=1 | SAMPLE_EDT=WishListName
+  VALUE=contactPersonInfo | COUNT=1 | SAMPLE_EDT=smmContactPersonId
+  VALUE=partyInfo | COUNT=6 | SAMPLE_EDT=SalesPerson
+  VALUE=workerInfo | COUNT=5 | SAMPLE_EDT=ProjWorkerResourceRecId
 ELEMENT=ReferenceTable | OCCURRENCES=2171 | DISTINCT_VALUES=1736
-  MIN=AX6_89577_Table | MAX=smmResponsibilityGroup
+  MIN=AX6_89577_Table | MIN_SAMPLE_EDT=AX6_89577_String | MAX=smmResponsibilityGroup | MAX_SAMPLE_EDT=smmResponsibilityId
 ELEMENT=Relations | OCCURRENCES=23846 | DISTINCT_VALUES=991
-  MIN=AccessorialMasterCode TMSAccessorialMaster | MAX=workShiftId RetailWorkShiftSetup
+  MIN=AccessorialMasterCode TMSAccessorialMaster | MIN_SAMPLE_EDT=TMSAccessorialMasterCode | MAX=workShiftId RetailWorkShiftSetup | MAX_SAMPLE_EDT=RetailWorkShiftId
 ELEMENT=RotateSign | OCCURRENCES=11 | DISTINCT_VALUES=1
-  VALUE=No | COUNT=11
+  VALUE=No | COUNT=11 | SAMPLE_EDT=DummyStr2Int
 ELEMENT=Scale | OCCURRENCES=23 | DISTINCT_VALUES=5
-  VALUE=2 | COUNT=4
-  VALUE=10 | COUNT=3
-  VALUE=12 | COUNT=2
-  VALUE=15 | COUNT=1
-  VALUE=16 | COUNT=13
+  VALUE=2 | COUNT=4 | SAMPLE_EDT=ReqPlanningPriority
+  VALUE=10 | COUNT=3 | SAMPLE_EDT=BenefitPayFrequencyConvFactor
+  VALUE=12 | COUNT=2 | SAMPLE_EDT=WeightBase
+  VALUE=15 | COUNT=1 | SAMPLE_EDT=ProjRetainedPercent
+  VALUE=16 | COUNT=13 | SAMPLE_EDT=LineNum
 ELEMENT=ShowZero | OCCURRENCES=456 | DISTINCT_VALUES=2
-  VALUE=No | COUNT=358
-  VALUE=Yes | COUNT=98
+  VALUE=No | COUNT=358 | SAMPLE_EDT=QMSAQLDefectAcceptanceNumber
+  VALUE=Yes | COUNT=98 | SAMPLE_EDT=DraPageSettingCacheExpiresInMinutes
 ELEMENT=SignDisplay | OCCURRENCES=42 | DISTINCT_VALUES=3
-  VALUE=None | COUNT=39
-  VALUE=Parentheses | COUNT=1
-  VALUE=Prefixed | COUNT=2
+  VALUE=None | COUNT=39 | SAMPLE_EDT=QMSLabelLength
+  VALUE=Parentheses | COUNT=1 | SAMPLE_EDT=AssetImpairmentAmount_JP
+  VALUE=Prefixed | COUNT=2 | SAMPLE_EDT=BudgetPlanColumnPeriodLengthYearOffset
 ELEMENT=StringSize | OCCURRENCES=4635 | DISTINCT_VALUES=128
-  MIN=-1 | MAX=32767
+  MIN=-1 | MIN_SAMPLE_EDT=QMSCAPAEmailFooter | MAX=32767 | MAX_SAMPLE_EDT=SysLookupMultiSelectValues
 ELEMENT=StringSizeIsExtensible | OCCURRENCES=111 | DISTINCT_VALUES=2
-  VALUE=No | COUNT=95
-  VALUE=Yes | COUNT=16
+  VALUE=No | COUNT=95 | SAMPLE_EDT=QMSApprovedCustomerGroupId
+  VALUE=Yes | COUNT=16 | SAMPLE_EDT=QMSSigner
 ELEMENT=Style | OCCURRENCES=13 | DISTINCT_VALUES=2
-  VALUE=Combobox | COUNT=9
-  VALUE=Radiobutton | COUNT=4
+  VALUE=Combobox | COUNT=9 | SAMPLE_EDT=BudgetSourceCheckResult
+  VALUE=Radiobutton | COUNT=4 | SAMPLE_EDT=BudgetActualsBalancesBalanceType
 ELEMENT=TableReferences | OCCURRENCES=23846 | DISTINCT_VALUES=1210
-  MIN=AccessPolicyId WhsWorkUserAccessPolicy | MAX=wMSPalletId WMSPallet
+  MIN=AccessPolicyId WhsWorkUserAccessPolicy | MIN_SAMPLE_EDT=WhsWorkUserAccessPolicyId | MAX=wMSPalletId WMSPallet | MAX_SAMPLE_EDT=WMSPalletId
 ELEMENT=Tags | OCCURRENCES=25 | DISTINCT_VALUES=1
-  VALUE=PostR1AXLTODO | COUNT=25
+  VALUE=PostR1AXLTODO | COUNT=25 | SAMPLE_EDT=MemberOfCustomsUnion_RU
 ELEMENT=ThousandSeparator | OCCURRENCES=3 | DISTINCT_VALUES=1
-  VALUE=None | COUNT=3
+  VALUE=None | COUNT=3 | SAMPLE_EDT=ReportMargin
 ELEMENT=TimeFormat | OCCURRENCES=6 | DISTINCT_VALUES=1
-  VALUE=Hour24 | COUNT=6
+  VALUE=Hour24 | COUNT=6 | SAMPLE_EDT=TimeHour24
 ELEMENT=TimeHours | OCCURRENCES=22 | DISTINCT_VALUES=2
-  VALUE=No | COUNT=15
-  VALUE=Yes | COUNT=7
+  VALUE=No | COUNT=15 | SAMPLE_EDT=DocumentFileReceiveDate
+  VALUE=Yes | COUNT=7 | SAMPLE_EDT=BatchJobActivePeriodFromTime
 ELEMENT=TimeMinute | OCCURRENCES=22 | DISTINCT_VALUES=2
-  VALUE=No | COUNT=15
-  VALUE=Yes | COUNT=7
+  VALUE=No | COUNT=15 | SAMPLE_EDT=DocumentFileReceiveDate
+  VALUE=Yes | COUNT=7 | SAMPLE_EDT=BatchJobActivePeriodFromTime
 ELEMENT=TimeSeconds | OCCURRENCES=52 | DISTINCT_VALUES=2
-  VALUE=No | COUNT=45
-  VALUE=Yes | COUNT=7
+  VALUE=No | COUNT=45 | SAMPLE_EDT=DocumentFileReceiveDate
+  VALUE=Yes | COUNT=7 | SAMPLE_EDT=BatchJobActivePeriodFromTime
 ELEMENT=TimeSeparator | OCCURRENCES=11 | DISTINCT_VALUES=1
-  VALUE=Colon | COUNT=11
+  VALUE=Colon | COUNT=11 | SAMPLE_EDT=FromTime
 ELEMENT=TimezonePreference | OCCURRENCES=9 | DISTINCT_VALUES=2
-  VALUE=NoConversion | COUNT=6
+  VALUE=NoConversion | COUNT=6 | SAMPLE_EDT=CashRegisterDateTime_W
+  VALUE=User | COUNT=3 | SAMPLE_EDT=SIGExpiryDateTime
