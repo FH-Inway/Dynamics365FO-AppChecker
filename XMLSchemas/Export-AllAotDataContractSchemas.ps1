@@ -116,6 +116,118 @@ function Save-SchemaDocument {
     [System.IO.File]::WriteAllBytes($Path, $ms.ToArray())
 }
 
+function Get-TypeOutputFilePath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [Type]$Type,
+        [Parameter(Mandatory = $true)]
+        [string]$BaseFolder
+    )
+
+    $fullNameBytes = [System.Text.Encoding]::UTF8.GetBytes($Type.FullName)
+    $hashBytes = [System.Security.Cryptography.MD5]::Create().ComputeHash($fullNameBytes)
+    $hash = ([System.BitConverter]::ToString($hashBytes)).Replace("-", "").Substring(0, 8).ToLowerInvariant()
+    $fileName = "{0}-{1}-DataContract.xsd" -f $Type.Name, $hash
+    return (Join-Path $BaseFolder $fileName)
+}
+
+function Invoke-TypeExport {
+    param(
+        [Parameter(Mandatory = $true)]
+        [Type]$Type,
+        [Parameter(Mandatory = $true)]
+        [string]$BaseFolder,
+        [switch]$RawOutput,
+        [switch]$SkipCanExportCheck,
+        [string]$WarningPrefix = ""
+    )
+
+    $warningLabel = if ([string]::IsNullOrWhiteSpace($WarningPrefix)) { "" } else { "$WarningPrefix " }
+    $exporter = New-Object System.Runtime.Serialization.XsdDataContractExporter
+
+    if (-not $SkipCanExportCheck) {
+        $canExport = $false
+        try {
+            $canExport = $exporter.CanExport($Type)
+        } catch {
+            $reason = "CanExport error: $($_.Exception.Message)"
+            Write-Warning "$($warningLabel)CanExport failed for type $($Type.FullName): $($_.Exception.Message)"
+            return [PSCustomObject]@{
+                Success = $false
+                Type = $Type.Name
+                FullName = $Type.FullName
+                Reason = $reason
+                File = $null
+            }
+        }
+
+        if (-not $canExport) {
+            $reason = "CanExport returned false"
+            Write-Warning "$($warningLabel)Cannot export type: $($Type.FullName)"
+            return [PSCustomObject]@{
+                Success = $false
+                Type = $Type.Name
+                FullName = $Type.FullName
+                Reason = $reason
+                File = $null
+            }
+        }
+    }
+
+    try {
+        $exporter.Export($Type)
+    } catch {
+        $reason = "Export error: $($_.Exception.Message)"
+        Write-Warning "$($warningLabel)Export failed for type $($Type.FullName): $($_.Exception.Message)"
+        return [PSCustomObject]@{
+            Success = $false
+            Type = $Type.Name
+            FullName = $Type.FullName
+            Reason = $reason
+            File = $null
+        }
+    }
+
+    $mainSchema = $exporter.Schemas.Schemas() |
+        Where-Object {
+            $_.TargetNamespace -ne "http://schemas.microsoft.com/2003/10/Serialization/" -and
+            $_.TargetNamespace -ne "http://www.w3.org/2001/XMLSchema"
+        } |
+        Select-Object -First 1
+
+    if (-not $mainSchema) {
+        $reason = "No non-WCF schema returned by exporter"
+        Write-Warning "$($warningLabel)No main schema produced for type: $($Type.FullName)"
+        return [PSCustomObject]@{
+            Success = $false
+            Type = $Type.Name
+            FullName = $Type.FullName
+            Reason = $reason
+            File = $null
+        }
+    }
+
+    $sw = New-Object System.IO.StringWriter
+    $mainSchema.Write($sw)
+    [string]$xsd = $sw.ToString()
+
+    $outputFile = Get-TypeOutputFilePath -Type $Type -BaseFolder $BaseFolder
+    if ($RawOutput) {
+        [System.IO.File]::WriteAllText($outputFile, $xsd, [System.Text.Encoding]::Unicode)
+    } else {
+        $cleanDoc = ConvertTo-CleanSchemaDocument -SchemaXml $xsd
+        Save-SchemaDocument -SchemaDocument $cleanDoc -Path $outputFile
+    }
+
+    return [PSCustomObject]@{
+        Success = $true
+        Type = $Type.Name
+        FullName = $Type.FullName
+        Reason = $null
+        File = $outputFile
+    }
+}
+
 $metadataDll = Join-Path $MetadataBinDir "Microsoft.Dynamics.AX.Metadata.dll"
 if (-not (Test-Path $metadataDll)) {
     throw "Microsoft.Dynamics.AX.Metadata.dll not found at: $metadataDll"
@@ -139,67 +251,67 @@ if (-not (Test-Path $OutputFolder)) {
 }
 
 $exported = New-Object System.Collections.Generic.List[object]
-$failed = New-Object System.Collections.Generic.List[object]
+$initialFailures = New-Object System.Collections.Generic.List[object]
 
 Write-Host ("Found {0} types matching {1}" -f $axTypes.Count, $TypeNamePattern)
 Write-Host ("RAW_MODE={0}" -f ([bool]$Raw))
 
 foreach ($type in $axTypes) {
-    $exporter = New-Object System.Runtime.Serialization.XsdDataContractExporter
-
-    if (-not $exporter.CanExport($type)) {
-        Write-Warning "Cannot export type: $($type.FullName)"
-        $failed.Add([PSCustomObject]@{
-                Type = $type.Name
-                Reason = "CanExport returned false"
+    $result = Invoke-TypeExport -Type $type -BaseFolder $OutputFolder -RawOutput:$Raw
+    if ($result.Success) {
+        $exported.Add([PSCustomObject]@{
+                Type = $result.Type
+                FullName = $result.FullName
+                File = $result.File
             }) | Out-Null
-        continue
-    }
-
-    try {
-        $exporter.Export($type)
-    } catch {
-        Write-Warning "Export failed for type $($type.FullName): $($_.Exception.Message)"
-        $failed.Add([PSCustomObject]@{
-                Type = $type.Name
-                Reason = $_.Exception.Message
-            }) | Out-Null
-        continue
-    }
-
-    $mainSchema = $exporter.Schemas.Schemas() |
-        Where-Object {
-            $_.TargetNamespace -ne "http://schemas.microsoft.com/2003/10/Serialization/" -and
-            $_.TargetNamespace -ne "http://www.w3.org/2001/XMLSchema"
-        } |
-        Select-Object -First 1
-
-    if (-not $mainSchema) {
-        Write-Warning "No main schema produced for type: $($type.FullName)"
-        $failed.Add([PSCustomObject]@{
-                Type = $type.Name
-                Reason = "No non-WCF schema returned by exporter"
-            }) | Out-Null
-        continue
-    }
-
-    $sw = New-Object System.IO.StringWriter
-    $mainSchema.Write($sw)
-    [string]$xsd = $sw.ToString()
-
-    $outputFile = Join-Path $OutputFolder ("{0}-DataContract.xsd" -f $type.Name)
-    if ($Raw) {
-        [System.IO.File]::WriteAllText($outputFile, $xsd, [System.Text.Encoding]::Unicode)
     } else {
-        $cleanDoc = ConvertTo-CleanSchemaDocument -SchemaXml $xsd
-        Save-SchemaDocument -SchemaDocument $cleanDoc -Path $outputFile
+        $initialFailures.Add([PSCustomObject]@{
+                Type = $result.Type
+                FullName = $result.FullName
+                Reason = $result.Reason
+            }) | Out-Null
+    }
+}
+
+$collisionFailures = @(
+    $initialFailures |
+        Where-Object {
+            $_.Reason -match "same data contract name" -and
+            $_.Reason -match "not equivalent"
+        }
+)
+
+$recovered = New-Object 'System.Collections.Generic.HashSet[string]'
+if ($collisionFailures.Count -gt 0) {
+    $collisionTypeLookup = @{}
+    foreach ($type in $axTypes) {
+        $collisionTypeLookup[$type.FullName] = $type
     }
 
-    $exported.Add([PSCustomObject]@{
-            Type = $type.Name
-            File = $outputFile
-        }) | Out-Null
+    Write-Host ("RETRY_COLLISION_FAILURES={0}" -f $collisionFailures.Count)
+
+    foreach ($failure in $collisionFailures) {
+        if (-not $collisionTypeLookup.ContainsKey($failure.FullName)) {
+            continue
+        }
+
+        $retryType = $collisionTypeLookup[$failure.FullName]
+        $retryResult = Invoke-TypeExport -Type $retryType -BaseFolder $OutputFolder -RawOutput:$Raw -SkipCanExportCheck -WarningPrefix "Retry:"
+        if ($retryResult.Success) {
+            $recovered.Add($retryResult.FullName) | Out-Null
+            $exported.Add([PSCustomObject]@{
+                    Type = $retryResult.Type
+                    FullName = $retryResult.FullName
+                    File = $retryResult.File
+                }) | Out-Null
+        }
+    }
 }
+
+$failed = @(
+    $initialFailures |
+        Where-Object { -not $recovered.Contains($_.FullName) }
+)
 
 $result = if ($failed.Count -gt 0) { "PARTIAL" } else { "OK" }
 Write-Host "EXPORT_RESULT=$result"
@@ -209,5 +321,5 @@ Write-Host "EXPORTED_COUNT=$($exported.Count)"
 Write-Host "FAILED_COUNT=$($failed.Count)"
 
 if ($failed.Count -gt 0) {
-    Write-Host ("FAILED_TYPES={0}" -f (($failed | Select-Object -ExpandProperty Type) -join ","))
+    Write-Host ("FAILED_TYPES={0}" -f (($failed | Select-Object -ExpandProperty FullName) -join ","))
 }
