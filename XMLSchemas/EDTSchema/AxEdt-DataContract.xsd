@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="AxEdt">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Alignment" nillable="true" type="Alignment_ITxt"></xs:element>
+      <xs:element minOccurs="0" name="ButtonImage" nillable="true" type="ButtonImage"></xs:element>
+      <xs:element minOccurs="0" name="CollectionLabel" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="ConfigurationKey" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="ControlClass" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="CountryRegionCodes" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="DataInteractorFactory" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Direction" nillable="true" type="Direction"></xs:element>
+      <xs:element minOccurs="0" name="DisplayLength" nillable="true" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="EnforceHierarchy" nillable="true" type="NoYes"></xs:element>
+      <xs:element minOccurs="0" name="Extends" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="FormHelp" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="HelpText" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="IsObsolete" nillable="true" type="NoYes"></xs:element>
+      <xs:element minOccurs="0" name="Label" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Literals" nillable="true" type="SqlLiteralMode_ITxt"></xs:element>
+      <xs:element minOccurs="0" name="PresenceClass" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="PresenceIndicatorAllowed" nillable="true" type="NoYes"></xs:element>
+      <xs:element minOccurs="0" name="PresenceMethod" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="ReferenceTable" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Visibility" nillable="true" type="CompilerVisibility"></xs:element>
+      <xs:element minOccurs="0" name="ArrayElements" nillable="true" type="AxEdtArrayElements" />
+      <xs:element minOccurs="0" name="Relations" nillable="true" type="AxEdtRelations" />
+      <xs:element minOccurs="0" name="TableReferences" nillable="true" type="AxEdtTableReferences" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdt" nillable="true" type="AxEdt" />
+  <xs:simpleType name="Alignment_ITxt">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="Center" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Alignment_ITxt" nillable="true" type="Alignment_ITxt" />
+  <xs:simpleType name="ButtonImage">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Arrow" />
+      <xs:enumeration value="Mail" />
+      <xs:enumeration value="URL" />
+      <xs:enumeration value="ThreeDots" />
+      <xs:enumeration value="OpenFile" />
+      <xs:enumeration value="Calendar" />
+      <xs:enumeration value="Phone" />
+      <xs:enumeration value="RightArrow" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ButtonImage" nillable="true" type="ButtonImage" />
+  <xs:simpleType name="Direction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="LTR" />
+      <xs:enumeration value="RTL" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Direction" nillable="true" type="Direction" />
+  <xs:simpleType name="NoYes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="No" />
+      <xs:enumeration value="Yes" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="NoYes" nillable="true" type="NoYes" />
+  <xs:simpleType name="SqlLiteralMode_ITxt">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="ForceLiterals" />
+      <xs:enumeration value="ForcePlaceholders" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SqlLiteralMode_ITxt" nillable="true" type="SqlLiteralMode_ITxt" />
+  <xs:simpleType name="CompilerVisibility">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Private" />
+      <xs:enumeration value="Protected" />
+      <xs:enumeration value="Public" />
+      <xs:enumeration value="Internal" />
+      <xs:enumeration value="InternalProtected" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CompilerVisibility" nillable="true" type="CompilerVisibility" />
+  <xs:complexType name="AxEdtArrayElements">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AxEdtArrayElement" nillable="true" type="AxEdtArrayElement" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdtArrayElements" nillable="true" type="AxEdtArrayElements" />
+  <xs:complexType name="AxEdtArrayElement">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="CollectionLabel" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="HelpText" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Index" nillable="true" type="xs:int"></xs:element>
+      <xs:element minOccurs="0" name="Label" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Relations" nillable="true" type="AxEdtRelations" />
+      <xs:element minOccurs="0" name="TableReferences" nillable="true" type="AxEdtTableReferences" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdtArrayElement" nillable="true" type="AxEdtArrayElement" />
+  <xs:complexType name="AxEdtRelations">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AxEdtRelation" nillable="true" type="AxEdtRelation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdtRelations" nillable="true" type="AxEdtRelations" />
+  <xs:complexType name="AxEdtRelation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RelatedField" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Table" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdtRelation" nillable="true" type="AxEdtRelation" />
+  <xs:complexType name="AxEdtRelationFixed">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdtRelation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Value" nillable="true" type="xs:int"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtRelationFixed" nillable="true" type="AxEdtRelationFixed" />
+  <xs:complexType name="AxEdtTableReferences">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AxEdtTableReference" nillable="true" type="AxEdtTableReference" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdtTableReferences" nillable="true" type="AxEdtTableReferences" />
+  <xs:complexType name="AxEdtTableReference">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RelatedField" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Table" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdtTableReference" nillable="true" type="AxEdtTableReference" />
+  <xs:complexType name="AxEdtTableReferenceFilter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdtTableReference">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Value" nillable="true" type="xs:int"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtTableReferenceFilter" nillable="true" type="AxEdtTableReferenceFilter" />
+  <xs:complexType name="AxEdtContainer">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtContainer" nillable="true" type="AxEdtContainer" />
+  <xs:complexType name="AxEdtString">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Adjustment" nillable="true" type="Adjustment"></xs:element>
+          <xs:element minOccurs="0" name="ChangeCase" nillable="true" type="ChangeCase"></xs:element>
+          <xs:element minOccurs="0" name="DatabaseStringSize" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="DisplayHeight" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="StringSize" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="StringSizeIsExtensible" nillable="true" type="AutoNoYes"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtString" nillable="true" type="AxEdtString" />
+  <xs:simpleType name="Adjustment">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Adjustment" nillable="true" type="Adjustment" />
+  <xs:simpleType name="ChangeCase">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="None" />
+      <xs:enumeration value="UpperCase" />
+      <xs:enumeration value="LowerCase" />
+      <xs:enumeration value="SentenceCase" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ChangeCase" nillable="true" type="ChangeCase" />
+  <xs:simpleType name="AutoNoYes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="No">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Yes">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AutoNoYes" nillable="true" type="AutoNoYes" />
+  <xs:complexType name="AxEdtInt">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AllowNegative" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="DisplaceNegative" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="RotateSign" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="ShowZero" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="SignDisplay" nillable="true" type="SignDisplay"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtInt" nillable="true" type="AxEdtInt" />
+  <xs:simpleType name="SignDisplay">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Prefixed" />
+      <xs:enumeration value="Suffixed" />
+      <xs:enumeration value="Parentheses" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SignDisplay" nillable="true" type="SignDisplay" />
+  <xs:complexType name="AxEdtInt64">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AllowNegative" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="DisplaceNegative" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="RotateSign" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="ShowZero" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="SignDisplay" nillable="true" type="SignDisplay"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtInt64" nillable="true" type="AxEdtInt64" />
+  <xs:complexType name="AxEdtReal">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AllowNegative" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="AutoInsSeparator" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="DecimalSeparator" nillable="true" type="DecimalSeparator"></xs:element>
+          <xs:element minOccurs="0" name="DisplaceNegative" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="FormatMST" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="NoOfDecimals" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="NoOfDecimalsIsExtensible" nillable="true" type="xs:boolean"></xs:element>
+          <xs:element minOccurs="0" name="RotateSign" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="Scale" nillable="true" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="ShowZero" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="SignDisplay" nillable="true" type="SignDisplay"></xs:element>
+          <xs:element minOccurs="0" name="ThousandSeparator" nillable="true" type="ThousandSeparator"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtReal" nillable="true" type="AxEdtReal" />
+  <xs:simpleType name="DecimalSeparator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Dot" />
+      <xs:enumeration value="Comma" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DecimalSeparator" nillable="true" type="DecimalSeparator" />
+  <xs:simpleType name="ThousandSeparator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Dot">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Comma">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Apostrophe">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Space">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ThousandSeparator" nillable="true" type="ThousandSeparator" />
+  <xs:complexType name="AxEdtEnum">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EnumType" nillable="true" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="Style" nillable="true" type="Style_ITxt"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtEnum" nillable="true" type="AxEdtEnum" />
+  <xs:simpleType name="Style_ITxt">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="Combobox" />
+      <xs:enumeration value="Radiobutton" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Style_ITxt" nillable="true" type="Style_ITxt" />
+  <xs:complexType name="AxEdtGuid">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtGuid" nillable="true" type="AxEdtGuid" />
+  <xs:complexType name="AxEdtTime">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="TimeFormat" nillable="true" type="TimeFormat"></xs:element>
+          <xs:element minOccurs="0" name="TimeHours" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="TimeMinute" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="TimeSeconds" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="TimeSeparator" nillable="true" type="TimeSeparator"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtTime" nillable="true" type="AxEdtTime" />
+  <xs:simpleType name="TimeFormat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Hour24" />
+      <xs:enumeration value="AMPM" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TimeFormat" nillable="true" type="TimeFormat" />
+  <xs:simpleType name="TimeSeparator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Colon" />
+      <xs:enumeration value="Dot" />
+      <xs:enumeration value="Space" />
+      <xs:enumeration value="Comma" />
+      <xs:enumeration value="Slash" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TimeSeparator" nillable="true" type="TimeSeparator" />
+  <xs:complexType name="AxEdtUtcDateTime">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DateDay" nillable="true" type="DateDay"></xs:element>
+          <xs:element minOccurs="0" name="DateFormat" nillable="true" type="DateFormat_ITxt"></xs:element>
+          <xs:element minOccurs="0" name="DateMonth" nillable="true" type="DateMonth"></xs:element>
+          <xs:element minOccurs="0" name="DateSeparator" nillable="true" type="DateSeparator_ITxt"></xs:element>
+          <xs:element minOccurs="0" name="DateYear" nillable="true" type="DateYear"></xs:element>
+          <xs:element minOccurs="0" name="MaxDateLabel" nillable="true" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="TimeFormat" nillable="true" type="TimeFormat"></xs:element>
+          <xs:element minOccurs="0" name="TimeHours" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="TimeMinute" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="TimeSeconds" nillable="true" type="AutoNoYes"></xs:element>
+          <xs:element minOccurs="0" name="TimeSeparator" nillable="true" type="TimeSeparator"></xs:element>
+          <xs:element minOccurs="0" name="TimezonePreference" nillable="true" type="TimeZonePreference"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtUtcDateTime" nillable="true" type="AxEdtUtcDateTime" />
+  <xs:simpleType name="DateDay">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Digits1or2">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Digits2">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DateDay" nillable="true" type="DateDay" />
+  <xs:simpleType name="DateFormat_ITxt">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="YMD" />
+      <xs:enumeration value="YDM" />
+      <xs:enumeration value="MYD" />
+      <xs:enumeration value="DYM" />
+      <xs:enumeration value="MDY" />
+      <xs:enumeration value="DMY" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DateFormat_ITxt" nillable="true" type="DateFormat_ITxt" />
+  <xs:simpleType name="DateMonth">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Digits1or2">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Digits2">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Short">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Long">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DateMonth" nillable="true" type="DateMonth" />
+  <xs:simpleType name="DateSeparator_ITxt">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="Slash_Slash" />
+      <xs:enumeration value="Slash_Dash" />
+      <xs:enumeration value="Slash_Dot" />
+      <xs:enumeration value="Slash_Space" />
+      <xs:enumeration value="Slash_None" />
+      <xs:enumeration value="Dash_Slash" />
+      <xs:enumeration value="Dash_Dash" />
+      <xs:enumeration value="Dash_Dot" />
+      <xs:enumeration value="Dash_Space" />
+      <xs:enumeration value="Dash_None" />
+      <xs:enumeration value="Dot_Slash" />
+      <xs:enumeration value="Dot_Dash" />
+      <xs:enumeration value="Dot_Dot" />
+      <xs:enumeration value="Dot_Space" />
+      <xs:enumeration value="Dot_None" />
+      <xs:enumeration value="Space_Slash" />
+      <xs:enumeration value="Space_Dash" />
+      <xs:enumeration value="Space_Dot" />
+      <xs:enumeration value="Space_Space" />
+      <xs:enumeration value="Space_None" />
+      <xs:enumeration value="None_Slash" />
+      <xs:enumeration value="None_Dash" />
+      <xs:enumeration value="None_Dot" />
+      <xs:enumeration value="None_Space" />
+      <xs:enumeration value="None_None" />
+      <xs:enumeration value="ChineseFormal" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DateSeparator_ITxt" nillable="true" type="DateSeparator_ITxt" />
+  <xs:simpleType name="DateYear">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Digits2" />
+      <xs:enumeration value="Digits4">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DateYear" nillable="true" type="DateYear" />
+  <xs:simpleType name="TimeZonePreference">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">99</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="User" />
+      <xs:enumeration value="NoConversion" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TimeZonePreference" nillable="true" type="TimeZonePreference" />
+  <xs:complexType name="AxEdtDate">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AxEdt">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DateDay" nillable="true" type="DateDay"></xs:element>
+          <xs:element minOccurs="0" name="DateFormat" nillable="true" type="DateFormat_ITxt"></xs:element>
+          <xs:element minOccurs="0" name="DateMonth" nillable="true" type="DateMonth"></xs:element>
+          <xs:element minOccurs="0" name="DateSeparator" nillable="true" type="DateSeparator_ITxt"></xs:element>
+          <xs:element minOccurs="0" name="DateYear" nillable="true" type="DateYear"></xs:element>
+          <xs:element minOccurs="0" name="MaxDateLabel" nillable="true" type="xs:string"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AxEdtDate" nillable="true" type="AxEdtDate" />
+  <xs:complexType name="AxEdtExtension">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="IsObsolete" nillable="true" type="NoYes"></xs:element>
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Visibility" nillable="true" type="CompilerVisibility"></xs:element>
+      <xs:element minOccurs="0" name="ArrayElements" nillable="true" type="AxEdtArrayElements" />
+      <xs:element minOccurs="0" name="PropertyModifications" nillable="true" type="AxPropertyModifications" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxEdtExtension" nillable="true" type="AxEdtExtension" />
+  <xs:complexType name="AxPropertyModifications">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AxPropertyModification" nillable="true" type="AxPropertyModification" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxPropertyModifications" nillable="true" type="AxPropertyModifications" />
+  <xs:complexType name="AxPropertyModification">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxPropertyModification" nillable="true" type="AxPropertyModification" />
+</xs:schema>
