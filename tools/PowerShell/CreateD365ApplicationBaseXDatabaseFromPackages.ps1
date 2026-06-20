@@ -1,6 +1,8 @@
 # Make sure the Java VM for BaseX has 10 GB memory capacity, e.g. by setting a system environment variable (may require a system reboot)
 # BASEX_JVM = -Xmx10G
 
+# This runs about 1,5 hours for the whole standard application.
+
 param(
     [string]$PackagesLocalDirectory = "C:\AOSService\PackagesLocalDirectory",
     [string]$BaseXDatabaseName = "D365Application",
