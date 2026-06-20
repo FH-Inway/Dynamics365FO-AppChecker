@@ -206,8 +206,11 @@
     <!-- Typed collection of AxEdtTableReference entries. -->
     <xs:complexType name="AxEdtTableReferencesType">
       <xs:sequence>
-        <xs:element name="AxEdtTableReference" type="AxEdtTableReferenceType"
-                    minOccurs="0" maxOccurs="unbounded"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="AxEdtTableReference" type="AxEdtTableReferenceType"/>
+          <xs:element name="AxEdtTableReference" type="AxEdtTableReferenceFilterType" 
+                      xsi:type="AxEdtTableReferenceFilter"/>
+        </xs:choice>
       </xs:sequence>
     </xs:complexType>
 
