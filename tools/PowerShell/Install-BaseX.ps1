@@ -26,6 +26,9 @@ if (-not (CheckJava)) {
   Write-Host "Installing Java..."
   # choco install temurin
   choco install temurin
+  # Installation adds java to PATH, but the current session does not recognize it. Restart PowerShell to use java command.
+  Write-Host "Please restart PowerShell and run this script again to continue installing BaseX."
+  exit
 }
 
 # Download BaseX
